@@ -1,13 +1,4 @@
 { config, pkgs, lib, ... }: {
-    home-manager.users.sargo = { pkgs, lib, ... }: let
-    unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-    flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-    hyprland = (import flake-compat {
-      src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-    }).defaultNix;
-  in  {
-
-
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
@@ -68,7 +59,15 @@
       starship
     ];
   };
-  
+     
+  home-manager.users.sargo = { pkgs, lib, ... }: let
+    unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+    flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+    hyprland = (import flake-compat {
+      src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+    }).defaultNix;
+  in  {
+
 
   
     imports = [

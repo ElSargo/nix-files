@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }: {
 
   environment.systemPackages = with pkgs; [
+    thunderbird
     catppuccin-gtk
     gcc
     any-nix-shell
