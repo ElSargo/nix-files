@@ -31,6 +31,9 @@ let
   #   };
   # }; 
     
+  
+
+  
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];

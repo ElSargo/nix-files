@@ -1,4 +1,14 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: let 
+  rust-pkgs = with pkgs; [      
+    rust-script
+    unstable.rustc
+    unstable.cargo
+    unstable.rust-analyzer
+    unstable.clippy
+    unstable.rustfmt
+  ];
+in{
+  
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
@@ -7,7 +17,6 @@
     packages = with pkgs;[
       feh
       zathura
-      rust-script
       galculator
       socat
       networkmanagerapplet
@@ -48,16 +57,11 @@
       python310Packages.python-lsp-server
       python310
       unstable.armcord
-      unstable.rustc
-      unstable.cargo
-      unstable.rust-analyzer
-      unstable.clippy
-      unstable.rustfmt
       exa
       sd
       zoxide
       starship
-    ];
+    ] ++ rust-pkgs;
   };
      
   home-manager.users.sargo = { pkgs, lib, ... }: let
@@ -73,6 +77,7 @@
     imports = [
       hyprland.homeManagerModules.default
     ];
+
     nixpkgs.overlays = [
       (self: super: {
         waybar = super.waybar.overrideAttrs (oldAttrs: {
@@ -799,12 +804,16 @@
          delay = lib.hm.gvariant.mkUint32 175; repeat-interval = lib.hm.gvariant.mkUint32 18; repeat = true;
        };
     };
+ 
+    
     home.file.".cargo/config.toml".text = /*toml*/ ''
+
       [target.x86_64-unknown-linux-gnu]
       linker = "clang"
       rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
     '';
- 
+
+
     home.file.".config/wofi/style.css".text = /*css*/''
       @define-color base   #24273a; @define-color mantle #1e2030; @define-color crust  #181926;  @define-color text     #cad3f5; @define-color subtext0 #a5adcb; @define-color subtext1 #b8c0e0;  @define-color surface0 #363a4f; @define-color surface1 #494d64; @define-color surface2 #5b6078;  @define-color overlay0 #6e738d; @define-color overlay1 #8087a2; @define-color overlay2 #939ab7;  @define-color blue      #8aadf4; @define-color lavender  #b7bdf8; @define-color sapphire  #7dc4e4; @define-color sky       #91d7e3; @define-color teal      #8bd5ca; @define-color green     #a6da95; @define-color yellow    #eed49f; @define-color peach     #f5a97f; @define-color maroon    #ee99a0; @define-color red       #ed8796; @define-color mauve     #c6a0f6; @define-color pink      #f5bde6; @define-color flamingo  #f0c6c6; @define-color rosewater #f4dbd6;  window { margin: 0px; border-radius: 30px; border: 2px solid teal; }  #input { margin: 5px; border: none; border-radius: 30px; }  #inner-box { margin: 5px; border: none; border-radius: 30px; }  #outer-box { margin: 15px; border: none; }  #scroll { margin: 0px; border: none; }  #text { margin: 5px; border: none; }   #entry:selected { border-radius: 20px; outline: none; }  #entry:selected * { border-radius: 20px; outline: none; } 
     ''; 
