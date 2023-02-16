@@ -111,6 +111,8 @@ let
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
       });
     })
+
+    
   ];
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = import unstableTarball {
@@ -123,6 +125,7 @@ let
   };
   imports =
     [ 
+      # ./new-terminal-hyprland.nix
       ./sargo.nix
       ./system-pakages.nix
       ./hardware-configuration.nix
@@ -143,4 +146,6 @@ let
     LC_TELEPHONE = "en_NZ.UTF-8";
     LC_TIME = "en_NZ.UTF-8";
   };
+  programs.wshowkeys.enable = true;
+  services.systembus-notify.enable = true;
 }

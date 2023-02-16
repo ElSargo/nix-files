@@ -36,5 +36,7 @@
     unstable.fontconfig
     unstable.freetype
     openssl
+    mako
+    libnotify
   ];
 }

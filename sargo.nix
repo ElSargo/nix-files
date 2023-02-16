@@ -7,14 +7,15 @@
     unstable.clippy
     unstable.rustfmt
   ];
-in{
-  
+
+  in {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs;[
+      inlyne
       feh
       zathura
       galculator
@@ -109,7 +110,8 @@ in{
       enable = true;
       extraConfig = /*kdl*/ ''
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        bind = SUPER, Return, exec, projects/open_terminal/target/release/open_terminal
+        bind = SUPER, r, exec fish -c rebuild
+        bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
         bind = SUPER, C, exec, fish -c open_system
         bind = SUPER, Q, killactive, 
         bind = SUPER, M, exit, 
@@ -169,7 +171,7 @@ in{
         exec = pkill hyprpaper ; pkill waybar ; waybar & hyprpaper & disown
         input {
             kb_layout = us
-            kb_options=caps:escape 
+            kb_options=caps:escape
             repeat_rate=69
             repeat_delay=150
             follow_mouse = 1
@@ -556,6 +558,7 @@ in{
       helix = {
         enable = true;
         package = pkgs.unstable.helix;
+        # package = pkgs.helix_bleeding;
         settings = {
           theme = "catppuccin_macchiato";
           editor = {
@@ -598,6 +601,10 @@ in{
       fish = {
         enable = true;
         functions = {
+          rebuild = {
+            body = ''zellij action write-chars :wa\n ; sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
+            description = "Rebuild the system configuration";
+          };
           toggle_eye_saver = {
             body = /*fish*/''
             switch "$(hyprctl getoption decoration:screen_shader)"
@@ -611,7 +618,8 @@ in{
           };
           open_system = {
             body = /*fish*/  ''
-              rust-script -d 'hyprland=*' -e 'let clients = <hyprland::data::Clients as hyprland::shared::HyprData>::get()?; for client in clients { if client.title.starts_with("Zellij (system)") { if let Err(e) = hyprland::dispatch::Dispatch::call(hyprland::dispatch::DispatchType::Workspace( hyprland::dispatch::WorkspaceIdentifierWithSpecial::Id(client.workspace.id), )) { println!("Error: {e}"); } return Ok(()); } } std::process::Command::new("kitty") .arg("--title") .arg("Zellij (system)") .arg("zellij") .arg("a") .arg("system") .spawn() .expect("Unable to spawn command");'            
+              # rust-script -d 'hyprland=*' -e 'let clients = <hyprland::data::Clients as hyprland::shared::HyprData>::get()?; for client in clients { if client.title.starts_with("Zellij (system)") { if let Err(e) = hyprland::dispatch::Dispatch::call(hyprland::dispatch::DispatchType::Workspace( hyprland::dispatch::WorkspaceIdentifierWithSpecial::Id(client.workspace.id), )) { println!("Error: {e}"); } return Ok(()); } } std::process::Command::new("kitty") .arg("--title") .arg("Zellij (system)") .arg("zellij") .arg("a") .arg("system") .spawn() .expect("Unable to spawn command");'            
+              ~/projects/open_system/target/release/hyprtest
             '';
             description = ''Goto the session or open it'';
           };
@@ -638,12 +646,7 @@ in{
           };
           dmenu = {
             body = /*fish*/''
-              switch $XDG_SESSION_TYPE
-              case "*wayland*"
                 wofi --show dmenu 
-              case "*"
-                rofi --show dmenu 
-              end
             '';
             description = "Dmenu for wayland or x using wofi or rofi";
           };
@@ -669,6 +672,7 @@ in{
            xc  = "wl-copy";
         };
         shellAbbrs = {
+          hxb = "~/.cargo/bin/hx --config ~/.config/helix/bleeding_config.toml";
            i  = "nix-env -iA nixos.";
            q  = "exit";
          ":q" = "exit";
@@ -729,6 +733,7 @@ in{
         delta.enable = true;
       };
       bash = {
+
         enable = true;
       };
     };
@@ -1089,6 +1094,7 @@ in{
     '';
 
     home.file.".config/zellij/layouts/system.kdl".text = /*kdl*/ ''
+      cwd "/home/sargo/nix-files"
       layout {
       	default_tab_template {
       		children
@@ -1112,12 +1118,12 @@ in{
               pane split_direction="vertical" {
       			// Root commands run in user shell to avoid glitches
                   pane name="Configuration.nix" command="fish"{
-                      args "-c" " sudo hx /etc/nixos/configuration.nix"
+                      args "-c" "hx sargo.nix"
                   }
                   pane size="30%" split_direction="horizontal" {
-      		        pane name="Rebuild" command="fish" start_suspended=true {
-      		            args "-c" "sudo nixos-rebuild switch" 
-      		        }
+        		        pane name="Rebuild" command="fish" start_suspended=true {
+        		            args "-c" "cp sudo /home/sargo/nix-files/*.nix && sudo nixos-rebuild switch" 
+        		        }
                   }
               }
           }        
