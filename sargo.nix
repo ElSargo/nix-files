@@ -37,7 +37,6 @@
       libreoffice
       keepassxc
       firefox
-      unstable.zellij
       nil
       delta
       clang
@@ -110,7 +109,7 @@
       enable = true;
       extraConfig = /*kdl*/ ''
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        bind = SUPER, r, exec fish -c rebuild
+        bind = SUPER, R, exec, fish -c rebuild
         bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
         bind = SUPER, C, exec, fish -c open_system
         bind = SUPER, Q, killactive, 
@@ -124,7 +123,6 @@
         bind = SUPERSHIFT, Q, exec, wlogout
         bind = SUPER, B, exec, blueberry
         bind = SUPERSHIFT, W, exec, nm-connection-editor
-        bind = SUPER, Z, exec, fish -c 'set ses $(zellij list-sessions | wofi --show dmenu) ; kitty zellij a $ses'
         bind = SUPERSHIFT, Z, exec, kitty fish '-c zn'
         bind = SUPER, J, layoutmsg, cyclenext
         bind = SUPER, K, layoutmsg, cycleprev 
@@ -576,12 +574,6 @@
               character = "│";
             };
           };
-          keys.normal = {
-            X = '':sh zellij action write-chars "gsvgl" '';
-            "C-j" = ['':sh zellij action write-chars 'f(lmi(' '' ''flip_selections''];
-            "C-k" = ['':sh zellij action write-chars 'f[lmi[' '' ''flip_selections''];
-            "C-l" = ['':sh zellij action write-chars 'f{lmi{' '' ''flip_selections''];
-          };
         };
       };
       kitty = {
@@ -602,7 +594,7 @@
         enable = true;
         functions = {
           rebuild = {
-            body = ''zellij action write-chars :wa\n ; sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
+            body = ''sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
             description = "Rebuild the system configuration";
           };
           toggle_eye_saver = {
@@ -618,50 +610,15 @@
           };
           open_system = {
             body = /*fish*/  ''
-              # rust-script -d 'hyprland=*' -e 'let clients = <hyprland::data::Clients as hyprland::shared::HyprData>::get()?; for client in clients { if client.title.starts_with("Zellij (system)") { if let Err(e) = hyprland::dispatch::Dispatch::call(hyprland::dispatch::DispatchType::Workspace( hyprland::dispatch::WorkspaceIdentifierWithSpecial::Id(client.workspace.id), )) { println!("Error: {e}"); } return Ok(()); } } std::process::Command::new("kitty") .arg("--title") .arg("Zellij (system)") .arg("zellij") .arg("a") .arg("system") .spawn() .expect("Unable to spawn command");'            
               ~/projects/open_system/target/release/hyprtest
             '';
             description = ''Goto the session or open it'';
-          };
-          zr = {
-            body = /*fish*/''zellij run --name "$argv" -- fish -c "$argv" '';
-            description = ''Run a command in a zellij pane'';
-          };
-          zrf = {
-            body = /*fish*/''zellij run --name "$argv" --floating -- fish -c "$argv" '';
-            description = ''Run a command in a floating zellij pane'';
-          };
-          ze = {
-            body = /*fish*/''zellij edit $argv '';
-            description = ''Edit a file with helix in zellij'';
-          };
-          zef = {
-            body = /*fish*/''zellij edit --floating $argv '';
-            description = ''Edit a file with helix in a floating zellij pane'';
-          };
-          o = {
-            body = /*fish*/''zellij a $name || zellij -l /home/sargo/.config/zellij/layouts/$name -s $name'';
-            description = '' '';
-            argumentNames = ["name"];
           };
           dmenu = {
             body = /*fish*/''
                 wofi --show dmenu 
             '';
             description = "Dmenu for wayland or x using wofi or rofi";
-          };
-          zd = {
-            body = /*fish*/''fish -c 'fish -c 'pkill kitty ; kitty zellij a "$(zellij list-sessions | dmenu)" '';
-            description = ''Open a menu active zellij sessions'';
-          
-          };
-          zn = {
-            body = /*fish*/''set SESSION_SEL $(string trim --right --chars='.kdl' "$(/usr/bin/env ls ~/.config/zellij/layouts | dmenu)") ; zellij a $SESSION_SEL || zellij -s $SESSION_SEL -l $SESSION_SEL  '';
-            description = "Open a prompt with prebuilt layouts and join or spwan a session with it";
-          };          
-          fo = {
-            body = /*fish*/''fish -c 'set name $(zellij list-sessions | fzf);zellij a $name || zellij -l /home/sargo/.config/zellij/layouts/$1 -s $name' '';
-            description = ''Open a fuzzy finder of active zellij sessions'';
           };
           copy_history = {
             body = /*fish*/''history | fzf | xc'';
@@ -750,28 +707,6 @@
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
         ];
       };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        binding = "<Super>n";
-        command = /*fish*/''fish -c 'pkill kitty ; kitty fish -c zn' '';
-        name = "Zellij from layout";
-      };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        binding = "<Super><Shift>n";
-        command = /*fish*/''fish -c 'pkill kitty ; kitty zellij -s $(echo "" | dmenu) ' '';
-        name = "New zellij";
-      };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
-        binding = "<Super>j";
-        command = /*fish*/''
-          fish -c '
-            pkill kitty;
-            set NAME $(zellij list-sessions | dmenu)
-            set NAME $(string split " " -- $NAME)[1]
-            kitty zellij a $NAME
-          '
-        '';
-        name = "Zellij attach";
-      };
       "org/gnome/desktop/wm/keybindings" = {
           switch-to-workspace-1 = ["<Shift><Super>1"]; switch-to-workspace-2 = ["<Shift><Super>2"]; switch-to-workspace-3 = ["<Shift><Super>3"]; switch-to-workspace-4 = ["<Shift><Super>4"]; switch-to-workspace-5 = ["<Shift><Super>5"]; switch-to-workspace-6 = ["<Shift><Super>6"]; switch-to-workspace-7 = ["<Shift><Super>7"]; switch-to-workspace-8 = ["<Shift><Super>8"]; switch-to-workspace-9 = ["<Shift><Super>9"]; 
           move-to-workspace-1 = ["<Control><Super>1"]; move-to-workspace-2 = ["<Control><Super>2"]; move-to-workspace-3 = ["<Control><Super>3"]; move-to-workspace-4 = ["<Control><Super>4"]; move-to-workspace-5 = ["<Control><Super>5"]; move-to-workspace-6 = ["<Control><Super>6"]; move-to-workspace-7 = ["<Control><Super>7"]; move-to-workspace-8 = ["<Control><Super>8"]; move-to-workspace-9 = ["<Control><Super>9"]; switch-applications   = ["<Super>Tab"];
@@ -822,463 +757,7 @@
     home.file.".config/wofi/style.css".text = /*css*/''
       @define-color base   #24273a; @define-color mantle #1e2030; @define-color crust  #181926;  @define-color text     #cad3f5; @define-color subtext0 #a5adcb; @define-color subtext1 #b8c0e0;  @define-color surface0 #363a4f; @define-color surface1 #494d64; @define-color surface2 #5b6078;  @define-color overlay0 #6e738d; @define-color overlay1 #8087a2; @define-color overlay2 #939ab7;  @define-color blue      #8aadf4; @define-color lavender  #b7bdf8; @define-color sapphire  #7dc4e4; @define-color sky       #91d7e3; @define-color teal      #8bd5ca; @define-color green     #a6da95; @define-color yellow    #eed49f; @define-color peach     #f5a97f; @define-color maroon    #ee99a0; @define-color red       #ed8796; @define-color mauve     #c6a0f6; @define-color pink      #f5bde6; @define-color flamingo  #f0c6c6; @define-color rosewater #f4dbd6;  window { margin: 0px; border-radius: 30px; border: 2px solid teal; }  #input { margin: 5px; border: none; border-radius: 30px; }  #inner-box { margin: 5px; border: none; border-radius: 30px; }  #outer-box { margin: 15px; border: none; }  #scroll { margin: 0px; border: none; }  #text { margin: 5px; border: none; }   #entry:selected { border-radius: 20px; outline: none; }  #entry:selected * { border-radius: 20px; outline: none; } 
     ''; 
-    home.file.".config/zellij/config.kdl".text = /*kdl*/ ''
-      // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
-      keybinds clear-defaults=true{
-          normal {
-              // uncomment this and adjust key if using copy_on_select=false
-              // bind "Alt c" { Copy; }
-              bind "Alt Right" { GoToNextTab; }
-              bind "Alt Left" { GoToPreviousTab; }
-              bind "Alt k" { FocusNextPane; }
-              bind "Alt k" { FocusNextPane; }
-              bind "Alt j" { FocusPreviousPane; }
-              bind "Alt 1" { GoToTab 1; }
-              bind "Alt 2" { GoToTab 2; }
-              bind "Alt 3" { GoToTab 3; }
-              bind "Alt 4" { GoToTab 4; }
-              bind "Alt 5" { GoToTab 5; }
-              bind "Alt 6" { GoToTab 6; }
-              bind "Alt 7" { GoToTab 7; }
-              bind "Alt 8" { GoToTab 8; }
-              bind "Alt 9" { GoToTab 9; }
-              bind "Alt f" {ToggleFloatingPanes; }
-          }
-          locked {
-              bind "Ctrl g" { SwitchToMode "Normal"; }
-          }
-          resize {
-              bind "Ctrl n" { SwitchToMode "Normal"; }
-              bind "h" "Left" { Resize "Increase Left"; }
-              bind "j" "Down" { Resize "Increase Down"; }
-              bind "k" "Up"   { Resize "Increase Up"; }
-              bind "l" "Right"{ Resize "Increase Right"; }
-              bind "H" { Resize "Decrease Left"; }
-              bind "J" { Resize "Decrease Down"; }
-              bind "K" { Resize "Decrease Up"; }
-              bind "L" { Resize "Decrease Right"; }
-              bind "=" "+" { Resize "Increase"; }
-              bind "-" { Resize "Decrease"; }
-          }
-          pane {
-              bind "Ctrl p" { SwitchToMode "Normal"; }
-              bind "h" "Left" { MoveFocus "Left"; }
-              bind "l" "Right" { MoveFocus "Right"; }
-              bind "j" "Down" { MoveFocus "Down"; }
-              bind "k" "Up" { MoveFocus "Up"; }
-              bind "p" { SwitchFocus; }
-              bind "n" { NewPane; SwitchToMode "Normal"; }
-              bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
-              bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
-              bind "x" { CloseFocus; SwitchToMode "Normal"; }
-              bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-              bind "z" { TogglePaneFrames; SwitchToMode "Normal"; }
-              bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
-              bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
-              bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
-          }
-          move {
-              bind "Ctrl h" { SwitchToMode "Normal"; }
-              bind "n" "Tab" { MovePane; }
-              bind "h" "Left" { MovePane "Left"; }
-              bind "j" "Down" { MovePane "Down"; }
-              bind "k" "Up" { MovePane "Up"; }
-              bind "l" "Right" { MovePane "Right"; }
-          }
-          tab {
-              bind "Ctrl t" { SwitchToMode "Normal"; }
-              bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
-              bind "h" "Left" "Up" "k" { GoToPreviousTab; }
-              bind "l" "Right" "Down" "j" { GoToNextTab; }
-              bind "n" { NewTab; SwitchToMode "Normal"; }
-              bind "x" { CloseTab; SwitchToMode "Normal"; }
-              bind "s" { ToggleActiveSyncTab; SwitchToMode "Normal"; }
-              bind "1" { GoToTab 1; SwitchToMode "Normal"; }
-              bind "2" { GoToTab 2; SwitchToMode "Normal"; }
-              bind "3" { GoToTab 3; SwitchToMode "Normal"; }
-              bind "4" { GoToTab 4; SwitchToMode "Normal"; }
-              bind "5" { GoToTab 5; SwitchToMode "Normal"; }
-              bind "6" { GoToTab 6; SwitchToMode "Normal"; }
-              bind "7" { GoToTab 7; SwitchToMode "Normal"; }
-              bind "8" { GoToTab 8; SwitchToMode "Normal"; }
-              bind "9" { GoToTab 9; SwitchToMode "Normal"; }
-              bind "Tab" { ToggleTab; }
-          }
-          scroll {
-              bind "Ctrl f" { SwitchToMode "Normal"; }
-              bind "e" { EditScrollback; SwitchToMode "Normal"; }
-              bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
-              bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
-              bind "j" "Down" { ScrollDown; }
-              bind "k" "Up" { ScrollUp; }
-              bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
-              bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
-              bind "d" { HalfPageScrollDown; }
-              bind "u" { HalfPageScrollUp; }
-              // uncomment this and adjust key if using copy_on_select=false
-              // bind "Alt c" { Copy; }
-          }
-          search {
-              bind "Ctrl s" { SwitchToMode "Normal"; }
-              bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
-              bind "j" "Down" { ScrollDown; }
-              bind "k" "Up" { ScrollUp; }
-              bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
-              bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
-              bind "d" { HalfPageScrollDown; }
-              bind "u" { HalfPageScrollUp; }
-              bind "n" { Search "down"; }
-              bind "p" { Search "up"; }
-              bind "c" { SearchToggleOption "CaseSensitivity"; }
-              bind "w" { SearchToggleOption "Wrap"; }
-              bind "o" { SearchToggleOption "WholeWord"; }
-          }
-          entersearch {
-              bind "Ctrl c" "Esc" { SwitchToMode "Scroll"; }
-              bind "Enter" { SwitchToMode "Search"; }
-          }
-          renametab {
-              bind "Ctrl c" { SwitchToMode "Normal"; }
-              bind "Esc" { UndoRenameTab; SwitchToMode "Tab"; }
-          }
-          renamepane {
-              bind "Ctrl c" { SwitchToMode "Normal"; }
-              bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
-          }
-          session {
-              bind "Ctrl s" { SwitchToMode "Normal"; }
-              bind "Ctrl f" { SwitchToMode "Scroll"; }
-              bind "d" { Detach; }
-          }
-          tmux {
-              bind "[" { SwitchToMode "Scroll"; }
-              bind "Ctrl b" { Write 2; SwitchToMode "Normal"; }
-              bind "\"" { NewPane "Down"; SwitchToMode "Normal"; }
-              bind "%" { NewPane "Right"; SwitchToMode "Normal"; }
-              bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-              bind "c" { NewTab; SwitchToMode "Normal"; }
-              bind "," { SwitchToMode "RenameTab"; }
-              bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
-              bind "n" { GoToNextTab; SwitchToMode "Normal"; }
-              bind "Left" { MoveFocus "Left"; SwitchToMode "Normal"; }
-              bind "Right" { MoveFocus "Right"; SwitchToMode "Normal"; }
-              bind "Down" { MoveFocus "Down"; SwitchToMode "Normal"; }
-              bind "Up" { MoveFocus "Up"; SwitchToMode "Normal"; }
-              bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
-              bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
-              bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
-              bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
-              bind "o" { FocusNextPane; }
-              bind "d" { Detach; }
-          }
-          shared_except "locked" {
-              bind "Ctrl g" { SwitchToMode "Locked"; }
-              bind "Ctrl q" { Quit; }
-              bind "Alt n" { NewPane; }
-              bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
-              bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
-              bind "Alt j" "Alt Down" { MoveFocus "Down"; }
-              bind "Alt k" "Alt Up" { MoveFocus "Up"; }
-              bind "Alt =" "Alt +" { Resize "Increase"; }
-              bind "Alt -" { Resize "Decrease"; }
-          }
-          shared_except "normal" "locked" {
-              bind "Enter" "Esc" { SwitchToMode "Normal"; }
-          }
-          shared_except "pane" "locked" {
-              bind "Ctrl p" { SwitchToMode "Pane"; }
-          }
-          shared_except "resize" "locked" {
-              bind "Ctrl n" { SwitchToMode "Resize"; }
-          }
-          shared_except "scroll" "locked" {
-              bind "Ctrl f" { SwitchToMode "Scroll"; }
-          }
-          shared_except "session" "locked" {
-              bind "Ctrl s" { SwitchToMode "Session"; }
-          }
-          shared_except "tab" "locked" {
-              bind "Ctrl t" { SwitchToMode "Tab"; }
-          }
-          shared_except "move" "locked" {
-              bind "Ctrl h" { SwitchToMode "Move"; }
-          }
-          shared_except "tmux" "locked" {
-              bind "Ctrl b" { SwitchToMode "Tmux"; }
-          }
-      }
-      plugins {
-          tab-bar { path "tab-bar"; }
-          status-bar { path "status-bar"; }
-          strider { path "strider"; }
-          compact-bar { path "compact-bar"; }
-      }
-      // For more examples, see: https://github.com/zellij-org/zellij/tree/main/example/themes
-      themes {
-          dracula {
-              rounded_corners: true
-              fg 248 248 242
-              bg 40 42 54
-              red 255 85 85
-              green 80 250 123
-              yellow 241 250 140
-              blue 98 114 164
-              magenta 255 121 198
-              orange 255 184 108
-              cyan 139 233 253
-              black 0 0 0
-              white 255 255 255
-          }
-          gruvbox-light {
-              fg 60 56 54
-              bg 251 82 75
-              black 40 40 40
-              red 205 75 69
-              green 152 151 26
-              yellow 215 153 33
-              blue 69 133 136
-              magenta 177 98 134
-              cyan 104 157 106
-              white 213 196 161
-              orange 214 93 14
-          }
-          gruvbox-dark {
-              fg 213 196 161
-              bg 40 40 40
-              black 60 56 54
-              red 204 36 29
-              green 152 151 26
-              yellow 215 153 33
-              blue 69 133 136
-              magenta 177 98 134
-              cyan 104 157 106
-              white 251 241 199
-              orange 214 93 14
-          }
-          catppuccin-frappe {
-            bg "#626880" // Surface2
-            fg "#c6d0f5"
-            red "#e78284"
-            green "#a6d189"
-            blue "#8caaee"
-            yellow "#e5c890"
-            magenta "#f4b8e4" // Pink
-            orange "#ef9f76" // Peach
-            cyan "#99d1db" // Sky
-            black "#292c3c" // Mantle
-            white "#c6d0f5"
-          }
-          catppuccin-macchiato {
-            bg "#5b6078"  
-            fg "#cad3f5"
-            red "#ed8796"
-            green "#a6da95"
-            blue "#8aadf4"
-            yellow "#eed49f"
-            magenta "#f5bde6"  
-            orange "#f5a97f"  
-            cyan "#91d7e3"  
-            black "#1e2030"  
-            white "#cad3f5"
-          }
-      }
-      theme "catppuccin-macchiato"
-      # // default_layout "compact"
-      ui {
-          pane_frames {
-              rounded_corners true
-          }
-      }
-    
-      copy_command "wl-copy" // x11
-    '';
 
-    home.file.".config/zellij/layouts/system.kdl".text = /*kdl*/ ''
-      cwd "/home/sargo/nix-files"
-      layout {
-      	default_tab_template {
-      		children
-      		cbar
-      	}
-          pane_template name="cbar" {
-              pane size=1 borderless=true {
-                  plugin location="zellij:compact-bar"
-              }
-          }
-          pane_template name="bar" {
-              pane size=2 borderless=true {
-                  plugin location="zellij:status-bar"
-              }
-              pane size=1 borderless=true {
-                  plugin location="zellij:tab-bar"
-              }
-          }
-
-          tab name="Sys conf" {
-              pane split_direction="vertical" {
-      			// Root commands run in user shell to avoid glitches
-                  pane name="Configuration.nix" command="fish"{
-                      args "-c" "hx sargo.nix"
-                  }
-                  pane size="30%" split_direction="horizontal" {
-        		        pane name="Rebuild" command="fish" start_suspended=true {
-        		            args "-c" "cp sudo /home/sargo/nix-files/*.nix && sudo nixos-rebuild switch" 
-        		        }
-                  }
-              }
-          }        
-      }
-    '';
-  
-    home.file.".config/zellij/layouts/default.kdl".text = /*kdl*/ '' 
-      layout {
-          pane split_direction="vertical" {
-            pane 
-            pane size="10%"{
-              plugin location="zellij:strider"
-            }
-          }
-          pane size=1 borderless=true {
-              plugin location="zellij:compact-bar"
-          }
-      }
-    '';
-  
-    home.file.".config/zellij/layouts/mcsc.kdl".text = /*kdl*/ '' 
-      layout {
-        cwd "/home/sargo/projects/mcsc"
-        pane_template name="cbar" {
-            pane size=1 borderless=true {
-                plugin location="zellij:compact-bar"
-            }
-        }
-        pane_template name="bar" {
-            pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
-            }
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
-        }
-   
-        // Client workspace
-        tab name="Client" {
-            pane split_direction="vertical" {
-                pane name="Helix" command="hx"{
-                    args "src/client.rs"
-                }
-                    pane size="30%" split_direction="horizontal" {
-                    pane name="Run client" command="cargo" start_suspended=true {
-                        args "run" "--bin" "mcsc-client"
-                    }
-                }
-            }
-            cbar
-        }        
-        // Server workspace
-        tab focus=true name="Server"  {
-            pane split_direction="vertical" {
-                // pane name="Helix" command="pwd" focus=true 
-                pane name="Helix" command="hx" focus=true {
-                    args "src/server.rs" 
-                }
-                pane name="Run server" size="30%" command="cargo" start_suspended=true {
-                    args "run" "--bin" "mcsc-server"
-                }
-            }
-            cbar
-        }
-        tab name="Files" {
-            pane  split_direction="vertical" {
-                pane name="XPLR" command="xplr" borderless=true  {
-                    args "./"
-                }
-        
-            }
-            cbar
-        }
-        tab name="Git" {
-            pane  split_direction="vertical" {
-                pane name="Lazygit" command="lazygit" borderless=true  
-            }
-            cbar
-        }
-    }
-    '';
-    home.file.".config/zellij/layouts/rolling-set.kdl".text = /*kdl*/ '' 
-      layout {
-      	cwd "/home/sargo/projects/rolling-set"
-          pane split_direction="vertical" {
-              pane name="Helix" command="hx"{
-                  args "src/lib.rs"
-              }
-              pane size="35%" split_direction="horizontal" {
-                  pane name="Run" command="cargo" {
-                      args "test"
-                  }
-                  pane name="LazyGit" command="lazygit"{
-              
-                  }
-              }
-          }
-          pane size=2 borderless=true {
-              plugin location="zellij:status-bar"
-          }
-          // pane size=1 borderless=true {
-          //     plugin location="zellij:tab-bar"
-          // }
-      
-      }
-    '';
-    home.file.".config/zellij/layouts/unixchadbookmarks.kdl".text = /*kdl*/ ''  
-      layout {
-          cwd "/home/sargo/projects/unixchadbookmarks"
-          pane_template name="bar" {
-              pane size=2 borderless=true {
-                  plugin location="zellij:status-bar"
-              }
-              pane size=1 borderless=true {
-                  plugin location="zellij:tab-bar"
-              }
-          }
-      
-          tab name="Shell" {
-              pane  split_direction="vertical" {
-                  pane           
-                  pane          
-              }
-              bar
-          }
-          tab name="Files" {
-              pane  split_direction="vertical" {
-                  pane name="LF" command="fish"{
-                      args "-c" "lf"
-                  }
-                  pane name="Lazygit" command="lazygit"           
-              }
-              bar
-          }
-          tab focus=true name="Code"  {
-              pane split_direction="vertical" {
-                  // pane name="Helix" command="pwd" focus=true 
-                  pane name="Helix" command="hx" focus=true {
-                      args "src/main.rs" 
-                  }
-                  pane name="Install" size="30%" command="cargo" start_suspended=true {
-                      args "install" "--path" "./"
-                  }
-              }
-              bar
-          }
-      }
-    '';
-    home.file.".config/zellij/layouts/remote.kdl".text = /*kdl*/ '' 
-      layout {
-        pane command="ssh"{
-          args "sargo@192.168.1.3"
-        }
-      }
-    '';
   };
 }
 
