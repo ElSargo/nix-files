@@ -1,12 +1,10 @@
 { config, pkgs, lib, ... }: let 
-  rust-pkgs = with pkgs; [      
-    rust-script
-    unstable.rustc
-    unstable.cargo
-    unstable.rust-analyzer
-    unstable.clippy
-    unstable.rustfmt
-  ];
+  
+  rust = (pkgs.rustChannelOf { channel = "nightly"; }).rust.override {
+    targets = [ "x86_64-unknown-linux-gnu" ];
+  };
+
+  
 
   in {
   users.users.sargo = {
@@ -14,54 +12,55 @@
     initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs;[
-      inlyne
-      feh
-      zathura
-      galculator
-      socat
-      networkmanagerapplet
-      blueman
-      pcmanfm
-      blueberry
-      jq
-      jaq
-      gojq
-      chafa
-      hyprpaper
-      htop
-      wlogout
-      ispell
-      cmake
-      gnumake
-      libreoffice
-      keepassxc
-      firefox
-      nil
-      delta
-      clang
-      mold
-      felix-fm
-      trash-cli
-      fish
-      kitty
-      protobuf
-      xplr
-      fzf
-      ripgrep
-      wl-clipboard
-      wofi
-      xclip
-      wget
-      btop
-      python310Packages.python-lsp-server
-      python310
-      unstable.armcord
-      exa
-      sd
-      zoxide
-      starship
-    ] ++ rust-pkgs;
+    packages = [
+      pkgs.inlyne
+      pkgs.feh
+      pkgs.zathura
+      pkgs.galculator
+      pkgs.socat
+      pkgs.networkmanagerapplet
+      pkgs.blueman
+      pkgs.pcmanfm
+      pkgs.blueberry
+      pkgs.jq
+      pkgs.jaq
+      pkgs.gojq
+      pkgs.chafa
+      pkgs.hyprpaper
+      pkgs.htop
+      pkgs.wlogout
+      pkgs.ispell
+      pkgs.cmake
+      pkgs.gnumake
+      pkgs.libreoffice
+      pkgs.keepassxc
+      pkgs.firefox
+      pkgs.nil
+      pkgs.delta
+      pkgs.clang
+      pkgs.mold
+      pkgs.felix-fm
+      pkgs.trash-cli
+      pkgs.fish
+      pkgs.kitty
+      pkgs.protobuf
+      pkgs.xplr
+      pkgs.fzf
+      pkgs.ripgrep
+      pkgs.wl-clipboard
+      pkgs.wofi
+      pkgs.xclip
+      pkgs.wget
+      pkgs.btop
+      pkgs.python310Packages.python-lsp-server
+      pkgs.python310
+      pkgs.unstable.armcord
+      pkgs.exa
+      pkgs.sd
+      pkgs.zoxide
+      pkgs.starship
+      rust
+    ];
   };
      
   home-manager.users.sargo = { pkgs, lib, ... }: let
@@ -746,12 +745,12 @@
     };
  
     
-    home.file.".cargo/config.toml".text = /*toml*/ ''
+    # home.file.".cargo/config.toml".text = /*toml*/ ''
 
-      [target.x86_64-unknown-linux-gnu]
-      linker = "clang"
-      rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
-    '';
+    #   [target.x86_64-unknown-linux-gnu]
+    #   linker = "clang"
+    #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
+    # '';
 
 
     home.file.".config/wofi/style.css".text = /*css*/''

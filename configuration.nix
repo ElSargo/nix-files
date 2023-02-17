@@ -1,12 +1,18 @@
 { config, pkgs, lib, ... }:
 let
+  mozillaOverlay = import (builtins.fetchTarball "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
+
   home-manager = fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+
   unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+
   flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+
   hyprland = (import flake-compat {
     src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
- in
+
+  in
   {
   programs.hyprland = {
     enable = true;
@@ -16,23 +22,6 @@ let
 # User setup
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   users.defaultUserShell = pkgs.fish;
-  
-
-  # services.syncthing = {
-  #   enable = true;
-  #   dataDir = "/home/sargo/sync";
-  #   folders."/home/sargo/sync/keepass".watch = true;
-  #   devices = {
-  #     phone = {
-  #       id = "CMVIRSQ-VBWQT3Q-6EXBYHI-WQYWMXA-X5JQV5D-VXN5KRT-OD326MD-G5HJRQQ";
-  #       autoAcceptFolders = true;
-  #       introducer = true;
-  #     };
-  #   };
-  # }; 
-    
-  
-
   
   # Enable networking
   networking.networkmanager.enable = true;
@@ -111,8 +100,8 @@ let
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
       });
     })
-
-    
+    mozillaOverlay
+        
   ];
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = import unstableTarball {
