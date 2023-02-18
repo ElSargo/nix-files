@@ -1,10 +1,8 @@
 { config, pkgs, lib, ... }: let 
-  
+
   rust = (pkgs.rustChannelOf { channel = "nightly"; }).rust.override {
     targets = [ "x86_64-unknown-linux-gnu" ];
   };
-
-  
 
   in {
   users.users.sargo = {

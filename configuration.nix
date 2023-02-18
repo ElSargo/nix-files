@@ -1,15 +1,15 @@
 { config, pkgs, lib, ... }:
 let
-  mozillaOverlay = import (builtins.fetchTarball "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
+  mozillaOverlay = import (fetchTarball "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
 
   home-manager = fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 
   unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
 
-  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+  flake-compat = fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
   hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+    src = fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
 
   in
@@ -101,7 +101,6 @@ let
       });
     })
     mozillaOverlay
-        
   ];
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = import unstableTarball {

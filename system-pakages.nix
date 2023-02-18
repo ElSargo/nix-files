@@ -12,19 +12,19 @@
     ];
 
 
-    gnome = with pkgs; [
-        gnome.dconf-editor
-        unstable.gnomeExtensions.custom-accent-colors
-        unstable.gnomeExtensions.fuzzy-app-search
-        unstable.gnomeExtensions.caffeine
-        unstable.gnomeExtensions.dash-to-dock
-        unstable.gnomeExtensions.blur-my-shell
-        unstable.gnomeExtensions.uptime-indicator
-        unstable.gnomeExtensions.user-themes
-        unstable.gnome.gnome-tweaks
-        unstable.gnome.nautilus
-        unstable.gnome.gnome-themes-extra
-      ];
+    # gnome = with pkgs; [
+    #     gnome.dconf-editor
+    #     unstable.gnomeExtensions.custom-accent-colors
+    #     unstable.gnomeExtensions.fuzzy-app-search
+    #     unstable.gnomeExtensions.caffeine
+    #     unstable.gnomeExtensions.dash-to-dock
+    #     unstable.gnomeExtensions.blur-my-shell
+    #     unstable.gnomeExtensions.uptime-indicator
+    #     unstable.gnomeExtensions.user-themes
+    #     unstable.gnome.gnome-tweaks
+    #     unstable.gnome.nautilus
+    #     unstable.gnome.gnome-themes-extra
+    # ];
 
     gtk = with pkgs; [
         unstable.gtk-engine-murrine    
@@ -60,6 +60,7 @@
 in {
 
   environment.systemPackages = with pkgs; [
+    ydotool
     syncthing
     thunderbird
     any-nix-shell
@@ -67,7 +68,7 @@ in {
     unstable.firefox
   ]
   ++ notifications 
-  ++ gnome 
+  # ++ gnome 
   ++ gtk 
   ++ dexktop-portal 
   ++ fonts 
