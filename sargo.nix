@@ -762,10 +762,10 @@
     # '';
 
     home.file.".config/hypr/hyprpaper.conf" = /*toml*/  '' 
-      preload = ~/Pictures/gruv-material-texture.png
+      preload = ~/nix-files/gruv-material-texture.png
 
-      wallpaper = HDMI-A-1,~/Pictures/gruv-material-texture.png
-      wallpaper = eDP-1,~/Pictures/gruv-material-texture.png
+      wallpaper = HDMI-A-1,~/nix-files/gruv-material-texture.png
+      wallpaper = eDP-1,~/nix-files/gruv-material-texture.png
     '';
 
 
