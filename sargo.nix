@@ -556,7 +556,7 @@
         package = pkgs.unstable.helix;
         # package = pkgs.helix_bleeding;
         settings = {
-          theme = "catppuccin_macchiato";
+          theme = "gruvbox";
           editor = {
             line-number = "relative";
             scrolloff = 10;
@@ -577,7 +577,7 @@
       };
       kitty = {
         enable = true;
-        theme  = "Catppuccin-Macchiato";
+        theme  = "Gruvbox-Dark-Hard";
         settings = {
             font_family = "JetbrainsMono";
             update_check_interval   = 0;
