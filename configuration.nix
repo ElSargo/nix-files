@@ -42,7 +42,7 @@ let
     libinput.enable = true;
     excludePackages= [ pkgs.xterm pkgs.gnome.gnome-terminal];
     layout = "us";
-    xkbVariant = "";
+    xkbVariant = "colemak";
   };
   qt5.enable = true;
   qt5.platformTheme = "gtk2";

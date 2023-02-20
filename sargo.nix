@@ -166,6 +166,7 @@
         exec = pkill hyprpaper ; pkill waybar ; waybar & hyprpaper & disown
         input {
             kb_layout = us
+            # kb_variant = colemak
             kb_options=caps:escape
             repeat_rate=69
             repeat_delay=150
@@ -571,6 +572,7 @@
               character = "│";
             };
           };
+          keys = { };
         };
       };
       kitty = {
