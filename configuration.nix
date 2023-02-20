@@ -136,4 +136,5 @@ let
   };
   programs.wshowkeys.enable = true;
   services.systembus-notify.enable = true;
+  system.autoUpgrade.enable = true;
 }

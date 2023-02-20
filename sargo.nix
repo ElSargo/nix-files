@@ -585,7 +585,7 @@
             resize_in_steps         = "yes";
             confirm_os_window_close = 0;
             remember_window_size    = "yes";
-            background_opacity      = "0.9";
+            background_opacity      = "0.85";
             allow_remote_control    = "yes";
         };
       };
@@ -704,7 +704,8 @@
     dconf.settings = {
    
       "org/gnome/desktop/interface" = {
-        gtk-theme = "Gruvbox-Dark";
+        gtk-theme = "gruvbox-dark";
+        icon-theme=  "oomox-gruvbox-dark";
       };
   
       "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -759,6 +760,13 @@
     #   linker = "clang"
     #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
     # '';
+
+    home.file.".config/hypr/hyprpaper.conf" = /*toml*/  '' 
+      preload = ~/Pictures/gruv-material-texture.png
+
+      wallpaper = HDMI-A-1,~/Pictures/gruv-material-texture.png
+      wallpaper = eDP-1,~/Pictures/gruv-material-texture.png
+    '';
 
 
     home.file.".config/wofi/style.css".text = /*css*/''
