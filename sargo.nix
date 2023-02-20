@@ -268,11 +268,11 @@
             "cpu" = {
               format = "{usage}% ";
               tooltip = false;
-              on-click = "alacritty -e htop";
+              on-click = "kitty -e htop";
             };
             "memory" = {
               format = "{}% ";
-              on-click = "alacritty -e htop";
+              on-click = "kitty -e htop";
             };
             "battery" = {
               states= {
