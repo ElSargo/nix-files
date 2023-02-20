@@ -28,6 +28,7 @@
 
     gtk = with pkgs; [
         unstable.gtk-engine-murrine    
+        gruvbox-dark-gtk
         catppuccin-gtk
       ];
 

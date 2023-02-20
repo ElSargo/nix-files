@@ -129,7 +129,7 @@
         bind = SUPER, V, layoutmsg, focusmaster
         bind = SUPER, Space, layoutmsg, swapwithmaster
         bind = SUPER, G, exec, firefox https://grammar.net.nz/login/
-        bind = SUPER, p, exec, firefox https:https://search.nixos.org/packages?channel=22.11&query=
+        bind = SUPER, p, exec, firefox https://search.nixos.org/packages?channel=22.11&query=
         bind = ,XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% 	
         bind = ,XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%
         bind = ,XF86AudioMute, exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	
@@ -704,7 +704,7 @@
     dconf.settings = {
    
       "org/gnome/desktop/interface" = {
-        gtk-theme = "Catppuccin-Dark";
+        gtk-theme = "Gruvbox-Dark";
       };
   
       "org/gnome/settings-daemon/plugins/media-keys" = {
