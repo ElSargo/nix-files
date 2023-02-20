@@ -577,7 +577,7 @@
       };
       kitty = {
         enable = true;
-        theme  = "Gruvbox Dark Hard";
+        theme  = "Gruvbox Dark";
         settings = {
             font_family = "JetbrainsMono";
             update_check_interval   = 0;
@@ -585,10 +585,18 @@
             resize_in_steps         = "yes";
             confirm_os_window_close = 0;
             remember_window_size    = "yes";
-            background_opacity      = "0.8";
+            background_opacity      = "0.9";
             allow_remote_control    = "yes";
         };
       };
+
+      starship = {
+        enable = true;
+        settings = {
+          "$schema" = "https://starship.rs/config-schema.json";
+        };
+      };
+      
       fish = {
         enable = true;
         functions = {
