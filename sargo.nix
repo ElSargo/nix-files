@@ -110,9 +110,8 @@
         bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
         bind = SUPER, C, exec, fish -c open_system
         bind = SUPER, Q, killactive, 
-        bind = SUPER, M, exit, 
-        bind = SUPER, E, exec, nautilus
-        bind = SUPERSHIFT, Space, togglefloating, 
+        bind = SUPERSHIFT, F, exec, pcmanfm
+        bind = SUPERSFT, Space, togglefloating, 
         bind = SUPERSHIFT, Return, exec, wofi --show drun
         bind = SUPER, P, pseudo, # dwindle
         bind = SUPER, W, exec, firefox
@@ -180,11 +179,9 @@
             gaps_in = 5
             gaps_out = 20
             border_size = 2
-            col.active_border = rgb(8bd5ca) rgb(a6da95) 145deg
-            col.inactive_border = rgba(595959aa)
+            col.active_border = rgb(b8bb26) 
+            col.inactive_border = rgb(928374)
             layout = master
-
-
         }
         decoration {
             screen_shader = ~/.config/hypr/shader.glsl
@@ -196,7 +193,7 @@
             drop_shadow = yes
             shadow_range = 4
             shadow_render_power = 3
-            col.shadow = rgba(1a1a1aee) 
+            col.shadow = rgba(1a1a1eee) 
         }
         animations {
             enabled = yes
@@ -761,7 +758,7 @@
     #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
     # '';
 
-    home.file.".config/hypr/hyprpaper.conf" = /*toml*/  '' 
+    home.file.".config/hypr/hyprpaper.conf".text = /*toml*/  '' 
       preload = ~/nix-files/gruv-material-texture.png
 
       wallpaper = HDMI-A-1,~/nix-files/gruv-material-texture.png
