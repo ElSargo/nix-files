@@ -106,8 +106,13 @@
       enable = true;
       extraConfig = /*kdl*/ ''
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        bind = SUPER, R, exec, fish -c rebuild
         bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
+        bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
+        bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
+        bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
+        bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
+
+        bind = SUPER, G, exec, projects/unixchadbookmarks/target/release/unixchadbookmarks
         bind = SUPER, C, exec, fish -c open_system
         bind = SUPER, Q, killactive, 
         bind = SUPERSHIFT, F, exec, pcmanfm
@@ -127,13 +132,13 @@
         bind = SUPER SHIFT, w, workspace, browser
         bind = SUPER, V, layoutmsg, focusmaster
         bind = SUPER, Space, layoutmsg, swapwithmaster
-        bind = SUPER, G, exec, firefox https://grammar.net.nz/login/
-        bind = SUPER, p, exec, firefox https://search.nixos.org/packages?channel=22.11&query=
+        bind = SUPER, p, exec, firefox search.nixos.org/packages?channel=22.11&query=
         bind = ,XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% 	
         bind = ,XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%
         bind = ,XF86AudioMute, exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	
         bind = ,XF86Calculator, exec, galculator 	
-        bind = ,XF86Mail, exec, firefox https://mail.google.com/mail/u/0/#inbox
+        bind = ,XF86Mail, exec, firefox mail.google.com/mail/u/0/#inbox
+        unbind, SUPER, M
         bind = SUPER, 1, workspace, 1
         bind = SUPER, 2, workspace, 2
         bind = SUPER, 3, workspace, 3
@@ -313,51 +318,38 @@
           };
         };
         style = /*css*/''
-          @define-color base   #24273a;
-          @define-color mantle #1e2030;
-          @define-color crust  #181926;
-          @define-color text     #cad3f5;
-          @define-color subtext0 #a5adcb;
-          @define-color subtext1 #b8c0e0;
-          @define-color surface0 #363a4f;
-          @define-color surface1 #494d64;
-          @define-color surface2 #5b6078;
-          @define-color overlay0 #6e738d;
-          @define-color overlay1 #8087a2;
-          @define-color overlay2 #939ab7;
-          @define-color blue      #8aadf4;
-          @define-color lavender  #b7bdf8;
-          @define-color sapphire  #7dc4e4;
-          @define-color sky       #91d7e3;
-          @define-color teal      #8bd5ca;
-          @define-color green     #a6da95;
-          @define-color yellow    #eed49f;
-          @define-color peach     #f5a97f;
-          @define-color maroon    #ee99a0;
-          @define-color red       #ed8796;
-          @define-color mauve     #c6a0f6;
-          @define-color pink      #f5bde6;
-          @define-color flamingo  #f0c6c6;
-          @define-color rosewater #f4dbd6;
-          * {
-              /* `otf-font-awesome` is required to be installed for icons */
-              font-family: JetBrainsMono;
-              font-size: 15px;
-          }
+          @define-color base   #282828;
+          @define-color text     #ebdbb2;
+          @define-color blue  #83a598;
+          @define-color green     #b8bb26;
+          @define-color yellow    #fabd2f;
+          @define-color red       #fb4934;
+          @define-color orange #fe8019;
+          @define-color rosewater #d3869b;
+          
           window#waybar {
             background: transparent;
+            background-color: transparent;
             border-radius: 0.5rem;
             padding-top: 60px;
             margin-top: 60px;
           }
+          
+          * {
+              /* `otf-font-awesome` is required to be installed for icons */
+              font-family: JetBrainsMono;
+              font-size: 15px;
+              color: @yellow;
+          }
+          
           #workspaces {
             border-radius: 1rem;
-            background-color: @surface0;
+            background-color: @base;
             margin-top: 1rem;
             margin: 7px 3px 0px 7px;
           }
           #workspaces button {
-            color: @pink;
+            color: @yellow;
             border-radius: 1rem;
             padding-left: 6px;
             margin: 5px 0;
@@ -366,11 +358,11 @@
             background-color: transparent;
           }
           #workspaces button.active {
-            color: @flamingo;
+            color: @yellow;
             border-radius: 1rem;
           }
           #workspaces button:hover {
-            color: @rosewater;
+            color: @yellow;
             border-radius: 1rem;
           }
           #cpu,
@@ -384,19 +376,20 @@
           #battery,
           #idle_inhibitor,
           #pulseaudio,
+          #custom-eye_saver,
           #custom-lock,
           #custom-power {
-            background-color: @surface0;
+            background-color: @base;
             margin: 7px 3px 0px 7px;
             padding: 10px 5px 10px 5px;
             border-radius: 1rem;
           }
 
           #clock {
-            color: @lavender;
+            color: @yellow;
           }
           #battery {
-            color: @green;
+            color: @yellow;
           }
           #battery.charging {
             color: @green;
@@ -405,20 +398,20 @@
             color: @red;
           }
           #network {
-              color: @flamingo;
+              color: @yellow;
           }
           #backlight {
             color: @yellow;
           }
           #pulseaudio {
-            color: @pink;
+            color: @yellow;
           }
           #pulseaudio.muted {
               color: @red;
           }
           #custom-power {
               border-radius: 1rem;
-              color: @red;
+              color: @yellow;
               margin-bottom: 1rem;
           }
           #tray {
@@ -426,10 +419,10 @@
           }
           tooltip {
               background: @base;
-              border: 1px solid @pink;
+              border: 1px solid @yellow;
           }
           tooltip label {
-              color: @text;
+              color: @yellow;
           }
         '';
       };
