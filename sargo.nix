@@ -167,7 +167,7 @@
         bindm = SUPER, mouse:273, resizewindow
         monitor=,preferred,auto,auto
         workspace=HDMI-1,1
-        exec = pkill hyprpaper ; pkill waybar ; waybar & hyprpaper & disown
+        exec = fish -c 'pidof waybar || waybar && disown ; pidof hyprpaper || hyprpaper && disown'
         input {
             kb_layout = us
             # kb_variant = colemak
@@ -192,13 +192,15 @@
             screen_shader = ~/.config/hypr/shader.glsl
             rounding = 10
             blur = yes
-            blur_size = 3
+            blur_size = 4
             blur_passes = 1
             blur_new_optimizations = on
-            drop_shadow = yes
-            shadow_range = 4
+
+            drop_shadow = true
+            shadow_range = 20
             shadow_render_power = 3
-            col.shadow = rgba(1a1a1eee) 
+            col.shadow = rgba(1a1a1aee)
+            shadow_offset = [-10, -10]
         }
         animations {
             enabled = yes
@@ -221,6 +223,8 @@
         gestures {
             # See https://wiki.hyprland.org/Configuring/Variables/ for more
             workspace_swipe = on
+            workspace_swipe_forever = true;
+            workspace_swipe_cancel_ratio = 0.25;
         }
         windowrule = float, ^(blueberry.py)$
         windowrule = float, ^(nm-connection-editor)$
@@ -318,23 +322,17 @@
           };
         };
         style = /*css*/''
-          @define-color base   #282828;
-          @define-color text     #ebdbb2;
-          @define-color blue  #83a598;
+          @define-color base      rgba(0.15625, 0.15625, 0.15625, 0.85);
+          @define-color base2     #3c3836;
+          @define-color text      #ebdbb2;
+          @define-color blue      #83a598;
           @define-color green     #b8bb26;
           @define-color yellow    #fabd2f;
           @define-color red       #fb4934;
-          @define-color orange #fe8019;
+          @define-color orange    #fe8019;
           @define-color rosewater #d3869b;
           
-          window#waybar {
-            background: transparent;
-            background-color: transparent;
-            border-radius: 0.5rem;
-            padding-top: 60px;
-            margin-top: 60px;
-          }
-          
+        
           * {
               /* `otf-font-awesome` is required to be installed for icons */
               font-family: JetBrainsMono;
@@ -344,45 +342,62 @@
           
           #workspaces {
             border-radius: 1rem;
-            background-color: @base;
-            margin-top: 1rem;
-            margin: 7px 3px 0px 7px;
+            background-color: @base2;
           }
+
           #workspaces button {
             color: @yellow;
             border-radius: 1rem;
-            padding-left: 6px;
-            margin: 5px 0;
-            box-shadow: inset 0 -3px transparent;
             transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.68);
             background-color: transparent;
           }
           #workspaces button.active {
-            color: @yellow;
+            color: @green;
+            border-radius: 1rem;
+          }
+          #workspaces button.focus {
+            color: @green;
             border-radius: 1rem;
           }
           #workspaces button:hover {
-            color: @yellow;
+            color: @green;
             border-radius: 1rem;
           }
+          #workspaces,
           #cpu,
           #memory,
           #label
-          #window
           #tray,
           #network,
           #backlight,
           #clock,
           #battery,
-          #idle_inhibitor,
           #pulseaudio,
+          #idle_inhibitor,
           #custom-eye_saver,
           #custom-lock,
           #custom-power {
-            background-color: @base;
-            margin: 7px 3px 0px 7px;
-            padding: 10px 5px 10px 5px;
+            margin: 3px 5px 5px 3px ;
+            padding: 2px;
             border-radius: 1rem;
+            background-color: @base2;
+          }
+
+          window > box {
+          	margin: 5px 5px 0px 5px ;
+            background: @base;
+            padding: 3px;
+            border-radius: 2rem;
+            box-shadow: 5px 5px 5px 5px #1a1a1a;
+          }
+          
+          window#waybar {
+            background: transparent
+          }
+
+          
+          #idle_inhibitor{
+            color: @text;
           }
 
           #clock {
