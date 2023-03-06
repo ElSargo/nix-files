@@ -14,6 +14,7 @@ let
 
   in
   {
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs.hyprland = {
     enable = true;
     package = hyprland.packages.${pkgs.system}.default;
@@ -24,6 +25,7 @@ let
   users.defaultUserShell = pkgs.fish;
   
   # Enable networking
+  # networking.wireless.enable = true;
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.hostName = "SargoLaptop"; # Define your hostname.
@@ -42,7 +44,7 @@ let
     libinput.enable = true;
     excludePackages= [ pkgs.xterm pkgs.gnome.gnome-terminal];
     layout = "us";
-    xkbVariant = "colemak";
+    # xkbVariant = "colemak";
   };
   qt5.enable = true;
   qt5.platformTheme = "gtk2";
@@ -113,10 +115,9 @@ let
   };
   imports =
     [ 
-      # ./new-terminal-hyprland.nix
+      ./hardware-configuration.nix
       ./sargo.nix
       ./system-pakages.nix
-      ./hardware-configuration.nix
       (import "${home-manager}/nixos")
       hyprland.nixosModules.default
     ];

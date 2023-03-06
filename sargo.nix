@@ -11,6 +11,9 @@
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = [
+      pkgs.unstable.lldb_9
+      pkgs.sccache
+      pkgs.swaybg
       pkgs.inlyne
       pkgs.feh
       pkgs.zathura
@@ -57,6 +60,7 @@
       pkgs.sd
       pkgs.zoxide
       pkgs.unstable.starship
+      pkgs.unstable.lld
       rust
     ];
   };
@@ -64,13 +68,12 @@
   home-manager.users.sargo = { pkgs, lib, ... }: let
     unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
     flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+
     hyprland = (import flake-compat {
       src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
     }).defaultNix;
   in  {
 
-
-  
     imports = [
       hyprland.homeManagerModules.default
     ];
@@ -167,7 +170,7 @@
         bindm = SUPER, mouse:273, resizewindow
         monitor=,preferred,auto,auto
         workspace=HDMI-1,1
-        exec = fish -c 'pidof waybar || waybar && disown ; pidof hyprpaper || hyprpaper && disown'
+        exec = fish -c 'pidof waybar || waybar & disown ; pidof swaybg || swaygb -i ~/nix-files/gruv-material-texture.png & disown'
         input {
             kb_layout = us
             # kb_variant = colemak
@@ -237,7 +240,8 @@
         }
 
       '';
-    };
+    };  
+
     programs = {
       home-manager.enable = true;  
       waybar = {
@@ -346,13 +350,13 @@
           }
 
           #workspaces button {
-            color: @yellow;
+            color: @green;
             border-radius: 1rem;
             transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.68);
             background-color: transparent;
           }
           #workspaces button.active {
-            color: @green;
+            color: @yellow;
             border-radius: 1rem;
           }
           #workspaces button.focus {
@@ -384,11 +388,11 @@
           }
 
           window > box {
-          	margin: 5px 5px 0px 5px ;
+          	margin: 10px 5px 5px 10px ;
             background: @base;
             padding: 3px;
             border-radius: 2rem;
-            box-shadow: 5px 5px 5px 5px #1a1a1a;
+            /*  box-shadow: 0px 2px 2px 5px rgba(0.1, 0.1, 0.1, 0.5);*/
           }
           
           window#waybar {
@@ -559,7 +563,6 @@
       helix = {
         enable = true;
         package = pkgs.unstable.helix;
-        # package = pkgs.helix_bleeding;
         settings = {
           theme = "gruvbox";
           editor = {
