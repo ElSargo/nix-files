@@ -11,6 +11,7 @@
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = [
+      pkgs.unstable.marksman
       pkgs.unstable.lldb_9
       pkgs.sccache
       pkgs.swaybg
@@ -752,7 +753,14 @@
                 repo = "sponge";
                 rev = "384299545104d5256648cee9d8b117aaa9a6d7be";
                 sha256 = "MdcZUDRtNJdiyo2l9o5ma7nAX84xEJbGFhAVhK+Zm1w=";
-              };          
+              };            
+            }{
+              name = "x";
+              src = pkgs.fetchFromGitHub {
+                owner = "Molyuu";
+                repo = "x";
+                rev = "43dbf864f67c0b548845f30287c42e804cf1fa8c";
+              };
             }
         ];
       };

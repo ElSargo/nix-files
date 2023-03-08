@@ -12,6 +12,13 @@ let
     src = fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
 
+  # stylix = pkgs.fetchFromGitHub {
+  #   owner = "danth";
+  #   repo = "stylix";
+  #   rev = "...";
+  #   sha256 = "...";
+  # };
+
   in
   {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -73,6 +80,9 @@ let
       ];
     }
   ];
+
+  
+  
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -95,6 +105,9 @@ let
   #Enable blutooth
   hardware.bluetooth.enable = true;
 
+
+  # stylix.image = /home/sargo/nix-files/gruv-material-texture.png;
+  
   system.stateVersion = "22.11"; # Did you read the comment?
   nixpkgs.overlays = [
     (self: super: {
@@ -115,6 +128,7 @@ let
   };
   imports =
     [ 
+      # (import stylix).homeManagerModules.stylix 
       ./hardware-configuration.nix
       ./sargo.nix
       ./system-pakages.nix
