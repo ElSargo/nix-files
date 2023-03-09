@@ -663,7 +663,10 @@
           };
         };
       };
-      
+      direnv = {
+        nix-direnv.enable = true;
+        enable = true;
+      };      
       fish = {
         enable = true;
         functions = {
@@ -760,6 +763,7 @@
                 owner = "Molyuu";
                 repo = "x";
                 rev = "43dbf864f67c0b548845f30287c42e804cf1fa8c";
+                sha256 = "sha256-oYVZoDCmY9zl5pLAKmO8xvMCSAe6vxf+yFpB6o8koos=";
               };
             }
         ];
