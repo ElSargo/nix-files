@@ -171,7 +171,8 @@
         bindm = SUPER, mouse:273, resizewindow
         monitor=,preferred,auto,auto
         workspace=HDMI-1,1
-        exec = fish -c 'pidof waybar || waybar & disown ; pidof swaybg || swaygb -i ~/nix-files/gruv-material-texture.png & disown'
+        exec = fish -c 'pidof waybar || waybar & disown'
+        exec = fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'
         input {
             kb_layout = us
             # kb_variant = colemak
@@ -538,10 +539,33 @@
         settings = {
           dircounts = true;
           dirfirst = true;
-          drawbox = true;
           icons = true;
         };
-        extraConfig = ''set previewer 'bat --color=always $1' '';
+        previewer.source = pkgs.writeShellScript "pv.sh" ''
+          #!/bin/sh
+
+          case "$1" in
+              *.tar*) tar tf "$1";;
+              *.zip) unzip -l "$1";;
+              *.rar) unrar l "$1";;
+              *.7z) 7z l "$1";;
+              *.pdf) pdftotext "$1" -;;
+              *) bat --paging=never --style=numbers --terminal-width $(($2-5)) -f "$1" ;;
+          esac
+        '';
+        commands = {
+          fuzy_search = /*bash*/ "\$\{\{ res=\$\(sk --ansi -i -c \'rg --line-number \"\{\}\"\' | cut -d : -f1\)   ;   [ ! -z \"\$res\" ] && lf -remote \"send \$id select \\\"\$res\\\"\"\n\}\}\n";
+          z = /*bash*/ "%\{\{\n	result=\"\$(zoxide query --exclude \$PWD \$@)\"\n	lf -remote \"send \$id cd \$result\"\n\}\}\n";
+          trash = "%trash-put $fx";
+        };
+        keybindings = {
+          Z = "push :z<space>";
+          "<enter>" = "push $hx<space>$f<enter>";
+          O = "push $fish<space>-c<space>fhx<enter>";
+          S = "push :fuzy_search<enter>";
+          M = "push $mkdir<space>";
+          T = "push $touch<space>";
+        };
       };
       bat = {
         enable = true;
@@ -670,8 +694,31 @@
       fish = {
         enable = true;
         functions = {
+          fhx = {
+            body = /*fish*/ '' 
+              hx $(sk --ansi -i -c 'rg --line-number "{}"' | cut -d : -f1,2)
+            '';
+            description = "Fuzzy find conntentes of files and open in hx";
+          };
+          lfcd = {
+            body = /*fish*/'' 
+              set tmp (mktemp)
+                # `command` is needed in case `lfcd` is aliased to `lf`
+                command lf -last-dir-path=$tmp $argv
+                if test -f "$tmp"
+                    set dir (cat $tmp)
+                    rm -f $tmp
+                    if test -d "$dir"
+                        if test "$dir" != (pwd)
+                            cd $dir
+                        end
+                    end
+                end
+            '';
+            description = "Change dirs with lf";
+          };
           rebuild = {
-            body = ''sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
+            body = /*fish*/''sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
             description = "Rebuild the system configuration";
           };
           toggle_eye_saver = {
@@ -703,7 +750,8 @@
           };
         };
         shellAliases = {
-           xc  = "wl-copy";
+          xc  = "wl-copy";
+          lf = "lfcd";
         };
         shellAbbrs = {
           hxb = "~/.cargo/bin/hx --config ~/.config/helix/bleeding_config.toml";

@@ -1,10 +1,5 @@
 { config, pkgs, lib, ... }: let 
 
-    notifications = with pkgs; [
-        mako
-        libnotify 
-      ];
-
     audio = with pkgs;[
       pulsemixer
       pavucontrol
@@ -61,6 +56,7 @@
 in {
 
   environment.systemPackages = with pkgs; [
+    skim
     cachix
     syncthing
     thunderbird
@@ -68,7 +64,6 @@ in {
     unstable.helix
     unstable.firefox
   ]
-  ++ notifications 
   ++ gnome 
   ++ gtk 
   ++ dexktop-portal 
