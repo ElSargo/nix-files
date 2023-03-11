@@ -32,7 +32,6 @@ let
   users.defaultUserShell = pkgs.fish;
   
   # Enable networking
-  # networking.wireless.enable = true;
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.hostName = "SargoLaptop"; # Define your hostname.

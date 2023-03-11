@@ -393,7 +393,6 @@
             background: @base;
             padding: 3px;
             border-radius: 2rem;
-            /*  box-shadow: 0px 2px 2px 5px rgba(0.1, 0.1, 0.1, 0.5);*/
           }
           
           window#waybar {
@@ -571,6 +570,7 @@
             scrolloff = 10;
             cursorline = true;
             auto-save = true;
+            color-modes = true;
             cursor-shape = {
               insert = "bar";
               normal = "block";
@@ -810,6 +810,9 @@
         favorite-apps = [
           "firefox.desktop" "kitty.desktop" "armcord.desktop" "org.keepassxc.KeePassXC.desktop" "org.gnome.Nautilus.desktop"
         ];
+
+        disable-user-extensions = false;
+        
       };
       "org/gnome/shell/custom-accent-colors/theme-shell" = {
         accent-color = "red"; theme-flatpak = true; theme-gtk3 = true; theme-shell = true;
