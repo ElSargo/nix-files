@@ -1,68 +1,45 @@
-{ config, pkgs, lib, ... }: let 
-
-  rust = (pkgs.rustChannelOf { channel = "nightly"; }).rust.override {
-    targets = [ "x86_64-unknown-linux-gnu" ];
-  };
-
-  in {
+{ config, pkgs, lib, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = [
-      pkgs.unstable.marksman
-      pkgs.unstable.lldb_9
-      pkgs.sccache
-      pkgs.swaybg
-      pkgs.inlyne
-      pkgs.feh
-      pkgs.zathura
-      pkgs.galculator
-      pkgs.socat
-      pkgs.networkmanagerapplet
-      pkgs.blueman
-      pkgs.pcmanfm
-      pkgs.blueberry
-      pkgs.jq
-      pkgs.jaq
-      pkgs.gojq
-      pkgs.chafa
-      pkgs.hyprpaper
-      pkgs.htop
-      pkgs.wlogout
-      pkgs.ispell
-      pkgs.cmake
-      pkgs.gnumake
-      pkgs.libreoffice
-      pkgs.keepassxc
-      pkgs.firefox
-      pkgs.nil
-      pkgs.delta
-      pkgs.clang
-      pkgs.mold
-      pkgs.felix-fm
-      pkgs.trash-cli
-      pkgs.fish
-      pkgs.kitty
-      pkgs.protobuf
-      pkgs.xplr
-      pkgs.fzf
-      pkgs.ripgrep
-      pkgs.wl-clipboard
-      pkgs.wofi
-      pkgs.xclip
-      pkgs.wget
-      pkgs.btop
-      pkgs.python310Packages.python-lsp-server
-      pkgs.python310
-      pkgs.unstable.armcord
-      pkgs.exa
-      pkgs.sd
-      pkgs.zoxide
-      pkgs.unstable.starship
-      pkgs.unstable.lld
-      rust
+    packages = with pkgs; [
+      nixfmt
+      unstable.marksman
+      inlyne
+      swaybg
+      feh
+      zathura
+      galculator
+      networkmanagerapplet
+      blueman
+      pcmanfm
+      blueberry
+      chafa
+      htop
+      wlogout
+      libreoffice
+      keepassxc
+      firefox
+      unstable.nil
+      delta
+      felix-fm
+      trash-cli
+      fish
+      kitty
+      xplr
+      fzf
+      ripgrep
+      wl-clipboard
+      wofi
+      xclip
+      wget
+      btop
+      exa
+      sd
+      zoxide
+      unstable.starship
     ];
   };
      
@@ -187,7 +164,7 @@
         }
         general {
             gaps_in = 5
-            gaps_out = 20
+            gaps_out = 7
             border_size = 2
             col.active_border = rgb(fe8019) 
             col.inactive_border = rgb(282828)
@@ -252,13 +229,15 @@
         settings = {
           mainbar = {
             spacing = 4;
-            modules-left = [ "wlr/workspaces" ];
-            modules-center = [ "clock" "custom/eye_saver"];
-            modules-right = [ "idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "battery" "tray"];
+            modules-left = [ "wlr/workspaces" "custom/gttfg" ];
+            modules-center = [ "clock" ];
+            modules-right = [ "custom/eye_saver" "idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "battery" "tray"];
             "custom/eye_saver" = {
               format = "👁";
               on-click = "fish -c toggle_eye_saver";
-              exec = "echo 👁";
+            };
+            "custom/gttfg" = {
+              format = "Go to the fucking gym!";
             };
             "wlr/workspaces" = {
               format = "{icon}";
@@ -273,9 +252,8 @@
               };
              };
             "clock" = {
-              tooltip-format = "<big>{ = %Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-              format-alt = "{ = %Y-%m-%d}";
-              on-click = "gnome-calander";
+              interval =  1;
+              format = "{:%T}";
             };
             "cpu" = {
               format = "{usage}% ";
@@ -329,7 +307,7 @@
         };
         style = /*css*/''
           @define-color base      rgba(0.15625, 0.15625, 0.15625, 0.85);
-          @define-color base2     #3c3836;
+          @define-color base2     rgba(0.2353 , 0.2196 , 0.2118 , 1.0 );
           @define-color text      #ebdbb2;
           @define-color blue      #83a598;
           @define-color green     #b8bb26;
@@ -343,33 +321,32 @@
               /* `otf-font-awesome` is required to be installed for icons */
               font-family: JetBrainsMono;
               font-size: 15px;
-              color: @yellow;
+              transition: all 0.1s cubic-bezier(.55,-0.68,.48,1.68);
           }
           
           #workspaces {
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             background-color: @base2;
           }
 
           #workspaces button {
-            color: @green;
-            border-radius: 1rem;
-            transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.68);
+            color: @yellow;
+            border-radius: 0.5rem;
             background-color: transparent;
           }
           #workspaces button.active {
-            color: @yellow;
-            border-radius: 1rem;
+            color: @red;
+            border-radius: 0.5rem;
           }
           #workspaces button.focus {
-            color: @green;
-            border-radius: 1rem;
+            color: @red;
+            border-radius: 0.5rem;
           }
           #workspaces button:hover {
-            color: @green;
-            border-radius: 1rem;
+            color: @red;
+            border-radius: 0.5rem;
           }
-          #workspaces,
+
           #cpu,
           #memory,
           #label
@@ -381,19 +358,21 @@
           #pulseaudio,
           #idle_inhibitor,
           #custom-eye_saver,
+          #custom-gttfg,
           #custom-lock,
           #custom-power {
             margin: 3px 5px 5px 3px ;
             padding: 2px;
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             background-color: @base2;
+            color: @yellow;
           }
 
           window > box {
-          	margin: 10px 5px 5px 10px ;
+          	margin: 5px 7px 0px 7px;
             background: @base;
-            padding: 3px;
-            border-radius: 2rem;
+            padding: 0px;
+            border-radius: 0.5rem;
           }
           
           window#waybar {
@@ -430,12 +409,12 @@
               color: @red;
           }
           #custom-power {
-              border-radius: 1rem;
+              border-radius: 0.5rem;
               color: @yellow;
-              margin-bottom: 1rem;
+              margin-bottom: 0.5rem;
           }
           #tray {
-            border-radius: 1rem;
+            border-radius: 0.5rem;
           }
           tooltip {
               background: @base;
