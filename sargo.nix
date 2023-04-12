@@ -1,10 +1,14 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   users.users.sargo = {
     isNormalUser = true;
-    initialHashedPassword = "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
+    initialHashedPassword =
+      "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      speedcrunch
+      glava
+      swayimg
       nixfmt
       unstable.marksman
       inlyne
@@ -42,725 +46,436 @@
       unstable.starship
     ];
   };
-     
-  home-manager.users.sargo = { pkgs, lib, ... }: let
-    unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-    flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
-    hyprland = (import flake-compat {
-      src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-    }).defaultNix;
-  in  {
+  home-manager.users.sargo = { pkgs, lib, ... }:
+    let
+      unstableTarball = fetchTarball
+        "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+      flake-compat = builtins.fetchTarball
+        "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
-    imports = [
-      hyprland.homeManagerModules.default
-      ./waybar.nix
-    ];
+      hyprland = (import flake-compat {
+        src = builtins.fetchTarball
+          "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+      }).defaultNix;
+    in {
 
-    nixpkgs.overlays = [
-      (self: super: {
-        waybar = super.waybar.overrideAttrs (oldAttrs: {
-          mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-        });
-      })
-    ];
-    nixpkgs.config = {
-      gtk = {
-        enable = true;
-        theme = {
-          name = "Catppuccin-Purple-Dark";
-          package = pkgs.catppuccin-gtk.override {
-            accents = ["pink"];
-            variant = "macchiato";
+      imports =
+        [ hyprland.homeManagerModules.default ./waybar.nix ./hyprland.nix ];
+
+      nixpkgs.overlays = [
+        (self: super: {
+          waybar = super.waybar.overrideAttrs (oldAttrs: {
+            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+          });
+        })
+      ];
+      nixpkgs.config = {
+        gtk = {
+          enable = true;
+          theme = {
+            name = "Catppuccin-Purple-Dark";
+            package = pkgs.catppuccin-gtk.override {
+              accents = [ "pink" ];
+              variant = "macchiato";
             };
           };
         };
         packageOverrides = pkgs: {
-        unstable = import unstableTarball {
-          config = config.nixpkgs.config;
+          unstable = import unstableTarball { config = config.nixpkgs.config; };
         };
       };
-    };
-    home.username = "sargo";
-    home.homeDirectory = "/home/sargo";
-    home.stateVersion = "22.11";
-    wayland.windowManager.hyprland = {
-      enable = true;
-      extraConfig = /*kdl*/ ''
-        # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
-        bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
-        bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
-        bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
-        bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
+      home.username = "sargo";
+      home.homeDirectory = "/home/sargo";
+      home.stateVersion = "22.11";
 
-        bind = SUPER, G, exec, projects/unixchadbookmarks/target/release/unixchadbookmarks
-        bind = SUPER, C, exec, fish -c open_system
-        bind = SUPER, Q, killactive, 
-        bind = SUPERSHIFT, F, exec, pcmanfm
-        bind = SUPERSHIFT, Space, togglefloating, 
-        bind = SUPERSHIFT, Return, exec, wofi --show drun
-        bind = SUPER, P, pseudo, # dwindle
-        bind = SUPER, W, exec, firefox
-        bind = SUPER, F,fullscreen,0
-        bind = SUPERSHIFT, Q, exec, wlogout
-        bind = SUPER, B, exec, blueberry
-        bind = SUPERSHIFT, W, exec, nm-connection-editor
-        bind = SUPERSHIFT, Z, exec, kitty fish '-c zn'
-        bind = SUPER, J, layoutmsg, cyclenext
-        bind = SUPER, K, layoutmsg, cycleprev 
-        bind = SUPERSHIFT, J, layoutmsg, swapnext
-        bind = SUPERSHIFT, K, layoutmsg, swapprev 
-        bind = SUPER SHIFT, w, workspace, browser
-        bind = SUPER, V, layoutmsg, focusmaster
-        bind = SUPER, Space, layoutmsg, swapwithmaster
-        bind = SUPER, p, exec, firefox search.nixos.org/packages?channel=22.11&query=
-        bind = ,XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% 	
-        bind = ,XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%
-        bind = ,XF86AudioMute, exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	
-        bind = ,XF86Calculator, exec, galculator 	
-        bind = ,XF86Mail, exec, firefox mail.google.com/mail/u/0/#inbox
-        unbind, SUPER, M
-        bind = SUPER, 1, workspace, 1
-        bind = SUPER, 2, workspace, 2
-        bind = SUPER, 3, workspace, 3
-        bind = SUPER, 4, workspace, 4
-        bind = SUPER, 5, workspace, 5
-        bind = SUPER, 6, workspace, 6
-        bind = SUPER, 7, workspace, 7
-        bind = SUPER, 8, workspace, 8
-        bind = SUPER, 9, workspace, 9
-        bind = SUPER, 0, workspace, 10
-        bind = SUPER SHIFT, 1, movetoworkspace, 1
-        bind = SUPER SHIFT, 2, movetoworkspace, 2
-        bind = SUPER SHIFT, 3, movetoworkspace, 3
-        bind = SUPER SHIFT, 4, movetoworkspace, 4
-        bind = SUPER SHIFT, 5, movetoworkspace, 5
-        bind = SUPER SHIFT, 6, movetoworkspace, 6
-        bind = SUPER SHIFT, 7, movetoworkspace, 7
-        bind = SUPER SHIFT, 8, movetoworkspace, 8
-        bind = SUPER SHIFT, 9, movetoworkspace, 9
-        bind = SUPER SHIFT, 0, movetoworkspace, 10
-        bind=SUPER_SHIFT,S,movetoworkspace,special
-        bind=SUPER,S,togglespecialworkspace,
-        bind = SUPER, mouse_down, workspace, e+1
-        bind = SUPER, mouse_up, workspace, e-1
-        bindm = SUPER, mouse:272, movewindow
-        bindm = SUPER, mouse:273, resizewindow
-        monitor=,preferred,auto,auto
-        workspace=HDMI-1,1
-        exec = fish -c 'pidof waybar || waybar & disown'
-        exec = fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'
-        input {
-            kb_layout = us
-            # kb_variant = colemak
-            kb_options=caps:escape
-            repeat_rate=69
-            repeat_delay=150
-            follow_mouse = 1
-            touchpad {
-                natural_scroll = no
-            }
-            sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-        }
-        general {
-            gaps_in = 5
-            gaps_out = 7
-            border_size = 2
-            col.active_border = rgb(fe8019) 
-            col.inactive_border = rgb(282828)
-            layout = master
-        }
-        decoration {
-            screen_shader = ~/.config/hypr/shader.glsl
-            rounding = 10
-            blur = yes
-            blur_size = 4
-            blur_passes = 1
-            blur_new_optimizations = on
-
-            drop_shadow = true
-            shadow_range = 20
-            shadow_render_power = 3
-            col.shadow = rgba(1a1a1aee)
-            shadow_offset = [-10, -10]
-        }
-        animations {
-            enabled = yes
-            bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-            animation = windows, 1, 7, default, slide
-            animation = windowsOut, 1, 11, default, slide
-            # animation = windowsOut, 1, 7, default, popin 80%
-            animation = border, 1, 10, default
-            animation = fade, 1, 7, default
-            animation = workspaces, 1, 6, default
-        }
-        dwindle {
-            pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-            preserve_split = yes # you probably want this
-        }
-        master {
-            new_is_master = true
-            new_on_top = true
-        }
-        gestures {
-            # See https://wiki.hyprland.org/Configuring/Variables/ for more
-            workspace_swipe = on
-            workspace_swipe_forever = true;
-            workspace_swipe_cancel_ratio = 0.25;
-        }
-        windowrule = float, ^(blueberry.py)$
-        windowrule = float, ^(nm-connection-editor)$
-        windowrule = float, ^(pavucontrol)$
-        windowrule = float, ^(galculator)$
-
-        misc {
-          enable_swallow = true
-          swallow_regex = ^(kitty)|(Alacritty)$
-        }
-
-      '';
-    };  
-
-    programs = {
-      home-manager.enable = true;  
-      # waybar = {
-      #   enable = true;
-      #   package = pkgs.waybar;
-      #   settings = {
-      #     mainbar = {
-      #       spacing = 4;
-      #       modules-left = [ "wlr/workspaces" "custom/gttfg" ];
-      #       modules-center = [ "clock" ];
-      #       modules-right = [ "custom/eye_saver" "idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "battery" "tray"];
-      #       "custom/eye_saver" = {
-      #         format = "👁";
-      #         on-click = "fish -c toggle_eye_saver";
-      #       };
-      #       "custom/gttfg" = {
-      #         format = "Go to the fucking gym!";
-      #       };
-      #       "wlr/workspaces" = {
-      #         format = "{icon}";
-      #         on-click = "activate";
-      #         sort-by-number = true;
-      #       };
-      #       "idle_inhibitor" = {
-      #         format = "{icon}";
-      #         format-icons = {
-      #           activated = "";
-      #           deactivated = "";
-      #         };
-      #        };
-      #       "clock" = {
-      #         interval =  1;
-      #         format = "{:%T}";
-      #       };
-      #       "cpu" = {
-      #         format = "{usage}% ";
-      #         tooltip = false;
-      #         on-click = "kitty -e htop";
-      #       };
-      #       "memory" = {
-      #         format = "{}% ";
-      #         on-click = "kitty -e htop";
-      #       };
-      #       "battery" = {
-      #         states= {
-      #           good = 95;
-      #           warning = 30;
-      #           critical = 1;
-      #         };
-      #         format = "{capacity}% {icon}";
-      #         format-charging = "{capacity}% ";
-      #         format-plugged = "{capacity}% ";
-      #         format-alt = "{time} {icon}";
-      #         format-icons = ["" "" "" "" ""];
-      #       };
-      #       "network" = {
-      #         format-wifi = "{essid} ({signalStrength}%) ";
-      #         format-ethernet = "{ipaddr}/{cidr} ";
-      #         tooltip-format = "{ifname} via {gwaddr} ";
-      #         format-linked = "{ifname} (No IP) ";
-      #         format-disconnected = "Disconnected ⚠";
-      #         format-alt = "{ifname} = {ipaddr}/{cidr}";
-      #         on-click = "nm-connection-editor";
-      #       };
-      #       "pulseaudio" = {
-      #         format = "{volume}% {icon} {format_source}";
-      #         format-bluetooth = "{volume}% {icon} {format_source}";
-      #         format-bluetooth-muted = " {icon} {format_source}";
-      #         format-muted = " {format_source}";
-      #         format-source = "{volume}% ";
-      #         format-source-muted = "";
-      #         format-icons = {
-      #           headphone = "";
-      #           hands-free = "";
-      #           headset = "";
-      #           phone = "";
-      #           portable = "";
-      #           car = "";
-      #           default = ["" "" ""];
-      #         };
-      #         on-click = "pavucontrol";
-      #       };
-      #     };
-      #   };
-      #   style = /*css*/''
-      #     @define-color base      rgba(0.15625, 0.15625, 0.15625, 0.85);
-      #     @define-color base2     rgba(0.2353 , 0.2196 , 0.2118 , 1.0 );
-      #     @define-color text      #ebdbb2;
-      #     @define-color blue      #83a598;
-      #     @define-color green     #b8bb26;
-      #     @define-color yellow    #fabd2f;
-      #     @define-color red       #fb4934;
-      #     @define-color orange    #fe8019;
-      #     @define-color rosewater #d3869b;
-          
-        
-      #     * {
-      #         /* `otf-font-awesome` is required to be installed for icons */
-      #         font-family: JetBrainsMono;
-      #         font-size: 15px;
-      #         transition: all 0.1s cubic-bezier(.55,-0.68,.48,1.68);
-      #     }
-          
-      #     #workspaces {
-      #       border-radius: 0.5rem;
-      #       background-color: @base2;
-      #     }
-
-      #     #workspaces button {
-      #       color: @yellow;
-      #       border-radius: 0.5rem;
-      #       background-color: transparent;
-      #     }
-      #     #workspaces button.active {
-      #       color: @red;
-      #       border-radius: 0.5rem;
-      #     }
-      #     #workspaces button.focus {
-      #       color: @red;
-      #       border-radius: 0.5rem;
-      #     }
-      #     #workspaces button:hover {
-      #       color: @red;
-      #       border-radius: 0.5rem;
-      #     }
-
-      #     #cpu,
-      #     #memory,
-      #     #label
-      #     #tray,
-      #     #network,
-      #     #backlight,
-      #     #clock,
-      #     #battery,
-      #     #pulseaudio,
-      #     #idle_inhibitor,
-      #     #custom-eye_saver,
-      #     #custom-gttfg,
-      #     #custom-lock,
-      #     #custom-power {
-      #       margin: 3px 5px 5px 3px ;
-      #       padding: 2px;
-      #       border-radius: 0.5rem;
-      #       background-color: @base2;
-      #       color: @yellow;
-      #     }
-
-      #     window > box {
-      #     	margin: 5px 7px 0px 7px;
-      #       background: @base;
-      #       padding: 0px;
-      #       border-radius: 0.5rem;
-      #     }
-          
-      #     window#waybar {
-      #       background: transparent
-      #     }
-
-          
-      #     #idle_inhibitor{
-      #       color: @text;
-      #     }
-
-      #     #clock {
-      #       color: @yellow;
-      #     }
-      #     #battery {
-      #       color: @yellow;
-      #     }
-      #     #battery.charging {
-      #       color: @green;
-      #     }
-      #     #battery.warning:not(.charging) {
-      #       color: @red;
-      #     }
-      #     #network {
-      #         color: @yellow;
-      #     }
-      #     #backlight {
-      #       color: @yellow;
-      #     }
-      #     #pulseaudio {
-      #       color: @yellow;
-      #     }
-      #     #pulseaudio.muted {
-      #         color: @red;
-      #     }
-      #     #custom-power {
-      #         border-radius: 0.5rem;
-      #         color: @yellow;
-      #         margin-bottom: 0.5rem;
-      #     }
-      #     #tray {
-      #       border-radius: 0.5rem;
-      #     }
-      #     tooltip {
-      #         background: @base;
-      #         border: 1px solid @yellow;
-      #     }
-      #     tooltip label {
-      #         color: @yellow;
-      #     }
-      #   '';
-      # };
-
-      alacritty = {
+      services.gammastep = {
         enable = true;
-        settings = {
-          colors = {
-            primary = {
-              background =  "#24273A"; # base
-              foreground =  "#CAD3F5"; # text
-              # Bright and dim foreground colors
-              dim_foreground =  "#CAD3F5"; # text
-              bright_foreground =  "#CAD3F5"; # text
-            };
-                    # Cursor colors
-            cursor = {
-              text =  "#24273A"; # base
-              cursor =  "#F4DBD6"; # rosewater
-            };
-            vi_mode_cursor = {
-              text =  "#24273A"; # base
-              cursor =  "#B7BDF8"; # lavender
-            };
-                    # Search colors
-            search = {
-              matches = {
-                foreground =  "#24273A"; # base
-                background =  "#A5ADCB"; # subtext0
+        latitude = -36.8;
+        longitude = 174.8;
+      };
+
+      programs = {
+        home-manager.enable = true;
+
+        alacritty = {
+          enable = true;
+          settings = {
+            colors = {
+              primary = {
+                background = "#24273A"; # base
+                foreground = "#CAD3F5"; # text
+                # Bright and dim foreground colors
+                dim_foreground = "#CAD3F5"; # text
+                bright_foreground = "#CAD3F5"; # text
               };
-              focused_match = {
-                foreground =  "#24273A"; # base
-                background =  "#A6DA95"; # green
+              # Cursor colors
+              cursor = {
+                text = "#24273A"; # base
+                cursor = "#F4DBD6"; # rosewater
               };
-              footer_bar = {
-                foreground =  "#24273A"; # base
-                background =  "#A5ADCB"; # subtext0
+              vi_mode_cursor = {
+                text = "#24273A"; # base
+                cursor = "#B7BDF8"; # lavender
               };
-            };
-                    # Keyboard regex hints
-            hints = {
-              start = {
-                foreground =  "#24273A"; # base
-                background =  "#EED49F"; # yellow
+              # Search colors
+              search = {
+                matches = {
+                  foreground = "#24273A"; # base
+                  background = "#A5ADCB"; # subtext0
+                };
+                focused_match = {
+                  foreground = "#24273A"; # base
+                  background = "#A6DA95"; # green
+                };
+                footer_bar = {
+                  foreground = "#24273A"; # base
+                  background = "#A5ADCB"; # subtext0
+                };
               };
-              end = {
-                foreground =  "#24273A"; # base
-                background =  "#A5ADCB"; # subtext0
+              # Keyboard regex hints
+              hints = {
+                start = {
+                  foreground = "#24273A"; # base
+                  background = "#EED49F"; # yellow
+                };
+                end = {
+                  foreground = "#24273A"; # base
+                  background = "#A5ADCB"; # subtext0
+                };
               };
-            };
-                    # Selection colors
-            selection = {
-              text =  "#24273A"; # base
-                background =  "#F4DBD6"; # rosewater
-            };
-                    # Normal colors
-            normal = {
-              black =  "#494D64"; # surface1
-                red =  "#ED8796"; # red
-                green =  "#A6DA95"; # green
-                yellow =  "#EED49F"; # yellow
-                blue =  "#8AADF4"; # blue
-                magenta =  "#F5BDE6"; # pink
-                cyan =  "#8BD5CA"; # teal
-                white =  "#B8C0E0"; # subtext1
-            };
-                    # Bright colors
-            bright = {
-              black =  "#5B6078"; # surface2
-                red =  "#ED8796"; # red
-                green =  "#A6DA95"; # green
-                yellow =  "#EED49F"; # yellow
-                blue =  "#8AADF4"; # blue
-                magenta =  "#F5BDE6"; # pink
-                cyan =  "#8BD5CA"; # teal
-                white =  "#A5ADCB"; # subtext0
-            };
-                    # Dim colors
-            dim = {
-              black =  "#494D64"; # surface1
-                red =  "#ED8796"; # red
-                green =  "#A6DA95"; # green
-                yellow =  "#EED49F"; # yellow
-                blue =  "#8AADF4"; # blue
-                magenta =  "#F5BDE6"; # pink
-                cyan =  "#8BD5CA"; # teal
-                white =  "#B8C0E0"; # subtext1
+              # Selection colors
+              selection = {
+                text = "#24273A"; # base
+                background = "#F4DBD6"; # rosewater
+              };
+              # Normal colors
+              normal = {
+                black = "#494D64"; # surface1
+                red = "#ED8796"; # red
+                green = "#A6DA95"; # green
+                yellow = "#EED49F"; # yellow
+                blue = "#8AADF4"; # blue
+                magenta = "#F5BDE6"; # pink
+                cyan = "#8BD5CA"; # teal
+                white = "#B8C0E0"; # subtext1
+              };
+              # Bright colors
+              bright = {
+                black = "#5B6078"; # surface2
+                red = "#ED8796"; # red
+                green = "#A6DA95"; # green
+                yellow = "#EED49F"; # yellow
+                blue = "#8AADF4"; # blue
+                magenta = "#F5BDE6"; # pink
+                cyan = "#8BD5CA"; # teal
+                white = "#A5ADCB"; # subtext0
+              };
+              # Dim colors
+              dim = {
+                black = "#494D64"; # surface1
+                red = "#ED8796"; # red
+                green = "#A6DA95"; # green
+                yellow = "#EED49F"; # yellow
+                blue = "#8AADF4"; # blue
+                magenta = "#F5BDE6"; # pink
+                cyan = "#8BD5CA"; # teal
+                white = "#B8C0E0"; # subtext1
+              };
             };
           };
         };
-      };
-      lf = {
-        enable = true;
-        settings = {
-          dircounts = true;
-          dirfirst = true;
-          icons = true;
-        };
-        previewer.source = pkgs.writeShellScript "pv.sh" ''
-          #!/bin/sh
+        lf = {
+          enable = true;
+          settings = {
+            dircounts = true;
+            dirfirst = true;
+            icons = true;
+          };
+          previewer.source = pkgs.writeShellScript "pv.sh" ''
+            #!/bin/sh
 
-          case "$1" in
-              *.tar*) tar tf "$1";;
-              *.zip) unzip -l "$1";;
-              *.rar) unrar l "$1";;
-              *.7z) 7z l "$1";;
-              *.pdf) pdftotext "$1" -;;
-              *) bat --paging=never --style=numbers --terminal-width $(($2-5)) -f "$1" ;;
-          esac
-        '';
-        commands = {
-          fuzy_search = /*bash*/ "\$\{\{ res=\$\(sk --ansi -i -c \'rg --line-number \"\{\}\"\' | cut -d : -f1\)   ;   [ ! -z \"\$res\" ] && lf -remote \"send \$id select \\\"\$res\\\"\"\n\}\}\n";
-          z = /*bash*/ "%\{\{\n	result=\"\$(zoxide query --exclude \$PWD \$@)\"\n	lf -remote \"send \$id cd \$result\"\n\}\}\n";
-          trash = "%trash-put $fx";
+            case "$1" in
+                *.tar*) tar tf "$1";;
+                *.zip) unzip -l "$1";;
+                *.rar) unrar l "$1";;
+                *.7z) 7z l "$1";;
+                *.pdf) pdftotext "$1" -;;
+                *) bat --paging=never --style=numbers --terminal-width $(($2-5)) -f "$1" ;;
+            esac
+          '';
+          commands = {
+            fuzy_search = # bash
+              ''
+                ''${{ res=$(sk --ansi -i -c 'rg --line-number "{}"' | cut -d : -f1)   ;   [ ! -z "$res" ] && lf -remote "send $id select \"$res\""
+                }}
+              '';
+            z = # bash
+              ''
+                %{{
+                	result="$(zoxide query --exclude $PWD $@)"
+                	lf -remote "send $id cd $result"
+                }}
+              '';
+            trash = "%trash-put $fx";
+          };
+          keybindings = {
+            Z = "push :z<space>";
+            "<enter>" = "push $hx<space>$f<enter>";
+            O = "push $fish<space>-c<space>fhx<enter>";
+            S = "push :fuzy_search<enter>";
+            M = "push $mkdir<space>";
+            T = "push $touch<space>";
+          };
         };
-        keybindings = {
-          Z = "push :z<space>";
-          "<enter>" = "push $hx<space>$f<enter>";
-          O = "push $fish<space>-c<space>fhx<enter>";
-          S = "push :fuzy_search<enter>";
-          M = "push $mkdir<space>";
-          T = "push $touch<space>";
+        bat = {
+          enable = true;
+          config = { theme = "gruvbox-dark"; };
         };
-      };
-      bat = {
-        enable = true;
-        config = { theme = "gruvbox-dark"; };
-      };
-      lazygit = {
-        enable = true;
-        settings = {
-          git =  {  
-            autofetch = true;
-            paging = {
-              colorarg = "always";
-              colorArg = "always";
-              pager = /*bash*/ "delta --dark --paging=never --24-bit-color=never";
+        lazygit = {
+          enable = true;
+          settings = {
+            git = {
+              autofetch = true;
+              paging = {
+                colorarg = "always";
+                colorArg = "always";
+                pager = # bash
+                  "delta --dark --paging=never --24-bit-color=never";
+              };
             };
           };
         };
-      };
-      helix = {
-        enable = true;
-        package = pkgs.unstable.helix;
-        settings = {
-          theme = "gruvbox";
-          editor = {
-            line-number = "relative";
-            scrolloff = 10;
-            cursorline = true;
-            auto-save = true;
-            color-modes = true;
-            cursor-shape = {
-              insert = "bar";
-              normal = "block";
+        helix = {
+          enable = true;
+          package = pkgs.unstable.helix;
+          settings = {
+            theme = "gruvbox";
+            editor = {
+              line-number = "relative";
+              scrolloff = 10;
+              cursorline = true;
+              auto-save = true;
+              color-modes = true;
+              cursor-shape = {
+                insert = "bar";
+                normal = "block";
+              };
+              lsp.display-messages = true;
+              lsp.display-inlay-hints = true;
+              indent-guides = {
+                render = true;
+                character = "│";
+              };
             };
-            lsp.display-messages = true;
-            indent-guides = {
-              render = true;
-              character = "│";
-            };
+            keys = { };
           };
-          keys = { };
         };
-      };
-      kitty = {
-        enable = true;
-        theme  = "Gruvbox Dark";
-        settings = {
+        kitty = {
+          package = pkgs.unstable.kitty;
+          enable = true;
+          settings = {
             font_family = "JetbrainsMono";
-            update_check_interval   = 0;
+            update_check_interval = 0;
             hide_window_decorations = "yes";
-            resize_in_steps         = "yes";
+            resize_in_steps = "yes";
             confirm_os_window_close = 0;
-            remember_window_size    = "yes";
-            background_opacity      = "0.85";
-            allow_remote_control    = "yes";
+            remember_window_size = "yes";
+            background_opacity = "0.85";
+            allow_remote_control = "yes";
+
+
+            # theme  = "Gruvbox Dark";
+            selection_foreground = "#ebdbb2";
+            selection_background = "#d65d0e";
+
+            background = "#282828";
+            foreground = "#ebdbb2";
+
+            color0 = "#3c3836";
+            color1 = "#cc241d";
+            color2 = "#98971a";
+            color3 = "#d79921";
+            color4 = "#458588";
+            color5 = "#b16286";
+            color6 = "#689d6a";
+            color7 = "#a89984";
+            color8 = "#928374";
+            color9 = "#fb4934";
+            color10 = "#b8bb26";
+            color11 = "#fabd2f";
+            color12 = "#83a598";
+            color13 = "#d3869b";
+            color14 = "#8ec07c";
+            color15 = "#fbf1c7";
+
+            cursor = "#bdae93";
+            cursor_text_color = "#665c54";
+
+            url_color = "#458588";
+
+          };
         };
-      };
 
-      starship = {
-        enable = true;
-        package = pkgs.unstable.starship;
-        settings = {
-          format = ''$time in $all'';
-          palette = "gruvbox";
-          directory = {
-            style = "bright_yellow";
-          };
-          git_branch = {
-            style = "bright_aqua";
-            format = "[$symbol$branch(:$remote_branch)]($style) ";
-          };
-          git_status= {
-            style = "bright_orange";
-          };
-          git_metrics = {
-            disabled = false;
-          };
-          time = {
-            disabled = false;
-            use_12hr = true;
-            format = "[$time]($style)";
-            style = "bright_blue";
-            time_format = "%I:%M %p";
-          };
-          cmd_duration = {
-            style = "bright_purple";
-          };
-          palettes = {
-            gruvbox = {
-              bg = "#282828"; # main background
-              bright_bg = "#3c3836";
-              bg2 = "#504945";
-              bg3 = "#665c54";
-              bg4 = "#7c6f64";
+        starship = {
+          enable = true;
+          package = pkgs.unstable.starship;
+          settings = {
+            format = "$time in $all";
+            palette = "gruvbox";
+            directory = { style = "bright_yellow"; };
+            git_branch = {
+              style = "bright_aqua";
+              format = "[$symbol$branch(:$remote_branch)]($style) ";
+            };
+            git_status = { style = "bright_orange"; };
+            git_metrics = { disabled = false; };
+            time = {
+              disabled = false;
+              use_12hr = true;
+              format = "[$time]($style)";
+              style = "bright_blue";
+              time_format = "%I:%M %p";
+            };
+            cmd_duration = { style = "bright_purple"; };
+            palettes = {
+              gruvbox = {
+                bg = "#282828"; # main background
+                bright_bg = "#3c3836";
+                bg2 = "#504945";
+                bg3 = "#665c54";
+                bg4 = "#7c6f64";
 
-              fg = "#fbf1c7";
-              bright_fg = "#ebdbb2"; # main foreground
-              fg2 = "#d5c4a1";
-              fg3 = "#bdae93";
-              fg4 = "#a89984"; # gray0
+                fg = "#fbf1c7";
+                bright_fg = "#ebdbb2"; # main foreground
+                fg2 = "#d5c4a1";
+                fg3 = "#bdae93";
+                fg4 = "#a89984"; # gray0
 
-              gray = "#a89984";
-              bright_gray = "#928374";
+                gray = "#a89984";
+                bright_gray = "#928374";
 
-              red = "#cc241d"; # neutral
-              bright_red = "#fb4934"; # bright
-              green = "#98971a";
-              bright_green = "#b8bb26";
-              yellow = "#d79921";
-              bright_yellow = "#fabd2f";
-              blue = "#458588";
-              bright_blue = "#83a598";
-              purple = "#b16286";
-              bright_purple = "#d3869b";
-              aqua = "#689d6a";
-              bright_aqua = "#8ec07c";
-              orange = "#d65d0e";
-              bright_orange = "#fe8019";
+                red = "#cc241d"; # neutral
+                bright_red = "#fb4934"; # bright
+                green = "#98971a";
+                bright_green = "#b8bb26";
+                yellow = "#d79921";
+                bright_yellow = "#fabd2f";
+                blue = "#458588";
+                bright_blue = "#83a598";
+                purple = "#b16286";
+                bright_purple = "#d3869b";
+                aqua = "#689d6a";
+                bright_aqua = "#8ec07c";
+                orange = "#d65d0e";
+                bright_orange = "#fe8019";
+              };
             };
           };
         };
-      };
-      direnv = {
-        nix-direnv.enable = true;
-        enable = true;
-      };      
-      fish = {
-        enable = true;
-        functions = {
-          fhx = {
-            body = /*fish*/ '' 
-              hx $(sk --ansi -i -c 'rg --line-number "{}"' | cut -d : -f1,2)
-            '';
-            description = "Fuzzy find conntentes of files and open in hx";
-          };
-          lfcd = {
-            body = /*fish*/'' 
-              set tmp (mktemp)
-                # `command` is needed in case `lfcd` is aliased to `lf`
-                command lf -last-dir-path=$tmp $argv
-                if test -f "$tmp"
-                    set dir (cat $tmp)
-                    rm -f $tmp
-                    if test -d "$dir"
-                        if test "$dir" != (pwd)
-                            cd $dir
+        direnv = {
+          nix-direnv.enable = true;
+          enable = true;
+        };
+        fish = {
+          enable = true;
+          functions = {
+            fhx = {
+              body = # fish
+                ''
+                  hx $(sk --ansi -i -c 'rg --line-number "{}"' | cut -d : -f1,2)
+                '';
+              description = "Fuzzy find conntentes of files and open in hx";
+            };
+            lfcd = {
+              body = # fish
+                ''
+                  set tmp (mktemp)
+                    # `command` is needed in case `lfcd` is aliased to `lf`
+                    command lf -last-dir-path=$tmp $argv
+                    if test -f "$tmp"
+                        set dir (cat $tmp)
+                        rm -f $tmp
+                        if test -d "$dir"
+                            if test "$dir" != (pwd)
+                                cd $dir
+                            end
                         end
                     end
-                end
+                '';
+              description = "Change dirs with lf";
+            };
+            rebuild = {
+              body = # fish
+                "sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch ";
+              description = "Rebuild the system configuration";
+            };
+            toggle_eye_saver = {
+              body = # fish
+                ''
+                  switch "$(hyprctl getoption decoration:screen_shader)"
+                    case "*shader.glsl*" 
+                        hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
+                    case '*'
+                        hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
+                    end
+                '';
+              description = "Toggle the eye saver shader";
+            };
+            open_system = {
+              body = # fish
+                ''
+                  ~/projects/open_system/target/release/hyprtest
+                '';
+              description = "Goto the session or open it";
+            };
+            dmenu = {
+              body = # fish
+                ''
+                  wofi --show dmenu 
+                '';
+              description = "Dmenu for wayland or x using wofi or rofi";
+            };
+            copy_history = {
+              body = # fish
+                "history | fzf | xc";
+              description = "Copy a previously run command";
+            };
+          };
+          shellAliases = {
+            xc = "wl-copy";
+            lf = "lfcd";
+          };
+          shellAbbrs = {
+            hxb =
+              "~/.cargo/bin/hx --config ~/.config/helix/bleeding_config.toml";
+            i = "nix-env -iA nixos.";
+            q = "exit";
+            ":q" = "exit";
+            c = "clear";
+            ls = "exa -l";
+            r = "reset";
+            xplr = "cd $(/usr/bin/env xplr)";
+            ns = "nix-shell";
+          };
+          shellInit = # fish
+            ''
+              export EDITOR="hx"
+              export VISUAL="hx"
+              export BROWSER="firefox"
             '';
-            description = "Change dirs with lf";
-          };
-          rebuild = {
-            body = /*fish*/''sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch '';
-            description = "Rebuild the system configuration";
-          };
-          toggle_eye_saver = {
-            body = /*fish*/''
-            switch "$(hyprctl getoption decoration:screen_shader)"
-              case "*shader.glsl*" 
-                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
-              case '*'
-                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
-              end
-               '';
-            description = ''Toggle the eye saver shader'';
-          };
-          open_system = {
-            body = /*fish*/  ''
-              ~/projects/open_system/target/release/hyprtest
+          interactiveShellInit = # fish
+            ''
+              set fish_greeting
+              bind \ce edit_command_buffer
+              bind \ch copy_history  
+              zoxide init fish | source
+              starship init fish | source
+              set -Ux STARSHIP_LOG error
+              any-nix-shell fish --info-right | source
             '';
-            description = ''Goto the session or open it'';
-          };
-          dmenu = {
-            body = /*fish*/''
-                wofi --show dmenu 
-            '';
-            description = "Dmenu for wayland or x using wofi or rofi";
-          };
-          copy_history = {
-            body = /*fish*/''history | fzf | xc'';
-            description = ''Copy a previously run command'';
-          };
-        };
-        shellAliases = {
-          xc  = "wl-copy";
-          lf = "lfcd";
-        };
-        shellAbbrs = {
-          hxb = "~/.cargo/bin/hx --config ~/.config/helix/bleeding_config.toml";
-           i  = "nix-env -iA nixos.";
-           q  = "exit";
-         ":q" = "exit";
-           c  = "clear";
-           ls = "exa -l";
-           r  = "reset";
-          xplr = "cd $(/usr/bin/env xplr)";
-          ns = "nix-shell";
-        };
-        shellInit = /*fish*/''
-          export EDITOR="hx"
-          export VISUAL="hx"
-          export BROWSER="firefox"
-        '';
-        interactiveShellInit = /*fish*/
-        ''
-            set fish_greeting
-            bind \ce edit_command_buffer
-            bind \ch copy_history  
-            zoxide init fish | source
-            starship init fish | source
-            set -Ux STARSHIP_LOG error
-            any-nix-shell fish --info-right | source
-        '';
-        # NOTE don't use plugins from the nixpkgs repo as they aren't configured properly
-        plugins = [
+          # NOTE don't use plugins from the nixpkgs repo as they aren't configured properly
+          plugins = [
             {
               name = "autopair-fish";
               src = pkgs.fetchFromGitHub {
@@ -768,24 +483,27 @@
                 repo = "autopair.fish";
                 rev = "4d1752ff5b39819ab58d7337c69220342e9de0e2";
                 sha256 = "qt3t1iKRRNuiLWiVoiAYOu+9E7jsyECyIqZJ/oRIT1A=";
-              };          
-            }{
+              };
+            }
+            {
               name = "colored-man-pages";
               src = pkgs.fetchFromGitHub {
                 owner = "PatrickF1";
                 repo = "colored_man_pages.fish";
                 rev = "f885c2507128b70d6c41b043070a8f399988bc7a";
                 sha256 = "ii9gdBPlC1/P1N9xJzqomrkyDqIdTg+iCg0mwNVq2EU=";
-              };          
-            }{
+              };
+            }
+            {
               name = "sponge";
               src = pkgs.fetchFromGitHub {
                 owner = "meaningful-ooo";
                 repo = "sponge";
                 rev = "384299545104d5256648cee9d8b117aaa9a6d7be";
                 sha256 = "MdcZUDRtNJdiyo2l9o5ma7nAX84xEJbGFhAVhK+Zm1w=";
-              };            
-            }{
+              };
+            }
+            {
               name = "x";
               src = pkgs.fetchFromGitHub {
                 owner = "Molyuu";
@@ -794,94 +512,159 @@
                 sha256 = "sha256-oYVZoDCmY9zl5pLAKmO8xvMCSAe6vxf+yFpB6o8koos=";
               };
             }
-        ];
-      };
-      git = {
-        enable = true;
-        userName = "Oliver Sargison";
-        userEmail = "sargo@sargo.cc";
-        delta.enable = true;
-      };
-      bash = {
+          ];
+        };
+        git = {
+          enable = true;
+          userName = "Oliver Sargison";
+          userEmail = "sargo@sargo.cc";
+          delta.enable = true;
+        };
+        bash = {
 
-        enable = true;
+          enable = true;
+        };
       };
+      dconf.settings = {
+
+        "org/gnome/desktop/interface" = {
+          gtk-theme = "gruvbox-dark";
+          icon-theme = "oomox-gruvbox-dark";
+        };
+
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+          ];
+        };
+        "org/gnome/desktop/wm/keybindings" = {
+          switch-to-workspace-1 = [ "<Shift><Super>1" ];
+          switch-to-workspace-2 = [ "<Shift><Super>2" ];
+          switch-to-workspace-3 = [ "<Shift><Super>3" ];
+          switch-to-workspace-4 = [ "<Shift><Super>4" ];
+          switch-to-workspace-5 = [ "<Shift><Super>5" ];
+          switch-to-workspace-6 = [ "<Shift><Super>6" ];
+          switch-to-workspace-7 = [ "<Shift><Super>7" ];
+          switch-to-workspace-8 = [ "<Shift><Super>8" ];
+          switch-to-workspace-9 = [ "<Shift><Super>9" ];
+          move-to-workspace-1 = [ "<Control><Super>1" ];
+          move-to-workspace-2 = [ "<Control><Super>2" ];
+          move-to-workspace-3 = [ "<Control><Super>3" ];
+          move-to-workspace-4 = [ "<Control><Super>4" ];
+          move-to-workspace-5 = [ "<Control><Super>5" ];
+          move-to-workspace-6 = [ "<Control><Super>6" ];
+          move-to-workspace-7 = [ "<Control><Super>7" ];
+          move-to-workspace-8 = [ "<Control><Super>8" ];
+          move-to-workspace-9 = [ "<Control><Super>9" ];
+          switch-applications = [ "<Super>Tab" ];
+          switch-applications-backward = [ "<Super><Shift>Tab" ];
+          switch-windows = [ "<Alt>Tab" ];
+          switch-windows-backward = [ "<Alt><Shift>Tab" ];
+          toggle-fullscreen = [ "<Alt>F11" ];
+          close = [ "<Super>q" ];
+        };
+
+        "org/gnome/shell" = {
+          enabled-exensions = [
+            "apps-menu@gnome-shell-extensions.gcampax.github.com"
+            "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+            "places-menu@gnome-shell-extensions.gcampax.github.com"
+            "drive-menu@gnome-shell-extensions.gcampax.github.com"
+            "user-theme@gnome-shell-extensions.gcampax.github.com"
+            "blur-my-shell@aunetx"
+            "color-picker@tuberry"
+            "pano@elhan.io"
+            "dash-to-dock@micxgx.gmail.com"
+            "custom-accent-colors@demiskp"
+            "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
+            "gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com"
+            "caffeine@patapon.info"
+            "uptime-indicator@gniourfgniourf.gmail.com"
+          ];
+          favorite-apps = [
+            "firefox.desktop"
+            "kitty.desktop"
+            "armcord.desktop"
+            "org.keepassxc.KeePassXC.desktop"
+            "org.gnome.Nautilus.desktop"
+          ];
+
+          disable-user-extensions = false;
+
+        };
+        "org/gnome/shell/custom-accent-colors/theme-shell" = {
+          accent-color = "red";
+          theme-flatpak = true;
+          theme-gtk3 = true;
+          theme-shell = true;
+        };
+        "org/gnome/shell/extensions/blur-my-shell" = {
+          hacks-level = 0;
+          sigma = 200;
+          brightness = 1;
+        };
+        "org/gnome/shell/extensions/auto-move-windows" = {
+          applications-list = [
+            "firefox.desktop:1"
+            "kitty.desktop:2"
+            "org.keepassxc.KeePassXC.desktop:4"
+            "armcord.desktop:3"
+          ];
+        };
+
+        "org/gnome/shell/extensions/dash-to-dock" = {
+          animation-time = 0.10000000000000002;
+          apply-custom-theme = false;
+          background-color = "rgb(30,30,30)";
+          background-opacity = 0.7;
+          click-action = "focus-minimize-or-previews";
+          custom-background-color = true;
+          custom-theme-shrink = false;
+          dash-max-icon-size = 48;
+          dock-position = "LEFT";
+          height-fraction = 0.74;
+          hide-delay = 0.10000000000000002;
+          hot-keys = true;
+          hotkeys-overlay = true;
+          hotkeys-show-dock = true;
+          intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
+          multi-monitor = false;
+          preferred-monitor = -2;
+          preferred-monitor-by-connector = "HDMI-1";
+          preview-size-scale = 0.32;
+          scroll-action = "cycle-windows";
+          shortcut-timeout = 2.0;
+          transparency-mode = "FIXED";
+        };
+        "org/gnome/desktop/peripherals/keyboard" = {
+          delay = lib.hm.gvariant.mkUint32 175;
+          repeat-interval = lib.hm.gvariant.mkUint32 18;
+          repeat = true;
+        };
+      };
+
+      # home.file.".cargo/config.toml".text = /*toml*/ ''
+
+      #   [target.x86_64-unknown-linux-gnu]
+      #   linker = "clang"
+      #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
+      # '';
+
+      home.file.".config/hypr/hyprpaper.conf".text = # toml
+        ''
+          preload = ~/nix-files/gruv-material-texture.png
+
+          wallpaper = HDMI-A-1,~/nix-files/gruv-material-texture.png
+          wallpaper = eDP-1,~/nix-files/gruv-material-texture.png
+        '';
+
+      home.file.".config/wofi/style.css".text = # css
+        ''
+          @define-color base   #24273a; @define-color mantle #1e2030; @define-color crust  #181926;  @define-color text     #cad3f5; @define-color subtext0 #a5adcb; @define-color subtext1 #b8c0e0;  @define-color surface0 #363a4f; @define-color surface1 #494d64; @define-color surface2 #5b6078;  @define-color overlay0 #6e738d; @define-color overlay1 #8087a2; @define-color overlay2 #939ab7;  @define-color blue      #8aadf4; @define-color lavender  #b7bdf8; @define-color sapphire  #7dc4e4; @define-color sky       #91d7e3; @define-color teal      #8bd5ca; @define-color green     #a6da95; @define-color yellow    #eed49f; @define-color peach     #f5a97f; @define-color maroon    #ee99a0; @define-color red       #ed8796; @define-color mauve     #c6a0f6; @define-color pink      #f5bde6; @define-color flamingo  #f0c6c6; @define-color rosewater #f4dbd6;  window { margin: 0px; border-radius: 30px; border: 2px solid #fe8019; }  #input { margin: 5px; border: none; border-radius: 30px; }  #inner-box { margin: 5px; border: none; border-radius: 30px; }  #outer-box { margin: 15px; border: none; }  #scroll { margin: 0px; border: none; }  #text { margin: 5px; border: none; }   #entry:selected { border-radius: 20px; outline: none; }  #entry:selected * { border-radius: 20px; outline: none; } 
+        '';
+
     };
-    dconf.settings = {
-   
-      "org/gnome/desktop/interface" = {
-        gtk-theme = "gruvbox-dark";
-        icon-theme=  "oomox-gruvbox-dark";
-      };
-  
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = [
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
-        ];
-      };
-      "org/gnome/desktop/wm/keybindings" = {
-          switch-to-workspace-1 = ["<Shift><Super>1"]; switch-to-workspace-2 = ["<Shift><Super>2"]; switch-to-workspace-3 = ["<Shift><Super>3"]; switch-to-workspace-4 = ["<Shift><Super>4"]; switch-to-workspace-5 = ["<Shift><Super>5"]; switch-to-workspace-6 = ["<Shift><Super>6"]; switch-to-workspace-7 = ["<Shift><Super>7"]; switch-to-workspace-8 = ["<Shift><Super>8"]; switch-to-workspace-9 = ["<Shift><Super>9"]; 
-          move-to-workspace-1 = ["<Control><Super>1"]; move-to-workspace-2 = ["<Control><Super>2"]; move-to-workspace-3 = ["<Control><Super>3"]; move-to-workspace-4 = ["<Control><Super>4"]; move-to-workspace-5 = ["<Control><Super>5"]; move-to-workspace-6 = ["<Control><Super>6"]; move-to-workspace-7 = ["<Control><Super>7"]; move-to-workspace-8 = ["<Control><Super>8"]; move-to-workspace-9 = ["<Control><Super>9"]; switch-applications   = ["<Super>Tab"];
-          switch-applications-backward = ["<Super><Shift>Tab"];
-          switch-windows = ["<Alt>Tab"];
-          switch-windows-backward = ["<Alt><Shift>Tab"];
-          toggle-fullscreen = ["<Alt>F11"];
-          close = ["<Super>q"];
-      };
-  
-      "org/gnome/shell" = { 
-        enabled-exensions = [
-          "apps-menu@gnome-shell-extensions.gcampax.github.com" "auto-move-windows@gnome-shell-extensions.gcampax.github.com" "places-menu@gnome-shell-extensions.gcampax.github.com" "drive-menu@gnome-shell-extensions.gcampax.github.com" "user-theme@gnome-shell-extensions.gcampax.github.com" "blur-my-shell@aunetx" "color-picker@tuberry" "pano@elhan.io" "dash-to-dock@micxgx.gmail.com" "custom-accent-colors@demiskp" "windowsNavigator@gnome-shell-extensions.gcampax.github.com" "gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com" "caffeine@patapon.info" "uptime-indicator@gniourfgniourf.gmail.com" 
-        ];
-        favorite-apps = [
-          "firefox.desktop" "kitty.desktop" "armcord.desktop" "org.keepassxc.KeePassXC.desktop" "org.gnome.Nautilus.desktop"
-        ];
-
-        disable-user-extensions = false;
-        
-      };
-      "org/gnome/shell/custom-accent-colors/theme-shell" = {
-        accent-color = "red"; theme-flatpak = true; theme-gtk3 = true; theme-shell = true;
-      };
-      "org/gnome/shell/extensions/blur-my-shell" = {
-        hacks-level = 0; sigma = 200; brightness = 1;
-      };
-      "org/gnome/shell/extensions/auto-move-windows" = {
-        applications-list = [       
-         "firefox.desktop:1" "kitty.desktop:2" "org.keepassxc.KeePassXC.desktop:4" "armcord.desktop:3"        
-        ];
-      };
-
-      "org/gnome/shell/extensions/dash-to-dock" = {
-        animation-time=0.10000000000000002; apply-custom-theme=false; background-color="rgb(30,30,30)"; background-opacity=0.69999999999999996; click-action="focus-minimize-or-previews"; custom-background-color=true; custom-theme-shrink=false; dash-max-icon-size=48; dock-position="LEFT"; height-fraction=0.73999999999999999; hide-delay=0.10000000000000002; hot-keys=true; hotkeys-overlay=true; hotkeys-show-dock=true; intellihide-mode="FOCUS_APPLICATION_WINDOWS"; multi-monitor=false; preferred-monitor=-2; preferred-monitor-by-connector="HDMI-1"; preview-size-scale=0.32000000000000001; scroll-action="cycle-windows"; shortcut-timeout=2.0; transparency-mode="FIXED";
-      };
-       "org/gnome/desktop/peripherals/keyboard" = {
-         delay = lib.hm.gvariant.mkUint32 175; repeat-interval = lib.hm.gvariant.mkUint32 18; repeat = true;
-       };
-    };
- 
-    
-    # home.file.".cargo/config.toml".text = /*toml*/ ''
-
-    #   [target.x86_64-unknown-linux-gnu]
-    #   linker = "clang"
-    #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
-    # '';
-
-    home.file.".config/hypr/hyprpaper.conf".text = /*toml*/  '' 
-      preload = ~/nix-files/gruv-material-texture.png
-
-      wallpaper = HDMI-A-1,~/nix-files/gruv-material-texture.png
-      wallpaper = eDP-1,~/nix-files/gruv-material-texture.png
-    '';
-
-
-    home.file.".config/wofi/style.css".text = /*css*/''
-      @define-color base   #24273a; @define-color mantle #1e2030; @define-color crust  #181926;  @define-color text     #cad3f5; @define-color subtext0 #a5adcb; @define-color subtext1 #b8c0e0;  @define-color surface0 #363a4f; @define-color surface1 #494d64; @define-color surface2 #5b6078;  @define-color overlay0 #6e738d; @define-color overlay1 #8087a2; @define-color overlay2 #939ab7;  @define-color blue      #8aadf4; @define-color lavender  #b7bdf8; @define-color sapphire  #7dc4e4; @define-color sky       #91d7e3; @define-color teal      #8bd5ca; @define-color green     #a6da95; @define-color yellow    #eed49f; @define-color peach     #f5a97f; @define-color maroon    #ee99a0; @define-color red       #ed8796; @define-color mauve     #c6a0f6; @define-color pink      #f5bde6; @define-color flamingo  #f0c6c6; @define-color rosewater #f4dbd6;  window { margin: 0px; border-radius: 30px; border: 2px solid #fe8019; }  #input { margin: 5px; border: none; border-radius: 30px; }  #inner-box { margin: 5px; border: none; border-radius: 30px; }  #outer-box { margin: 15px; border: none; }  #scroll { margin: 0px; border: none; }  #text { margin: 5px; border: none; }   #entry:selected { border-radius: 20px; outline: none; }  #entry:selected * { border-radius: 20px; outline: none; } 
-    ''; 
-
-  };
 }
 

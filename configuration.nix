@@ -1,15 +1,20 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
-  mozillaOverlay = import (fetchTarball "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
+  mozillaOverlay = import (fetchTarball
+    "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
 
-  home-manager = fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  home-manager = fetchTarball
+    "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 
-  unstableTarball = fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+  unstableTarball = fetchTarball
+    "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
 
-  flake-compat = fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+  flake-compat = fetchTarball
+    "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
   hyprland = (import flake-compat {
-    src = fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+    src =
+      fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
   }).defaultNix;
 
   # stylix = pkgs.fetchFromGitHub {
@@ -19,18 +24,17 @@ let
   #   sha256 = "...";
   # };
 
-  in
-  {
+in {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs.hyprland = {
     enable = true;
     package = hyprland.packages.${pkgs.system}.default;
   };
-#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-# User setup
-#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  # User setup
+  #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   users.defaultUserShell = pkgs.fish;
-  
+
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
@@ -42,13 +46,11 @@ let
       xterm.enable = false;
       gnome.enable = true;
     };
- 
+
     displayManager.gdm.enable = true;
-    displayManager = {
-        defaultSession = "hyprland";
-    };
+    displayManager = { defaultSession = "hyprland"; };
     libinput.enable = true;
-    excludePackages= [ pkgs.xterm pkgs.gnome.gnome-terminal];
+    excludePackages = [ pkgs.xterm pkgs.gnome.gnome-terminal ];
     layout = "us";
     # xkbVariant = "colemak";
   };
@@ -69,26 +71,24 @@ let
     pulse.enable = true;
     # jack.enable = true;
   };
-  security.sudo.extraRules= [
-    {
-      users = [ "sargo" ];
-      commands = [
-         { command = "ALL" ;
-           options= [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
-        }
-      ];
-    }
-  ];
+  security.sudo.extraRules = [{
+    users = [ "sargo" ];
+    commands = [{
+      command = "ALL";
+      options =
+        [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
+    }];
+  }];
 
-  
-  
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
-  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".device = "/dev/disk/by-uuid/4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064";
-  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".keyFile = "/crypto_keyfile.bin";
+  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".device =
+    "/dev/disk/by-uuid/4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064";
+  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".keyFile =
+    "/crypto_keyfile.bin";
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -104,9 +104,8 @@ let
   #Enable blutooth
   hardware.bluetooth.enable = true;
 
-
   # stylix.image = /home/sargo/nix-files/gruv-material-texture.png;
-  
+
   system.stateVersion = "22.11"; # Did you read the comment?
   nixpkgs.overlays = [
     (self: super: {
@@ -117,23 +116,21 @@ let
     mozillaOverlay
   ];
   nixpkgs.config.packageOverrides = pkgs: {
-    unstable = import unstableTarball {
-      config = config.nixpkgs.config;
-    };
+    unstable = import unstableTarball { config = config.nixpkgs.config; };
   };
   nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
-  imports =
-    [ 
-      # (import stylix).homeManagerModules.stylix 
-      ./hardware-configuration.nix
-      ./sargo.nix
-      ./system-pakages.nix
-      (import "${home-manager}/nixos")
-      hyprland.nixosModules.default
-    ];
+  imports = [
+    # (import stylix).homeManagerModules.stylix 
+    ./hardware-configuration.nix
+    ./sargo.nix
+    ./system-pakages.nix
+    (import "${home-manager}/nixos")
+    hyprland.nixosModules.default
+  ];
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Pacific/Auckland";
   i18n = {
@@ -149,6 +146,6 @@ let
       LC_TIME = "en_NZ.UTF-8";
     };
   };
-  
+
   system.autoUpgrade.enable = true;
 }
