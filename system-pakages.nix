@@ -36,7 +36,7 @@ let
     jetbrains-mono
   ];
 
-  desktop = with pkgs; [ waybar hyprland ];
+  desktop = with pkgs; [ waybar unstable.hyprland ];
 
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl ];
 
@@ -44,6 +44,7 @@ in {
 
   environment.systemPackages = with pkgs;
     [
+      cmake
       unzip
       killall
       skim
@@ -51,6 +52,7 @@ in {
       syncthing
       thunderbird
       any-nix-shell
+      unstable.wayland
       unstable.helix
       unstable.firefox
       unstable.ncspot

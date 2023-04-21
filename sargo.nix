@@ -90,7 +90,7 @@
 
       wayland.windowManager.hyprland = {
         enable = true;
-        extraConfig = #zig
+        extraConfig = # zig
           ''
             # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
             bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
@@ -416,8 +416,9 @@
           };
         };
         kitty = {
-          package = pkgs.unstable.kitty;
           enable = true;
+          package = pkgs.unstable.kitty;
+          # theme  = "Gruvbox Dark";
           settings = {
             font_family = "JetbrainsMono";
             update_check_interval = 0;
@@ -427,7 +428,7 @@
             remember_window_size = "yes";
             background_opacity = "0.85";
             allow_remote_control = "yes";
-
+            map = "ctrl+shift+enter new_os_window_with_cwd";
             # theme  = "Gruvbox Dark";
             selection_foreground = "#ebdbb2";
             selection_background = "#d65d0e";
@@ -679,28 +680,40 @@
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
           ];
         };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+            binding = "<Super>Return";
+            command = "kitty";
+            name = "open-terminal";
+        };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+            binding = "<Super>w";
+            command = "librewolf";
+            name = "open-browser";
+        };
         "org/gnome/desktop/wm/keybindings" = {
-          switch-to-workspace-1 = [ "<Shift><Super>1" ];
-          switch-to-workspace-2 = [ "<Shift><Super>2" ];
-          switch-to-workspace-3 = [ "<Shift><Super>3" ];
-          switch-to-workspace-4 = [ "<Shift><Super>4" ];
-          switch-to-workspace-5 = [ "<Shift><Super>5" ];
-          switch-to-workspace-6 = [ "<Shift><Super>6" ];
-          switch-to-workspace-7 = [ "<Shift><Super>7" ];
-          switch-to-workspace-8 = [ "<Shift><Super>8" ];
-          switch-to-workspace-9 = [ "<Shift><Super>9" ];
-          move-to-workspace-1 = [ "<Control><Super>1" ];
-          move-to-workspace-2 = [ "<Control><Super>2" ];
-          move-to-workspace-3 = [ "<Control><Super>3" ];
-          move-to-workspace-4 = [ "<Control><Super>4" ];
-          move-to-workspace-5 = [ "<Control><Super>5" ];
-          move-to-workspace-6 = [ "<Control><Super>6" ];
-          move-to-workspace-7 = [ "<Control><Super>7" ];
-          move-to-workspace-8 = [ "<Control><Super>8" ];
-          move-to-workspace-9 = [ "<Control><Super>9" ];
+
+          switch-to-workspace-1 = [ "<Super>1" ];
+          switch-to-workspace-2 = [ "<Super>2" ];
+          switch-to-workspace-3 = [ "<Super>3" ];
+          switch-to-workspace-4 = [ "<Super>4" ];
+          switch-to-workspace-5 = [ "<Super>5" ];
+          switch-to-workspace-6 = [ "<Super>6" ];
+          switch-to-workspace-7 = [ "<Super>7" ];
+          switch-to-workspace-8 = [ "<Super>8" ];
+          switch-to-workspace-9 = [ "<Super>9" ];
+          switch-to-workspace-10 = [ "<Super>0" ];
+          move-to-workspace-1 = [ "<Shift><Super>1" ];
+          move-to-workspace-2 = [ "<Shift><Super>2" ];
+          move-to-workspace-3 = [ "<Shift><Super>3" ];
+          move-to-workspace-4 = [ "<Shift><Super>4" ];
+          move-to-workspace-5 = [ "<Shift><Super>5" ];
+          move-to-workspace-6 = [ "<Shift><Super>6" ];
+          move-to-workspace-7 = [ "<Shift><Super>7" ];
+          move-to-workspace-8 = [ "<Shift><Super>8" ];
+          move-to-workspace-9 = [ "<Shift><Super>9" ];
+          move-to-workspace-10 = [ "<Shift><Super>10" ];
           switch-applications = [ "<Super>Tab" ];
           switch-applications-backward = [ "<Super><Shift>Tab" ];
           switch-windows = [ "<Alt>Tab" ];
@@ -769,8 +782,8 @@
           dock-position = "LEFT";
           height-fraction = 0.74;
           hide-delay = 0.10000000000000002;
-          hot-keys = true;
-          hotkeys-overlay = true;
+          hot-keys = false;
+          hotkeys-overlay = false;
           hotkeys-show-dock = true;
           intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
           multi-monitor = false;
