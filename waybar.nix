@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{  pkgs,  ... }: {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar;
@@ -15,11 +15,16 @@
           "cpu"
           "memory"
           "battery"
+          "custom/logout"
           "tray"
         ];
         "custom/eye_saver" = {
           format = "👁";
           on-click = "fish -c toggle_eye_saver";
+        };
+        "custom/logout" = {
+          format = "👁";
+          on-click = "wlogout";
         };
         "custom/gttfg" = { format = "Go to the fucking gym!"; };
         "wlr/workspaces" = {
