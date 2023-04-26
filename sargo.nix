@@ -6,11 +6,14 @@
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      gitui
+      pastel
       speedcrunch
       glava
       swayimg
       nixfmt
       unstable.marksman
+      unstable.zellij
       inlyne
       swaybg
       feh
@@ -51,44 +54,29 @@
     let
       unstableTarball = fetchTarball
         "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+
       flake-compat = builtins.fetchTarball
         "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
-      hyprland = (import flake-compat {
-        src = builtins.fetchTarball
-          "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-      }).defaultNix;
+hyprland = (import flake-compat {
+    src = fetchGit {
+      url = "https://github.com/hyprwm/Hyprland";
+      rev = "edad24c257c1264e2d0c05b04798b6c90515831e";
+    };
+  }).defaultNix;
+      # hyprland = (import flake-compat {
+      #   src = builtins.fetchTarball
+      #     "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+      # }).defaultNix;
     in {
 
-      imports = [ hyprland.homeManagerModules.default ./waybar.nix ];
-
-      nixpkgs.overlays = [
-        (self: super: {
-          waybar = super.waybar.overrideAttrs (oldAttrs: {
-            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-          });
-        })
+      imports = [
+        hyprland.homeManagerModules.default 
+        ./waybar.nix
+        ./zellij.nix
       ];
-      nixpkgs.config = {
-        gtk = {
-          enable = true;
-          theme = {
-            name = "Catppuccin-Purple-Dark";
-            package = pkgs.catppuccin-gtk.override {
-              accents = [ "pink" ];
-              variant = "macchiato";
-            };
-          };
-        };
-        packageOverrides = pkgs: {
-          unstable = import unstableTarball { config = config.nixpkgs.config; };
-        };
-      };
-      home.username = "sargo";
-      home.homeDirectory = "/home/sargo";
-      home.stateVersion = "22.11";
 
-      wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = {
         enable = true;
         extraConfig = # zig
           ''
@@ -158,7 +146,6 @@
             monitor=HDMI-A-1,preferred,auto,1
             monitor=HDMI-A-1,transform,1
             workspace=HDMI-A-1,1
-
 
             exec = fish -c 'pidof waybar || waybar & disown'
             exec = fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'
@@ -232,6 +219,35 @@
 
           '';
       };
+      
+
+
+
+      nixpkgs.overlays = [
+        (self: super: {
+          waybar = super.waybar.overrideAttrs (oldAttrs: {
+            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+          });
+        })
+      ];
+      nixpkgs.config = {
+        gtk = {
+          enable = true;
+          theme = {
+            name = "Catppuccin-Purple-Dark";
+            package = pkgs.catppuccin-gtk.override {
+              accents = [ "pink" ];
+              variant = "macchiato";
+            };
+          };
+        };
+        packageOverrides = pkgs: {
+          unstable = import unstableTarball { config = config.nixpkgs.config; };
+        };
+      };
+      home.username = "sargo";
+      home.homeDirectory = "/home/sargo";
+      home.stateVersion = "22.11";
 
       services.gammastep = {
         enable = true;
@@ -401,6 +417,7 @@
               cursorline = true;
               auto-save = true;
               color-modes = true;
+              bufferline = "multiple";
               cursor-shape = {
                 insert = "bar";
                 normal = "block";
@@ -412,7 +429,17 @@
                 character = "│";
               };
             };
-            keys = { };
+            keys = {
+              normal = {
+                X = [
+                  "goto_first_nonwhitespace"
+                  "select_mode"
+                  "goto_line_end"
+                  "normal_mode"
+                ];
+                "esc" = [ "collapse_selection" "keep_primary_selection" ];
+              };
+            };
           };
         };
         kitty = {
@@ -429,6 +456,8 @@
             background_opacity = "0.85";
             allow_remote_control = "yes";
             map = "ctrl+shift+enter new_os_window_with_cwd";
+            font_size = 13;
+
             # theme  = "Gruvbox Dark";
             selection_foreground = "#ebdbb2";
             selection_background = "#d65d0e";
@@ -601,6 +630,8 @@
             r = "reset";
             xplr = "cd $(/usr/bin/env xplr)";
             ns = "nix-shell";
+            zl =
+              " zellij a $(pwd | sd '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
           };
           shellInit = # fish
             ''
@@ -680,18 +711,21 @@
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
           ];
         };
-        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" =
+          {
             binding = "<Super>Return";
             command = "kitty";
             name = "open-terminal";
-        };
-        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+          };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" =
+          {
             binding = "<Super>w";
             command = "librewolf";
             name = "open-browser";
-        };
+          };
         "org/gnome/desktop/wm/keybindings" = {
 
           switch-to-workspace-1 = [ "<Super>1" ];
@@ -725,7 +759,7 @@
         "org/gnome/shell" = {
           enabled-exensions = [
             "apps-menu@gnome-shell-extensions.gcampax.github.com"
-            "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+            # "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
             "places-menu@gnome-shell-extensions.gcampax.github.com"
             "drive-menu@gnome-shell-extensions.gcampax.github.com"
             "user-theme@gnome-shell-extensions.gcampax.github.com"
@@ -740,7 +774,7 @@
             "uptime-indicator@gniourfgniourf.gmail.com"
           ];
           favorite-apps = [
-            "firefox.desktop"
+            "librewolf.desktop"
             "kitty.desktop"
             "armcord.desktop"
             "org.keepassxc.KeePassXC.desktop"
@@ -762,12 +796,8 @@
           brightness = 1;
         };
         "org/gnome/shell/extensions/auto-move-windows" = {
-          applications-list = [
-            "firefox.desktop:1"
-            "kitty.desktop:2"
-            "org.keepassxc.KeePassXC.desktop:4"
-            "armcord.desktop:3"
-          ];
+          applications-list =
+            [ "firefox.desktop:1" "org.keepassxc.KeePassXC.desktop:10" ];
         };
 
         "org/gnome/shell/extensions/dash-to-dock" = {

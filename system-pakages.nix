@@ -36,7 +36,7 @@ let
     jetbrains-mono
   ];
 
-  desktop = with pkgs; [ waybar unstable.hyprland ];
+  desktop = with pkgs; [ waybar ];
 
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl ];
 
