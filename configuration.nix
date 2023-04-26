@@ -3,8 +3,13 @@ let
   mozillaOverlay = import (fetchTarball
     "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
 
-  home-manager = fetchTarball
-    "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  # home-manager = fetchTarball
+  #   "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+
+  home-manager = fetchGit {
+    url = "https://github.com/nix-community/home-manager";
+    rev = "6142193635ecdafb9a231bd7d1880b9b7b210d19";
+  };
 
   unstableTarball = fetchTarball
     "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";

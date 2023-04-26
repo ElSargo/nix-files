@@ -5,7 +5,7 @@
     settings = {
       mainbar = {
         spacing = 4;
-        modules-left = [ "wlr/workspaces" "custom/gttfg" ];
+        modules-left = [ "wlr/workspaces" ];
         modules-center = [ "clock" ];
         modules-right = [
           "custom/eye_saver"

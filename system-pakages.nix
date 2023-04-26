@@ -59,5 +59,6 @@ in {
       unstable.librewolf
       unstable.qpwgraph
       unstable.jamesdsp
+      unstable.chromium
     ] ++ gnome ++ gtk ++ dexktop-portal ++ fonts ++ desktop ++ compat ++ audio;
 }
