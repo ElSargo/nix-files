@@ -1,4 +1,4 @@
-{  pkgs,  ... }: {
+{ pkgs, ... }: {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar;
@@ -23,7 +23,7 @@
           on-click = "fish -c toggle_eye_saver";
         };
         "custom/logout" = {
-          format = "👁";
+          format = "⏼";
           on-click = "wlogout";
         };
         "custom/gttfg" = { format = "Go to the fucking gym!"; };
@@ -149,6 +149,7 @@
         #custom-eye_saver,
         #custom-gttfg,
         #custom-lock,
+        #custom-logout,
         #custom-power {
           margin: 3px 5px 5px 3px ;
           padding: 2px;

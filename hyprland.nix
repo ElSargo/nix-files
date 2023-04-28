@@ -109,13 +109,11 @@
         }
         animations {
             enabled = yes
-            bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-            animation = windows, 1, 7, default, slide
-            animation = windowsOut, 1, 11, default, slide
-            # animation = windowsOut, 1, 7, default, popin 80%
+            animation = windows, 1, 2, default, slide
+            animation = windowsOut, 1, 2, default, slide
             animation = border, 1, 10, default
             animation = fade, 1, 7, default
-            animation = workspaces, 1, 6, default
+            animation = workspaces, 1, 2, default
         }
         dwindle {
             pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
