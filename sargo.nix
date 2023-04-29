@@ -136,14 +136,44 @@
         longitude = 174.8;
       };
 
-
-
       # home.file.".cargo/config.toml".text = /*toml*/ ''
 
       #   [target.x86_64-unknown-linux-gnu]
       #   linker = "clang"
       #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
       # '';
+
+      home.file.".config/hypr/shader.glsl".text = # glsl
+        ''
+          precision mediump float;
+          varying vec2 v_texcoord;
+          uniform sampler2D tex;
+
+          void main() {
+
+              vec4 pixColor = texture2D(tex, v_texcoord);
+              pixColor.xyz = smoothstep(0.,1.,pixColor.xyz);
+
+              gl_FragColor = pixColor;
+          }
+        '';
+
+      home.file.".config/hypr/shader_eye_saver.glsl".text = # glsl
+        ''
+          precision mediump float;
+          varying vec2 v_texcoord;
+          uniform sampler2D tex;
+
+          void main() {
+
+              vec4 pixColor = texture2D(tex, v_texcoord);
+
+              pixColor.rgb = smoothstep(0.,1.,pixColor.rgb) 
+                  * vec3(1, 0.5, .2) * 0.3;    
+
+              gl_FragColor = pixColor;
+          }
+        '';
 
       home.file.".config/hypr/hyprpaper.conf".text = # toml
         ''
