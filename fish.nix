@@ -67,6 +67,7 @@
     };
     shellAliases = {
       xc = "wl-copy";
+      clip = "wl-copy";
       lf = "lfcd";
     };
     shellAbbrs = {
@@ -79,14 +80,19 @@
       r = "reset";
       xplr = "cd $(/usr/bin/env xplr)";
       ns = "nix-shell";
+      za = "zellij a";
       zl =
         " zellij a $(pwd | sd '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
+      lt = "hyprctl dispatch layoutmsg orientationtop";
+      lr = "hyprctl dispatch layoutmsg orientationright";
+      lb = "hyprctl dispatch layoutmsg orientationbottom";
+      ll = "hyprctl dispatch layoutmsg orientationleft";
     };
     shellInit = # fish
       ''
         export EDITOR="hx"
         export VISUAL="hx"
-        export BROWSER="firefox"
+        export BROWSER="librewolf"
       '';
     interactiveShellInit = # fish
       ''
