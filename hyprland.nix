@@ -9,7 +9,7 @@
         bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
         bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
         bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
-
+        bind = SUPER, A, exec, kitty zellij a
         bind = SUPER, G, exec, projects/unixchadbookmarks/target/release/unixchadbookmarks
         bind = SUPER, C, exec, fish -c open_system
         bind = SUPER, Q, killactive, 
@@ -130,6 +130,7 @@
             workspace_swipe_cancel_ratio = 0.25;
         }
         windowrule = float, ^(blueberry.py)$
+        windowrulev2 = float,title:^(Graze.)$
         windowrule = float, ^(nm-connection-editor)$
         windowrule = float, ^(pavucontrol)$
         windowrule = float, ^(galculator)$
