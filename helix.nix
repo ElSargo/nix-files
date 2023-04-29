@@ -15,6 +15,7 @@
           insert = "bar";
           normal = "block";
         };
+        soft-wrap = { enable = true; };
         lsp.display-messages = true;
         lsp.display-inlay-hints = true;
         indent-guides = {
