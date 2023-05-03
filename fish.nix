@@ -6,6 +6,14 @@ in {
   programs.fish = {
     enable = true;
     functions = {
+      sshigh = {
+        description = "Initilise the ssh agent for github";
+        body = # fish
+          ''
+            eval $(ssh-agent -c)
+            ssh-add ~/.ssh/github
+          '';
+      };
       fhx = {
         body = # fish
           ''
