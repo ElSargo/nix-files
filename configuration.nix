@@ -1,12 +1,18 @@
 { config, pkgs, ... }:
 let
-  mozillaOverlay = import (fetchTarball
-    "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
-
   home-manager = fetchGit {
     url = "https://github.com/nix-community/home-manager";
     rev = "6142193635ecdafb9a231bd7d1880b9b7b210d19";
   };
+
+  # unstableChannel = fetchGit {
+  #   url = "https://github.com/NixOS/nixpkgs/";
+  #   rev = "c1a1e9fa3d70c347da5bc6f09b56d4b8345215a2";
+  # };
+  # flake-compat = fetchGit {
+  #   url = "https://github.com/edolstra/flake-compat/";
+  #   rev = "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9";
+  # };
 
   unstableTarball = fetchTarball
     "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
@@ -46,6 +52,7 @@ in {
     excludePackages = [ pkgs.xterm pkgs.gnome.gnome-terminal ];
     layout = "us";
   };
+
   qt5.enable = true;
   qt5.platformTheme = "gtk2";
   qt5.style = "gtk2";
@@ -72,6 +79,9 @@ in {
     }];
   }];
 
+  boot.binfmt.emulatedSystems =
+    [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -82,28 +92,26 @@ in {
   boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".keyFile =
     "/crypto_keyfile.bin";
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.mtr.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
   services.dbus.enable = true;
   services.blueman.enable = true;
   services.openssh.enable = true;
   services.openssh.permitRootLogin = "no";
   hardware.bluetooth.enable = true;
 
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "22.11";
   nixpkgs.overlays = [
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
       });
     })
-    mozillaOverlay
   ];
+
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = import unstableTarball { config = config.nixpkgs.config; };
   };
