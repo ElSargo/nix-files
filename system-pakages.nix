@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 let
 
   audio = with pkgs; [ pulsemixer pavucontrol pulseaudio ];

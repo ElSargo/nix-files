@@ -50,9 +50,9 @@ in {
   qt5.platformTheme = "gtk2";
   qt5.style = "gtk2";
   xdg.portal.wlr.enable = true;
-  # Enable CUPS to print documents.
+
   services.printing.enable = true;
-  # Enable sound with pipewire.
+
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -93,7 +93,6 @@ in {
   services.blueman.enable = true;
   services.openssh.enable = true;
   services.openssh.permitRootLogin = "no";
-  #Enable blutooth
   hardware.bluetooth.enable = true;
 
   system.stateVersion = "22.11"; # Did you read the comment?

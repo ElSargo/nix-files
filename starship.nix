@@ -1,106 +1,96 @@
-{ pkgs, ... }: {
+{ pkgs, palette, ... }:
+let
+  bg = palette.br_bg;
+  sep = palette.bg2;
+in {
   programs.starship = {
     enable = true;
     package = pkgs.unstable.starship;
     settings = let
-      bg = "#282828"; # main background
-      br_bg = "#3c3836";
-      bg2 = "#504945";
-      bg3 = "#665c54";
-      bg4 = "#7c6f64";
-      fg = "#fbf1c7";
-      br_fg = "#ebdbb2"; # main foreground
-      fg2 = "#d5c4a1";
-      fg3 = "#bdae93";
-      fg4 = "#a89984"; # gray0
-      gray = "#a89984";
-      br_gray = "#928374";
-      red = "#cc241d";
-      br_red = "#fb4934"; # bright
-      green = "#98971a";
-      br_green = "#b8bb26";
-      yellow = "#d79921";
-      br_yellow = "#fabd2f";
-      blue = "#458588";
-      br_blue = "#83a598";
-      purple = "#b16286";
-      br_purple = "#d3869b";
-      aqua = "#689d6a";
-      br_aqua = "#8ec07c";
-      orange = "#d65d0e";
-      br_orange = "#fe8019";
-
-      main_format = builtins.concatStringsSep "[](fg:${br_bg} bg:${bg2})[](fg:${bg2} bg:${br_bg})" [
-        "[❆](bg:${br_bg} fg:${br_blue})"
-        "$directory"
-        "$nix_shell"
-        "$git_branch$git_metrics$git_status" 
-        "$rust"
-        "$time"
-        "$cmd_duration"
-      ];
+      main_format = builtins.concatStringsSep
+        "[](fg:${bg} bg:${sep})[](fg:${sep} bg:${bg})" [
+          "[❆](bg:${bg} fg:${palette.br_blue})"
+          "$time"
+          "$directory"
+          "$git_branch$git_metrics$git_status"
+          "$nix_shell"
+          "$rust"
+          "$cmd_duration"
+        ];
     in {
-      format = "${main_format}\n$character";
+      format = ''
+        ${main_format}[](fg:${bg})
+        $jobs$character'';
 
       palette = "gruvbox";
-      directory.format =
-        "[ $path](bg:${br_bg} fg:${br_yellow})[$read_only](bg:${br_bg})";
+      directory = {
+        format =
+          "[ $path](bg:${bg} fg:${palette.br_yellow})[$read_only](bg:${bg})";
+        substitutions = {
+          "Documents" = "";
+          "Downloads" = " ";
+          "Music" = " ";
+          "Pictures" = " ";
+          "nix-files" = "❆";
+          "~/projects" = "";
+        };
+      };
       git_branch = {
-        style = "bg:${br_bg} fg:${br_aqua}";
+        style = "bg:${bg} fg:${palette.br_blue}";
         format = "[ $symbol$branch($remote_branch)]($style)";
       };
       git_status = {
-        style = "bg:${br_bg} fg:${br_orange}";
+        style = "bg:${bg} fg:${palette.br_orange}";
         format = "[ \\[$all_status$ahead_behind\\]]($style)";
       };
       git_metrics = {
         disabled = false;
-        style = "bg:${br_bg} fg:${br_orange}";
+        style = "bg:${bg} fg:${palette.br_orange}";
         format =
-          "[ +$added ](bg:${br_bg} fg:${br_green})[-$deleted](bg:${br_bg} fg:${br_red})";
+          "[ +$added ](bg:${bg} fg:${palette.br_green})[-$deleted](bg:${bg} fg:${palette.br_red})";
       };
-      rust.format = "[ $symbol($version)](fg:${br_orange} bg:${br_bg})";
+      rust.format = "[ $symbol($version)](fg:${palette.br_orange} bg:${bg})";
       time = {
         disabled = false;
         use_12hr = true;
-        format = "[ $time](bg:${br_bg} fg:${br_green})";
+        format = "[ $time](bg:${bg} fg:${palette.br_green})";
         time_format = "%I:%M %p";
       };
       cmd_duration = {
-        format = "[ took](bg:${br_bg})[ $duration]($style)";
-        style = "bg:${br_bg} fg:${br_purple}";
+        format = "[ took](bg:${bg})[ $duration]($style)";
+        style = "bg:${bg} fg:${palette.br_purple}";
       };
       nix_shell = {
-        format = ''[ ❆ $state shell](fg:${br_blue} bg:${br_bg})'';
+        format = "[ ❆ $state shell](fg:${palette.br_blue} bg:${bg})";
       };
       palettes = {
         gruvbox = {
-          bg = "${bg}"; # main background
-          br_bg = "${br_bg}";
-          bg2 = "${bg2}";
-          bg3 = "${bg3}";
-          bg4 = "${bg4}";
-          fg = "${fg}";
-          br_fg = "${br_fg}"; # main foreground
-          fg2 = "${fg2}";
-          fg3 = "${fg3}";
-          fg4 = "${fg4}"; # gray0
-          gray = "${gray}";
-          br_gray = "${br_gray}";
-          red = "${red}";
-          br_red = "${br_red}"; # bright
-          green = "${green}";
-          br_green = "${br_green}";
-          yellow = "${yellow}";
-          br_yellow = "${br_yellow}";
-          blue = "${blue}";
-          br_blue = "${br_blue}";
-          purple = "${purple}";
-          br_purple = "${br_purple}";
-          aqua = "${aqua}";
-          br_aqua = "${br_aqua}";
-          orange = "${orange}";
-          br_orange = "${br_orange}";
+          bg = "${palette.bg}"; # main background
+          br_bg = "${bg}";
+          bg2 = "${sep}";
+          bg3 = "${palette.bg3}";
+          bg4 = "${palette.bg4}";
+          fg = "${palette.fg}";
+          br_fg = "${palette.br_fg}"; # main foreground
+          fg2 = "${palette.fg2}";
+          fg3 = "${palette.fg3}";
+          fg4 = "${palette.fg4}"; # gray0
+          gray = "${palette.gray}";
+          br_gray = "${palette.br_gray}";
+          red = "${palette.red}";
+          br_red = "${palette.br_red}"; # bright
+          green = "${palette.green}";
+          br_green = "${palette.br_green}";
+          yellow = "${palette.yellow}";
+          br_yellow = "${palette.br_yellow}";
+          blue = "${palette.blue}";
+          br_blue = "${palette.br_blue}";
+          purple = "${palette.purple}";
+          br_purple = "${palette.br_purple}";
+          aqua = "${palette.aqua}";
+          br_aqua = "${palette.br_aqua}";
+          orange = "${palette.orange}";
+          br_orange = "${palette.br_orange}";
 
         };
       };

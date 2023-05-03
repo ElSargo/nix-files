@@ -32,6 +32,7 @@
             "normal_mode"
           ];
           "esc" = [ "collapse_selection" "keep_primary_selection" ];
+          space = { n = [ ":write-all" ":sh nixfmt *.nix" ":reload-all" ]; };
         };
       };
     };

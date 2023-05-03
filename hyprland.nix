@@ -1,70 +1,107 @@
-{ ... }: {
+{ pkgs, ... }:
+with builtins;
+let
+  helper = f: node:
+    if isAttrs node then
+      concatLists (attrValues
+        (mapAttrs (element: child: map (c: [ element ] ++ c) (f f child)) node))
+    else
+      [ [ node ] ];
+  smoosh = helper helper;
+
+  keybinds = pkgs.lib.strings.concatMapStrings (s: ''
+    bind = ${s} 
+  '') (map (concatStringsSep ", ") (smoosh {
+    SUPERSHIFT = {
+
+      S = "movetoworkspace,special";
+      "0" = "movetoworkspace, 10";
+      "9" = "movetoworkspace, 9";
+      "8" = "movetoworkspace, 8";
+      "7" = "movetoworkspace, 7";
+      "6" = "movetoworkspace, 6";
+      "5" = "movetoworkspace, 5";
+      "4" = "movetoworkspace, 4";
+      "3" = "movetoworkspace, 3";
+      "2" = "movetoworkspace, 2";
+      "1" = "movetoworkspace, 1";
+      L = "exec, wlogout";
+      O = "layoutmsg, removemaster";
+      K = "layoutmsg, swapprev ";
+      J = "layoutmsg, swapnext";
+      Z = "exec, kitty fish '-c zn'";
+      W = "exec, nm-connection-editor";
+      Q = "exec, wlogout";
+      Return = "exec, wofi --show drun";
+      Space = "togglefloating, ";
+      F = "exec, pcmanfm";
+      N = "exec, [workspace 2 silent;float;noanim] kitty";
+
+    };
+
+    SUPER = {
+      mouse_up = "workspace, e-1";
+      mouse_down = "workspace, e+1";
+      S = "togglespecialworkspace,";
+      "0" = "workspace, 10";
+      "9" = "workspace, 9";
+      "8" = "workspace, 8";
+      "7" = "workspace, 7";
+      "6" = "workspace, 6";
+      "5" = "workspace, 5";
+      "4" = "workspace, 4";
+      "3" = "workspace, 3";
+      "2" = "workspace, 2";
+      "1" = "workspace, 1";
+
+      p = "exec, librewolf search.nixos.org/packages?channel=22.11&query=";
+      L = "exec, fish -c toggle_layout";
+      O = "layoutmsg, addmaster";
+      Space = "layoutmsg, swapwithmaster";
+      V = "layoutmsg, focusmaster";
+      K = "layoutmsg, cycleprev ";
+      J = "layoutmsg, cyclenext";
+      B = "exec, blueberry";
+      F = "fullscreen,0";
+      W = "exec, librewolf";
+      P = "pseudo, # dwindle";
+      Q = "killactive, ";
+      C = "exec, fish -c open_system";
+      G = "exec, projects/unixchadbookmarks/target/release/unixchadbookmarks";
+      A = "exec, kitty zellij a";
+      Return = "exec, kitty";
+      N = "workspace, empty";
+
+    };
+
+    "" = {
+      XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
+      XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
+      XF86Calculator = "exec, galculator 	";
+      XF86Mail = "exec, librewolf mail.google.com/mail/u/0/#inbox";
+      XF86KbdBrightnessUp = "exec,  ";
+      XF86KbdBrightnessDown = "exec, ";
+
+    };
+
+  }));
+
+in {
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = # kdl
       ''
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
-        bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
-        bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
-        bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
-        bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
-        bind = SUPER, A, exec, kitty zellij a
-        bind = SUPER, G, exec, projects/unixchadbookmarks/target/release/unixchadbookmarks
-        bind = SUPER, C, exec, fish -c open_system
-        bind = SUPER, Q, killactive, 
-        bind = SUPERSHIFT, F, exec, pcmanfm
-        bind = SUPERSHIFT, Space, togglefloating, 
-        bind = SUPERSHIFT, Return, exec, wofi --show drun
-        bind = SUPER, P, pseudo, # dwindle
-        bind = SUPER, W, exec, librewolf
-        bind = SUPER, F,fullscreen,0
-        bind = SUPERSHIFT, Q, exec, wlogout
-        bind = SUPER, B, exec, blueberry
-        bind = SUPERSHIFT, W, exec, nm-connection-editor
-        bind = SUPERSHIFT, Z, exec, kitty fish '-c zn'
-        bind = SUPER, J, layoutmsg, cyclenext
-        bind = SUPER, K, layoutmsg, cycleprev 
-        bind = SUPERSHIFT, J, layoutmsg, swapnext
-        bind = SUPERSHIFT, K, layoutmsg, swapprev 
-        bind = SUPER SHIFT, w, workspace, browser
-        bind = SUPER, V, layoutmsg, focusmaster
-        bind = SUPER, Space, layoutmsg, swapwithmaster
-        bind = SUPER, p, exec, librewolf search.nixos.org/packages?channel=22.11&query=
-        bind = ,XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% 	
-        bind = ,XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%
-        bind = ,XF86AudioMute, exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	
-        bind = ,XF86Calculator, exec, galculator 	
-        bind = ,XF86Mail, exec, librewolf mail.google.com/mail/u/0/#inbox
-        bind = ,XF86KbdBrightnessUp, exec,  
-        bind = ,XF86KbdBrightnessDown , exec, 
-        unbind, SUPER, M
-        bind = SUPER, 1, workspace, 1
-        bind = SUPER, 2, workspace, 2
-        bind = SUPER, 3, workspace, 3
-        bind = SUPER, 4, workspace, 4
-        bind = SUPER, 5, workspace, 5
-        bind = SUPER, 6, workspace, 6
-        bind = SUPER, 7, workspace, 7
-        bind = SUPER, 8, workspace, 8
-        bind = SUPER, 9, workspace, 9
-        bind = SUPER, 0, workspace, 10
-        bind = SUPER SHIFT, 1, movetoworkspace, 1
-        bind = SUPER SHIFT, 2, movetoworkspace, 2
-        bind = SUPER SHIFT, 3, movetoworkspace, 3
-        bind = SUPER SHIFT, 4, movetoworkspace, 4
-        bind = SUPER SHIFT, 5, movetoworkspace, 5
-        bind = SUPER SHIFT, 6, movetoworkspace, 6
-        bind = SUPER SHIFT, 7, movetoworkspace, 7
-        bind = SUPER SHIFT, 8, movetoworkspace, 8
-        bind = SUPER SHIFT, 9, movetoworkspace, 9
-        bind = SUPER SHIFT, 0, movetoworkspace, 10
-        bind=SUPER_SHIFT,S,movetoworkspace,special
-        bind=SUPER,S,togglespecialworkspace,
-        bind = SUPER, mouse_down, workspace, e+1
-        bind = SUPER, mouse_up, workspace, e-1
+        # bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
+        # bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
+        # bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
+        # bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
+        # bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
         bindm = SUPER, mouse:272, movewindow
         bindm = SUPER, mouse:273, resizewindow
+
+
+        unbind, SUPER, M
 
         monitor=HDMI-A-1,preferred,auto,1
         monitor=HDMI-A-1,transform,1
@@ -140,6 +177,6 @@
           swallow_regex = ^(kitty)|(Alacritty)$
         }
 
-      '';
+      '' + keybinds;
   };
 }

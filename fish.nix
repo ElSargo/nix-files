@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, palette, ... }: {
 
   programs.fish = {
     enable = true;
@@ -27,6 +27,18 @@
               end
           '';
         description = "Change dirs with lf";
+      };
+      toggle_layout = {
+        description = "Toggle between the hyprland master and dwindle layouts";
+        body = # fish
+          ''
+            switch "$(hyprctl getoption general:layout)"
+            case "*master*"
+              hyprctl keyword general:layout dwindle
+            case "*"
+              hyprctl keyword general:layout master
+            end
+          '';
       };
       rebuild = {
         body = # fish
@@ -87,6 +99,8 @@
       lr = "hyprctl dispatch layoutmsg orientationright";
       lb = "hyprctl dispatch layoutmsg orientationbottom";
       ll = "hyprctl dispatch layoutmsg orientationleft";
+      lc = "hyprctl dispatch layoutmsg orientationcenter";
+
     };
     shellInit = # fish
       ''
@@ -103,7 +117,59 @@
         starship init fish | source
         set -Ux STARSHIP_LOG error
         any-nix-shell fish --info-right | source
+        export DIRENV_LOG_FORMAT=
+        set fish_color_normal ${builtins.substring 1 6 palette.br_blue}
+        set fish_color_command ${builtins.substring 1 6 palette.br_blue}
+        set fish_color_option ${builtins.substring 1 6 palette.br_yellow}
+        set fish_color_escape ${builtins.substring 1 6 palette.br_orange}
+        set fish_color_end ${builtins.substring 1 6 palette.br_orange}
+        set fish_color_cancel ${builtins.substring 1 6 palette.br_orange}
+        set fish_color_redirection ${builtins.substring 1 6 palette.br_orange}
+        set fish_color_status ${builtins.substring 1 6 palette.br_red}
+        set fish_color_quote ${builtins.substring 1 6 palette.br_green}
+        set fish_color_comment ${builtins.substring 1 6 palette.gray}
+        set fish_color_keyword ${builtins.substring 1 6 palette.br_red}
+        set fish_color_valid_path ${builtins.substring 1 6 palette.br_green}
+        set fish_pager_color_progress ${
+          builtins.substring 1 6 palette.br_yellow
+        }
+        set fish_pager_color_progress --background ${
+          builtins.substring 1 6 palette.br_bg
+        }
+        set fish_pager_color_background --background ${
+          builtins.substring 1 6 palette.br_bg
+        }
+        set fish_pager_color_prefix ${builtins.substring 1 6 palette.green}
+        set fish_pager_color_completion ${
+          builtins.substring 1 6 palette.br_green
+        }
+        set fish_pager_color_description ${builtins.substring 1 6 palette.fg}
+        set fish_pager_color_selected_background --background ${
+          builtins.substring 1 6 palette.br_orange
+        }
+        set fish_pager_color_selected_prefix ${
+          builtins.substring 1 6 palette.br_bg
+        }
+        set fish_pager_color_selected_completion ${
+          builtins.substring 1 6 palette.bg2
+        }
+        set fish_pager_color_selected_description ${
+          builtins.substring 1 6 palette.br_bg
+        }
+        set fish_pager_color_secondary_background --background ${
+          builtins.substring 1 6 palette.bg2
+        }
+        set fish_pager_color_secondary_prefix ${
+          builtins.substring 1 6 palette.green
+        }
+        set fish_pager_color_secondary_completion ${
+          builtins.substring 1 6 palette.br_green
+        }
+        set fish_pager_color_secondary_description ${
+          builtins.substring 1 6 palette.fg
+        }
       '';
+
     # NOTE don't use plugins from the nixpkgs repo as they aren't configured properly
     plugins = [
       {

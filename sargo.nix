@@ -6,6 +6,7 @@
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      sccache
       gitui
       pastel
       speedcrunch
@@ -64,22 +65,58 @@
           rev = "edad24c257c1264e2d0c05b04798b6c90515831e";
         };
       }).defaultNix;
+
+      palette = {
+        bg = "#282828"; # main background
+        br_bg = "#3c3836";
+        bg2 = "#504945";
+        bg3 = "#665c54";
+        bg4 = "#7c6f64";
+        fg = "#fbf1c7";
+        br_fg = "#ebdbb2"; # main foreground
+        fg2 = "#d5c4a1";
+        fg3 = "#bdae93";
+        fg4 = "#a89984"; # gray0
+        gray = "#a89984";
+        br_gray = "#928374";
+        red = "#cc241d";
+        br_red = "#fb4934"; # bright
+        green = "#98971a";
+        br_green = "#b8bb26";
+        yellow = "#d79921";
+        br_yellow = "#fabd2f";
+        blue = "#458588";
+        br_blue = "#83a598";
+        purple = "#b16286";
+        br_purple = "#d3869b";
+        aqua = "#689d6a";
+        br_aqua = "#8ec07c";
+        orange = "#d65d0e";
+        br_orange = "#fe8019";
+        white = "#fbf1c7";
+        tan = "#bdae93";
+      };
+
     in {
 
-      imports = [
-        hyprland.homeManagerModules.default
-        ./waybar.nix
-        ./zellij.nix
-        ./hyprland.nix
-        ./fish.nix
-        ./alacritty.nix
-        ./starship.nix
-        ./kitty.nix
-        ./lf.nix
-        ./helix.nix
-        ./dconf.nix
-      ];
-
+      imports = map (x:
+        import x {
+          pkgs = pkgs;
+          lib = lib;
+          palette = palette;
+        }) [
+          ./starship.nix
+          ./alacritty.nix
+          ./fish.nix
+          ./kitty.nix
+          ./waybar.nix
+          ./zellij.nix
+          ./hyprland.nix
+          ./lf.nix
+          ./helix.nix
+          ./dconf.nix
+          # ./neomutt.nix
+        ] ++ [ hyprland.homeManagerModules.default ];
       programs = {
         home-manager.enable = true;
 
