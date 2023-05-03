@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, palette, ... }: {
   programs.zellij = {
     enable = true;
-    package = pkgs.unstable.zellij;
+    package = pkgs.zellij;
     settings = {
       ui = { pane_frames = { rounded_corners = true; }; };
       keybinds = {
@@ -23,17 +23,17 @@
       theme = "gruvbox_dark";
       themes = {
         gruvbox_dark = {
-          fg = "#3c3836";
-          bg = "#282828";
-          black = "#504945";
-          red = "#98971a"; # <-│switch
-          green = "#fb4934"; # <-│
-          yellow = "#d79921";
-          blue = "#458588";
-          magenta = "#b16286";
-          cyan = "#689d6a";
-          white = "#fbf1c7";
-          orange = "#d65d0e";
+          fg = palette.br_bg;
+          bg = palette.bg;
+          black = palette.bg2;
+          red = palette.br_green;
+          green = palette.br_red;
+          yellow = palette.br_yellow;
+          blue = palette.br_blue;
+          magenta = palette.br_purple;
+          cyan = palette.br_aqua;
+          orange = palette.br_orange;
+          white = palette.white;
         };
       };
     };

@@ -14,7 +14,6 @@
       swayimg
       nixfmt
       unstable.marksman
-      unstable.zellij
       inlyne
       swaybg
       feh
@@ -99,24 +98,19 @@
 
     in {
 
-      imports = map (x:
-        import x {
-          pkgs = pkgs;
-          lib = lib;
-          palette = palette;
-        }) [
-          ./starship.nix
-          ./alacritty.nix
-          ./fish.nix
-          ./kitty.nix
-          ./waybar.nix
-          ./zellij.nix
-          ./hyprland.nix
-          ./lf.nix
-          ./helix.nix
-          ./dconf.nix
-          # ./neomutt.nix
-        ] ++ [ hyprland.homeManagerModules.default ];
+      imports = map (x: import x { inherit pkgs lib palette; }) [
+        ./starship.nix
+        ./alacritty.nix
+        ./fish.nix
+        ./kitty.nix
+        ./waybar.nix
+        ./zellij.nix
+        ./hyprland.nix
+        ./lf.nix
+        ./helix.nix
+        ./dconf.nix
+        # ./neomutt.nix
+      ] ++ [ hyprland.homeManagerModules.default ];
       programs = {
         home-manager.enable = true;
 

@@ -12,32 +12,8 @@ let
   keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bind = ${s} 
   '') (map (concatStringsSep ", ") (smoosh {
-    SUPERSHIFT = {
 
-      S = "movetoworkspace,special";
-      "0" = "movetoworkspace, 10";
-      "9" = "movetoworkspace, 9";
-      "8" = "movetoworkspace, 8";
-      "7" = "movetoworkspace, 7";
-      "6" = "movetoworkspace, 6";
-      "5" = "movetoworkspace, 5";
-      "4" = "movetoworkspace, 4";
-      "3" = "movetoworkspace, 3";
-      "2" = "movetoworkspace, 2";
-      "1" = "movetoworkspace, 1";
-      L = "exec, wlogout";
-      O = "layoutmsg, removemaster";
-      K = "layoutmsg, swapprev ";
-      J = "layoutmsg, swapnext";
-      Z = "exec, kitty fish '-c zn'";
-      W = "exec, nm-connection-editor";
-      Q = "exec, wlogout";
-      Return = "exec, wofi --show drun";
-      Space = "togglefloating, ";
-      F = "exec, pcmanfm";
-      N = "exec, [workspace 2 silent;float;noanim] kitty";
-
-    };
+    SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] kitty"; };
 
     SUPER = {
       mouse_up = "workspace, e-1";
@@ -69,8 +45,40 @@ let
       C = "exec, fish -c open_system";
       G = "exec, projects/unixchadbookmarks/target/release/unixchadbookmarks";
       A = "exec, kitty zellij a";
-      Return = "exec, kitty";
+      Return = "exec, [size 40% 40%] kitty";
       N = "workspace, empty";
+      # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
+      # Return = "exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland";
+      # bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
+      # bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
+      # bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
+      # bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
+
+    };
+
+    SUPERSHIFT = {
+
+      S = "movetoworkspace,special";
+      "0" = "movetoworkspace, 10";
+      "9" = "movetoworkspace, 9";
+      "8" = "movetoworkspace, 8";
+      "7" = "movetoworkspace, 7";
+      "6" = "movetoworkspace, 6";
+      "5" = "movetoworkspace, 5";
+      "4" = "movetoworkspace, 4";
+      "3" = "movetoworkspace, 3";
+      "2" = "movetoworkspace, 2";
+      "1" = "movetoworkspace, 1";
+      L = "exec, wlogout";
+      O = "layoutmsg, removemaster";
+      K = "layoutmsg, swapprev ";
+      J = "layoutmsg, swapnext";
+      Z = "exec, kitty fish '-c zn'";
+      W = "exec, nm-connection-editor";
+      Q = "exec, wlogout";
+      Return = "exec, wofi --show drun";
+      Space = "togglefloating, ";
+      F = "exec, pcmanfm";
 
     };
 
@@ -89,14 +97,8 @@ let
 in {
   wayland.windowManager.hyprland = {
     enable = true;
-    extraConfig = # kdl
+    extraConfig = # zig
       ''
-        # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        # bind = SUPER, Return, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland
-        # bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
-        # bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
-        # bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
-        # bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
         bindm = SUPER, mouse:272, movewindow
         bindm = SUPER, mouse:273, resizewindow
 

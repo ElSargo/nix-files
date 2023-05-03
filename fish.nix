@@ -1,4 +1,7 @@
-{ pkgs, palette, ... }: {
+{ pkgs, palette, ... }:
+with builtins;
+let color = mapAttrs (k: v: builtins.substring 1 6 v) palette;
+in {
 
   programs.fish = {
     enable = true;
@@ -118,56 +121,32 @@
         set -Ux STARSHIP_LOG error
         any-nix-shell fish --info-right | source
         export DIRENV_LOG_FORMAT=
-        set fish_color_normal ${builtins.substring 1 6 palette.br_blue}
-        set fish_color_command ${builtins.substring 1 6 palette.br_blue}
-        set fish_color_option ${builtins.substring 1 6 palette.br_yellow}
-        set fish_color_escape ${builtins.substring 1 6 palette.br_orange}
-        set fish_color_end ${builtins.substring 1 6 palette.br_orange}
-        set fish_color_cancel ${builtins.substring 1 6 palette.br_orange}
-        set fish_color_redirection ${builtins.substring 1 6 palette.br_orange}
-        set fish_color_status ${builtins.substring 1 6 palette.br_red}
-        set fish_color_quote ${builtins.substring 1 6 palette.br_green}
-        set fish_color_comment ${builtins.substring 1 6 palette.gray}
-        set fish_color_keyword ${builtins.substring 1 6 palette.br_red}
-        set fish_color_valid_path ${builtins.substring 1 6 palette.br_green}
-        set fish_pager_color_progress ${
-          builtins.substring 1 6 palette.br_yellow
-        }
-        set fish_pager_color_progress --background ${
-          builtins.substring 1 6 palette.br_bg
-        }
-        set fish_pager_color_background --background ${
-          builtins.substring 1 6 palette.br_bg
-        }
-        set fish_pager_color_prefix ${builtins.substring 1 6 palette.green}
-        set fish_pager_color_completion ${
-          builtins.substring 1 6 palette.br_green
-        }
-        set fish_pager_color_description ${builtins.substring 1 6 palette.fg}
-        set fish_pager_color_selected_background --background ${
-          builtins.substring 1 6 palette.br_orange
-        }
-        set fish_pager_color_selected_prefix ${
-          builtins.substring 1 6 palette.br_bg
-        }
-        set fish_pager_color_selected_completion ${
-          builtins.substring 1 6 palette.bg2
-        }
-        set fish_pager_color_selected_description ${
-          builtins.substring 1 6 palette.br_bg
-        }
-        set fish_pager_color_secondary_background --background ${
-          builtins.substring 1 6 palette.bg2
-        }
-        set fish_pager_color_secondary_prefix ${
-          builtins.substring 1 6 palette.green
-        }
-        set fish_pager_color_secondary_completion ${
-          builtins.substring 1 6 palette.br_green
-        }
-        set fish_pager_color_secondary_description ${
-          builtins.substring 1 6 palette.fg
-        }
+        set fish_color_normal ${color.br_blue}
+        set fish_color_command ${color.br_blue}
+        set fish_color_option ${color.br_yellow}
+        set fish_color_escape ${color.br_orange}
+        set fish_color_end ${color.br_orange}
+        set fish_color_cancel ${color.br_orange}
+        set fish_color_redirection ${color.br_orange}
+        set fish_color_status ${color.br_red}
+        set fish_color_quote ${color.br_green}
+        set fish_color_comment ${color.gray}
+        set fish_color_keyword ${color.br_red}
+        set fish_color_valid_path ${color.br_green}
+        set fish_pager_color_progress ${color.br_yellow}
+        set fish_pager_color_progress --background ${color.br_bg}
+        set fish_pager_color_background --background ${color.br_bg}
+        set fish_pager_color_prefix ${color.green}
+        set fish_pager_color_completion ${color.br_green}
+        set fish_pager_color_description ${color.fg}
+        set fish_pager_color_selected_background --background ${color.br_orange}
+        set fish_pager_color_selected_prefix ${color.br_bg}
+        set fish_pager_color_selected_completion ${color.bg2}
+        set fish_pager_color_selected_description ${color.br_bg}
+        set fish_pager_color_secondary_background --background ${color.bg2}
+        set fish_pager_color_secondary_prefix ${color.green}
+        set fish_pager_color_secondary_completion ${color.br_green}
+        set fish_pager_color_secondary_description ${color.fg}
       '';
 
     # NOTE don't use plugins from the nixpkgs repo as they aren't configured properly
