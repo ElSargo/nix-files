@@ -96,7 +96,7 @@ let
 
 in {
   wayland.windowManager.hyprland = {
-    enable = true;
+    # enable = true;
     extraConfig = # zig
       ''
         bindm = SUPER, mouse:272, movewindow

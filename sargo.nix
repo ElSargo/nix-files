@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ hyprland, pkgs, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -49,21 +49,8 @@
       unstable.starship
     ];
   };
-
-  home-manager.users.sargo = { pkgs, lib, ... }:
+  home-manager.users.sargo = { lib, ... }:
     let
-      unstableTarball = fetchTarball
-        "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-
-      flake-compat = builtins.fetchTarball
-        "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-
-      hyprland = (import flake-compat {
-        src = fetchGit {
-          url = "https://github.com/hyprwm/Hyprland";
-          rev = "edad24c257c1264e2d0c05b04798b6c90515831e";
-        };
-      }).defaultNix;
 
       palette = {
         aqua = "#689d6a";
@@ -145,18 +132,6 @@
         };
       };
 
-      nixpkgs.overlays = [
-        (self: super: {
-          waybar = super.waybar.overrideAttrs (oldAttrs: {
-            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-          });
-        })
-      ];
-      nixpkgs.config = {
-        packageOverrides = pkgs: {
-          unstable = import unstableTarball { config = config.nixpkgs.config; };
-        };
-      };
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "22.11";
