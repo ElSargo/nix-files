@@ -119,7 +119,7 @@ in {
   imports = [
     ./hardware-configuration.nix
     (import ./sargo.nix { inherit pkgs hyprland; })
-    ./system-pakages.nix
+    ./system-packages.nix
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default
   ];

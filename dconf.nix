@@ -56,7 +56,7 @@
     };
 
     "org/gnome/shell" = {
-      enabled-exensions = [
+      enabled-extensions = [
         "apps-menu@gnome-shell-extensions.gcampax.github.com"
         # "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
         "places-menu@gnome-shell-extensions.gcampax.github.com"

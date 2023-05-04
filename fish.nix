@@ -7,7 +7,7 @@ in {
     enable = true;
     functions = {
       sshigh = {
-        description = "Initilise the ssh agent for github";
+        description = "Initialise the ssh agent for github";
         body = # fish
           ''
             eval $(ssh-agent -c)
