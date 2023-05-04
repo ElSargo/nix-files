@@ -12,6 +12,7 @@
       speedcrunch
       glava
       swayimg
+      typos
       nixfmt
       unstable.marksman
       inlyne
