@@ -38,11 +38,7 @@ in {
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.hostName = "SargoSummit"; # Define your hostname.
   networking.networkmanager.enable = true;
-  networking.nameservers = [
-    "192.168.1.1"
-    "1.1.1.1"
-    "8.8.8.8"
-  ];
+  networking.nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
 
   services.xserver = {
     enable = true;
@@ -94,13 +90,13 @@ in {
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
+  boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
   # Enable swap on luks
-  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".device = "/dev/disk/by-uuid/1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17";
-  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".keyFile = "/crypto_keyfile.bin";
+  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".device =
+    "/dev/disk/by-uuid/1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17";
+  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".keyFile =
+    "/crypto_keyfile.bin";
 
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   programs.mtr.enable = true;
