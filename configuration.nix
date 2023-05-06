@@ -35,9 +35,14 @@ in {
   users.defaultUserShell = pkgs.fish;
 
   # Enable networking
-  networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
-  networking.hostName = "SargoLaptop"; # Define your hostname.
+  networking.hostName = "SargoSummit"; # Define your hostname.
+  networking.networkmanager.enable = true;
+  networking.nameservers = [
+    "192.168.1.1"
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
 
   services.xserver = {
     enable = true;
@@ -83,14 +88,20 @@ in {
     [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
 
   # Bootloader.
+  # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
-  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".device =
-    "/dev/disk/by-uuid/4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064";
-  boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".keyFile =
-    "/crypto_keyfile.bin";
+
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".device = "/dev/disk/by-uuid/1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17";
+  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".keyFile = "/crypto_keyfile.bin";
+
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   programs.mtr.enable = true;
   programs.gnupg.agent = {
