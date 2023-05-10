@@ -1,54 +1,10 @@
-{ hyprland, pkgs, ... }: {
+{ hyprland, pkgs, nuscripts, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
       "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      sccache
-      gitui
-      pastel
-      speedcrunch
-      glava
-      swayimg
-      typos
-      nixfmt
-      unstable.marksman
-      inlyne
-      swaybg
-      feh
-      zathura
-      galculator
-      networkmanagerapplet
-      blueman
-      pcmanfm
-      blueberry
-      chafa
-      htop
-      wlogout
-      libreoffice
-      keepassxc
-      firefox
-      unstable.nil
-      delta
-      felix-fm
-      trash-cli
-      fish
-      kitty
-      xplr
-      fzf
-      ripgrep
-      wl-clipboard
-      wofi
-      xclip
-      wget
-      btop
-      exa
-      sd
-      zoxide
-      unstable.starship
-    ];
   };
   home-manager.users.sargo = { lib, ... }:
     let
@@ -86,22 +42,23 @@
 
     in {
 
-      imports = map (x: import x { inherit pkgs lib palette; }) [
-        ./starship.nix
+      imports = map (x: import x { inherit pkgs lib palette nuscripts; }) [
         ./alacritty.nix
+        ./dconf.nix
         ./fish.nix
+        ./helix.nix
+        ./hyprland.nix
         ./kitty.nix
+        ./nu.nix
+        ./lf.nix
+        ./starship.nix
         ./waybar.nix
         ./zellij.nix
-        ./hyprland.nix
-        ./lf.nix
-        ./helix.nix
-        ./dconf.nix
-        # ./neomutt.nix
+        ./zoxide.nix
       ] ++ [ hyprland.homeManagerModules.default ];
       programs = {
         home-manager.enable = true;
-
+        nix-index.enable = true;
         bat = {
           enable = true;
           config = { theme = "gruvbox-dark"; };
@@ -133,15 +90,11 @@
         };
       };
 
+      services.pueue.enable = true;
+
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "22.11";
-
-      services.gammastep = {
-        enable = true;
-        latitude = -36.8;
-        longitude = 174.8;
-      };
 
       # home.file.".cargo/config.toml".text = /*toml*/ ''
 
