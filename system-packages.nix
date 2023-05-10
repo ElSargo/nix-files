@@ -33,6 +33,7 @@ let
   ];
 
   utils = with pkgs; [
+    nix-prefetch-git
     light
     cachix
     speedcrunch
