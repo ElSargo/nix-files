@@ -84,11 +84,12 @@ let
 
     "" = {
       XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
+      XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
       XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
       XF86Calculator = "exec, galculator 	";
       XF86Mail = "exec, librewolf mail.google.com/mail/u/0/#inbox";
-      XF86KbdBrightnessUp = "exec,  ";
-      XF86KbdBrightnessDown = "exec, ";
+      XF86MonBrightnessUp = "exec, sudo light -A 5";
+      XF86MonBrightnessDown = "exec, sudo light -U 5";
 
     };
 
@@ -173,6 +174,7 @@ in {
         windowrule = float, ^(nm-connection-editor)$
         windowrule = float, ^(pavucontrol)$
         windowrule = float, ^(galculator)$
+        windowrule = noborder, ^(glava)$
 
         misc {
           enable_swallow = true
