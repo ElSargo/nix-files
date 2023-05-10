@@ -45,7 +45,6 @@ in {
       };
       git_metrics = {
         disabled = false;
-        style = "bg:${bg} fg:${palette.br_orange}";
         format =
           "[ +$added ](bg:${bg} fg:${palette.br_green})[-$deleted](bg:${bg} fg:${palette.br_red})";
       };
