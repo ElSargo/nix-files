@@ -2,7 +2,7 @@
 
   programs.alacritty = {
     package = pkgs.unstable.alacritty;
-    enable = true;
+    enable = false;
     settings = {
       font.normal.family = "JetbrainsMono";
       colors = {
