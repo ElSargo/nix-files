@@ -17,8 +17,10 @@ let
   unstableTarball = fetchTarball
     "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
 
-  flake-compat = fetchTarball
-    "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
+  flake-compat = fetchGit{
+    url = "https://github.com/edolstra/flake-compat";
+    rev = "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9";
+  };
 
   nuscripts = fetchGit {
     url = "https://github.com/nushell/nu_scripts/";
@@ -33,7 +35,7 @@ let
   hyprland = (import flake-compat {
     src = fetchGit {
       url = "https://github.com/hyprwm/Hyprland";
-      rev = "edad24c257c1264e2d0c05b04798b6c90515831e";
+      rev = "f2725a374a5921903bf918fdfd8111b537cbf18f";
     };
   }).defaultNix;
 
@@ -56,7 +58,7 @@ in {
   environment.systemPackages = pkgs.lib.flatten [
     (import ./system-packages.nix {inherit pkgs;})
     (import ./new-terminal-hyprland.nix {
-      inherit mozillaOverlay new-termainal-hyprland-src;
+      inherit mozillaOverlay; src =  new-termainal-hyprland-src;
     })
   ];
 
