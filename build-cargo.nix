@@ -1,4 +1,4 @@
-{ mozillaOverlay, new-termainal-hyprland-src, ... }:
+{ mozillaOverlay, src, ... }:
 let
   pkgs = import <nixpkgs> { overlays = [ mozillaOverlay ]; };
   rust = (pkgs.rustChannelOf { channel = "nightly"; }).rust.override {
@@ -11,7 +11,7 @@ let
 
 in rustPlatform.buildRustPackage {
   name = "new-termainl-hyprland";
-  src = builtins.toString new-termainal-hyprland-src;
+  src = builtins.toString src;
   cargoSha256 = "sha256-gdw2AOTkjzdZIu86FNuwDfVn2Cg1REfEhIWpiuXm8gQ=";
   target = "x86_64-unknown-linux-gnu";
 }
