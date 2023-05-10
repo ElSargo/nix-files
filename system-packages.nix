@@ -1,7 +1,14 @@
 { pkgs, ... }:
 let
 
-  audio = with pkgs; [ pulsemixer pavucontrol pulseaudio ];
+  audio = with pkgs; [
+    pulsemixer
+    pavucontrol
+    pulseaudio
+    unstable.ncspot
+    unstable.qpwgraph
+    unstable.jamesdsp
+  ];
 
   gnome = with pkgs; [
     unstable.gnomeExtensions.custom-accent-colors
@@ -11,9 +18,55 @@ let
     unstable.gnomeExtensions.blur-my-shell
     unstable.gnomeExtensions.uptime-indicator
     unstable.gnomeExtensions.user-themes
+    gnomeExtensions.gsconnect
     unstable.gnome.gnome-tweaks
     unstable.gnome.nautilus
     unstable.gnome.gnome-themes-extra
+    gnomeExtensions.drop-down-terminal
+  ];
+
+  networking = with pkgs; [
+    blueberry
+    blueman
+    networkmanagerapplet
+
+  ];
+
+  utils = with pkgs; [
+    light
+    cachix
+    speedcrunch
+    galculator
+    wlogout
+    keepassxc
+    wl-clipboard
+    wofi
+    syncthing
+    kitty
+  ];
+
+  coding = with pkgs; [ unstable.nil unstable.marksman sccache cmake ];
+
+  cli = with pkgs; [
+    unstable.helix
+    any-nix-shell
+    unzip
+    killall
+    skim
+    sd
+    exa
+    wget
+    ripgrep
+    fzf
+    xplr
+    trash-cli
+    delta
+    htop
+    chafa
+    nixfmt
+    typos
+    gitui
+    pastel
   ];
 
   gtk = with pkgs; [
@@ -36,29 +89,36 @@ let
     jetbrains-mono
   ];
 
-  desktop = with pkgs; [ waybar ];
+  desktop = with pkgs; [
+    waybar
+    thunderbird
+    glava
+    inlyne
+    swaybg
+    feh
+    libreoffice
+  ];
 
-  compat = with pkgs; [ pkg-config libxkbcommon gcc openssl ];
+  compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
 
-in {
+  browsers = with pkgs; [
+    unstable.firefox
+    unstable.librewolf
+    unstable.vivaldi
+  ];
 
-  environment.systemPackages = with pkgs;
-    [
-      cmake
-      unzip
-      killall
-      skim
-      cachix
-      syncthing
-      thunderbird
-      any-nix-shell
-      unstable.wayland
-      unstable.helix
-      unstable.firefox
-      unstable.ncspot
-      unstable.librewolf
-      unstable.qpwgraph
-      unstable.jamesdsp
-      unstable.chromium
-    ] ++ gnome ++ gtk ++ dexktop-portal ++ fonts ++ desktop ++ compat ++ audio;
-}
+in [
+  audio
+  gnome
+  networking
+  utils
+  coding
+  cli
+  gtk
+  dexktop-portal
+  fonts
+  desktop
+  compat
+  browsers
+]
+

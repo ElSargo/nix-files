@@ -20,6 +20,16 @@ let
   flake-compat = fetchTarball
     "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
+  nuscripts = fetchGit {
+    url = "https://github.com/nushell/nu_scripts/";
+    rev = "3645bae992faa14c820d76d5879ae102c8c4a9ee";
+  };
+
+  hosts = fetchGit {
+    url = "https://github.com/StevenBlack/hosts/";
+    rev = "8faee7e8423d8c74c28392ccc7ab8e3e24a0ab8c";
+  };
+
   hyprland = (import flake-compat {
     src = fetchGit {
       url = "https://github.com/hyprwm/Hyprland";
@@ -27,18 +37,41 @@ let
     };
   }).defaultNix;
 
+  new-termainal-hyprland-src = fetchGit {
+    url = "https://github.com/ElSargo/new-terminal-hyprland";
+    rev = "520e5d3c4d87bac6d46eae5041ec9c108a0d7727";
+  };
+  mozillaOverlay = import (builtins.fetchTarball
+    "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
+
 in {
+
+  imports = [
+    ./hardware-configuration.nix
+    (import ./sargo.nix { inherit pkgs hyprland  nuscripts ;})
+    (import "${home-manager}/nixos")
+    hyprland.nixosModules.default
+  ];
+
+  environment.systemPackages = pkgs.lib.flatten [
+    (import ./system-packages.nix {inherit pkgs;})
+    (import ./new-terminal-hyprland.nix {
+      inherit mozillaOverlay new-termainal-hyprland-src;
+    })
+  ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   # User setup
   #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  users.defaultUserShell = pkgs.fish;
+  users.defaultUserShell = pkgs.unstable.nushell;
 
   # Enable networking
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.hostName = "SargoSummit"; # Define your hostname.
   networking.networkmanager.enable = true;
   networking.nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
+  networking.extraHosts = builtins.readFile "${hosts}/hosts";
 
   services.xserver = {
     enable = true;
@@ -46,11 +79,11 @@ in {
       xterm.enable = false;
       gnome.enable = true;
     };
-
     displayManager.gdm.enable = true;
     displayManager = { defaultSession = "hyprland"; };
     libinput.enable = true;
-    excludePackages = [ pkgs.xterm pkgs.gnome.gnome-terminal ];
+    excludePackages =
+      [ pkgs.xterm pkgs.gnome.gnome-terminal pkgs.gnome-console ];
     layout = "us";
   };
 
@@ -122,14 +155,6 @@ in {
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = import unstableTarball { config = config.nixpkgs.config; };
   };
-
-  imports = [
-    ./hardware-configuration.nix
-    (import ./sargo.nix { inherit pkgs hyprland; })
-    ./system-packages.nix
-    (import "${home-manager}/nixos")
-    hyprland.nixosModules.default
-  ];
 
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Pacific/Auckland";
