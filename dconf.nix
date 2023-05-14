@@ -126,7 +126,7 @@
           "uptime-indicator@gniourfgniourf.gmail.com"
         ];
         favorite-apps = [
-          "vivaldi-stable.desktop"
+          "librewolf.desktop"
           "kitty.desktop"
           "armcord.desktop"
           "org.keepassxc.KeePassXC.desktop"

@@ -5,19 +5,10 @@ let
     rev = "6142193635ecdafb9a231bd7d1880b9b7b210d19";
   };
 
-  # unstableChannel = fetchGit {
-  #   url = "https://github.com/NixOS/nixpkgs/";
-  #   rev = "c1a1e9fa3d70c347da5bc6f09b56d4b8345215a2";
-  # };
-  # flake-compat = fetchGit {
-  #   url = "https://github.com/edolstra/flake-compat/";
-  #   rev = "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9";
-  # };
-
   unstableTarball = fetchTarball
     "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
 
-  flake-compat = fetchGit{
+  flake-compat = fetchGit {
     url = "https://github.com/edolstra/flake-compat";
     rev = "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9";
   };
@@ -39,27 +30,22 @@ let
     };
   }).defaultNix;
 
-  new-termainal-hyprland-src = fetchGit {
-    url = "https://github.com/ElSargo/new-terminal-hyprland";
-    rev = "520e5d3c4d87bac6d46eae5041ec9c108a0d7727";
-  };
-  mozillaOverlay = import (builtins.fetchTarball
-    "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz");
-
+  # cargo-builder = import ./build-cargo.nix;
 in {
 
   imports = [
     ./hardware-configuration.nix
-    (import ./sargo.nix { inherit pkgs hyprland  nuscripts ;})
+    (import ./sargo.nix { inherit pkgs hyprland nuscripts; })
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default
   ];
 
   environment.systemPackages = pkgs.lib.flatten [
-    (import ./system-packages.nix {inherit pkgs;})
-    (import ./new-terminal-hyprland.nix {
-      inherit mozillaOverlay; src =  new-termainal-hyprland-src;
-    })
+    (import ./system-packages.nix { inherit pkgs; })
+    # (cargo-builder {
+    #   inherit mozillaOverlay;
+    #   src = new-termainal-hyprland-src;
+    # })
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -73,7 +59,11 @@ in {
   networking.hostName = "SargoSummit"; # Define your hostname.
   networking.networkmanager.enable = true;
   networking.nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
-  networking.extraHosts = builtins.readFile "${hosts}/hosts";
+  networking.extraHosts = builtins.concatStringsSep "\n" [
+    (builtins.readFile "${hosts}/hosts")
+    "192.168.1.201 SargoLaptop"
+  ];
+  networking.defaultGateway = "192.168.1.200";
 
   services.xserver = {
     enable = true;
@@ -145,7 +135,7 @@ in {
   services.openssh.permitRootLogin = "no";
   hardware.bluetooth.enable = true;
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "unstable";
   nixpkgs.overlays = [
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {

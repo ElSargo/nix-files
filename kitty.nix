@@ -4,7 +4,7 @@
     package = pkgs.unstable.kitty;
     # theme  = "Gruvbox Dark";
     settings = {
-      font_family = "JetbrainsMono";
+      font_family = "Jetbrains Mono";
       update_check_interval = 0;
       hide_window_decorations = "yes";
       resize_in_steps = "yes";

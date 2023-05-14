@@ -3,6 +3,7 @@
     enable = true;
     package = pkgs.zellij;
     settings = {
+      default_layout = "compact";
       ui = { pane_frames = { rounded_corners = true; }; };
       keybinds = {
         unbind = "Ctrl o";

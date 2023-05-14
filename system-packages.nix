@@ -18,9 +18,8 @@ let
     unstable.gnomeExtensions.blur-my-shell
     unstable.gnomeExtensions.uptime-indicator
     unstable.gnomeExtensions.user-themes
-    gnomeExtensions.gsconnect
+    unstable.gnomeExtensions.gsconnect
     unstable.gnome.gnome-tweaks
-    unstable.gnome.nautilus
     unstable.gnome.gnome-themes-extra
     gnomeExtensions.drop-down-terminal
   ];
@@ -33,6 +32,7 @@ let
   ];
 
   utils = with pkgs; [
+    unstable.slides
     nix-prefetch-git
     light
     cachix
@@ -46,10 +46,17 @@ let
     kitty
   ];
 
-  coding = with pkgs; [ unstable.nil unstable.marksman sccache cmake ];
+  coding = with pkgs; [
+    unstable.nil
+    unstable.marksman
+    sccache
+    cmake
+    unstable.helix
+    unstable.lapce
+
+  ];
 
   cli = with pkgs; [
-    unstable.helix
     any-nix-shell
     unzip
     killall
@@ -68,6 +75,7 @@ let
     typos
     gitui
     pastel
+    cargo
   ];
 
   gtk = with pkgs; [
@@ -77,7 +85,7 @@ let
     catppuccin-gtk
   ];
 
-  dexktop-portal = with pkgs; [
+  desktop-portal = with pkgs; [
     xdg-desktop-portal
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
@@ -116,7 +124,7 @@ in [
   coding
   cli
   gtk
-  dexktop-portal
+  desktop-portal
   fonts
   desktop
   compat
