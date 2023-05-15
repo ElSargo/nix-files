@@ -5,6 +5,11 @@
     settings = {
       theme = "gruvbox";
       editor = {
+        statusline = {
+          left = ["mode" "spinner" "file-name" "version-control"];
+          center = ["workspace-diagnostics" ];
+          right = ["diagnostics" "selections" "position" "total-line-numbers" "position-percentage" "file-encoding"];
+        };
         line-number = "relative";
         scrolloff = 10;
         cursorline = true;

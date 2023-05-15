@@ -21,7 +21,6 @@ let
     unstable.gnomeExtensions.gsconnect
     unstable.gnome.gnome-tweaks
     unstable.gnome.gnome-themes-extra
-    gnomeExtensions.drop-down-terminal
   ];
 
   networking = with pkgs; [
@@ -111,7 +110,6 @@ let
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
 
   browsers = with pkgs; [
-    unstable.firefox
     unstable.librewolf
     unstable.vivaldi
   ];

@@ -1,7 +1,7 @@
 { pkgs, palette, ... }: {
   programs.zellij = {
     enable = true;
-    package = pkgs.zellij;
+    package = pkgs.unstable.zellij;
     settings = {
       default_layout = "compact";
       ui = { pane_frames = { rounded_corners = true; }; };

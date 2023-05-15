@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, browser, ... }:
 with builtins;
 let
   helper = f: node:
@@ -30,7 +30,7 @@ let
       "2" = "workspace, 2";
       "1" = "workspace, 1";
 
-      p = "exec, librewolf search.nixos.org/packages?channel=22.11&query=";
+      p = "exec, ${browser} search.nixos.org/packages?channel=22.11&query=";
       L = "exec, fish -c toggle_layout";
       O = "layoutmsg, addmaster";
       Space = "layoutmsg, swapwithmaster";
@@ -39,7 +39,7 @@ let
       J = "layoutmsg, cyclenext";
       B = "exec, blueberry";
       F = "fullscreen,0";
-      W = "exec, librewolf";
+      W = "exec, ${browser}";
       P = "pseudo, # dwindle";
       Q = "killactive, ";
       C = "exec, fish -c open_system";
@@ -87,7 +87,7 @@ let
       XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
       XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
       XF86Calculator = "exec, galculator 	";
-      XF86Mail = "exec, librewolf mail.google.com/mail/u/0/#inbox";
+      XF86Mail = "exec, thunderbird";
       XF86MonBrightnessUp = "exec, sudo light -A 5";
       XF86MonBrightnessDown = "exec, sudo light -U 5";
 

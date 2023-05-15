@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, browser, ... }: {
   dconf.settings = with builtins;
     with lib;
     let
@@ -10,12 +10,12 @@
         }
         {
           binding = "<Super>w";
-          command = "librewolf";
+          command = "${browser}";
           name = "open-browser";
         }
         {
           binding = "<Super><Shift>p";
-          command = "librewolf https://search.nixos.org/";
+          command = "${browser} https://search.nixos.org/";
           name = "package-search";
         }
 
@@ -36,35 +36,8 @@
         gtk-theme = "gruvbox-dark";
         icon-theme = "oomox-gruvbox-dark";
       };
-      # "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
-      #   "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-      #   "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-      #   "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
-      #   "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/" 
-      #   "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/"       ];
       "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings =
         mkreg binds;
-      # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" =
-      #   {
-      #     binding = "<Super>Return";
-      #     command = "kitty";
-      #     name = "open-terminal";
-      #   };
-      # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = 
-      # { 
-      #   binding = "<Super>Return"; 
-      #   command = "kitty"; 
-      #   name = "open-terminal"; 
-      # }; 
-      # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" =
-      #   {
-      #     binding = "<Super>w";
-      #     command = "librewolf";
-      #     name = "open-browser";
-      #   };
-
-      # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = { binding = "<Super>w"; command = "librewolf"; name = "open-browser"; }; 
-
       "org/gnome/desktop/wm/keybindings" = {
 
         switch-to-workspace-1 = [ "<Super>1" ];
@@ -126,7 +99,7 @@
           "uptime-indicator@gniourfgniourf.gmail.com"
         ];
         favorite-apps = [
-          "librewolf.desktop"
+          "${browser}.desktop"
           "kitty.desktop"
           "armcord.desktop"
           "org.keepassxc.KeePassXC.desktop"

@@ -8,7 +8,6 @@
   };
   home-manager.users.sargo = { lib, ... }:
     let
-
       palette = {
         aqua = "#689d6a";
         bg = "#282828"; # main background
@@ -40,22 +39,25 @@
         yellow = "#d79921";
       };
 
+      browser = "librewolf";
+
     in {
 
-      imports = map (x: import x { inherit pkgs lib palette nuscripts; }) [
-        ./alacritty.nix
-        ./dconf.nix
-        ./fish.nix
-        ./helix.nix
-        ./hyprland.nix
-        ./kitty.nix
-        ./nu.nix
-        ./lf.nix
-        ./starship.nix
-        ./waybar.nix
-        ./zellij.nix
-        ./zoxide.nix
-      ] ++ [ hyprland.homeManagerModules.default ];
+      imports =
+        map (x: import x { inherit pkgs lib palette nuscripts browser; }) [
+          ./alacritty.nix
+          ./dconf.nix
+          ./fish.nix
+          ./helix.nix
+          ./hyprland.nix
+          ./kitty.nix
+          ./nu.nix
+          ./lf.nix
+          ./starship.nix
+          ./waybar.nix
+          ./zellij.nix
+          ./zoxide.nix
+        ] ++ [ hyprland.homeManagerModules.default ];
       programs = {
         home-manager.enable = true;
         nix-index.enable = true;

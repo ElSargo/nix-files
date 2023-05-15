@@ -1,4 +1,4 @@
-{ pkgs, palette, ... }:
+{ pkgs, palette, browser, ... }:
 with builtins;
 let color = mapAttrs (k: v: builtins.substring 1 6 v) palette;
 in {
@@ -117,7 +117,7 @@ in {
       ''
         export EDITOR="hx"
         export VISUAL="hx"
-        export BROWSER="librewolf"
+        export BROWSER="${browser}"
       '';
     interactiveShellInit = # fish
       ''

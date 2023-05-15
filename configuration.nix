@@ -135,7 +135,7 @@ in {
   services.openssh.permitRootLogin = "no";
   hardware.bluetooth.enable = true;
 
-  system.stateVersion = "unstable";
+  system.stateVersion = "22.11";
   nixpkgs.overlays = [
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {
