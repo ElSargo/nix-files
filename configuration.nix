@@ -62,6 +62,7 @@ in {
   networking.extraHosts = builtins.concatStringsSep "\n" [
     (builtins.readFile "${hosts}/hosts")
     "192.168.1.201 SargoLaptop"
+    "192.168.1.202 SargoPi"
   ];
   networking.defaultGateway = "192.168.1.200";
 
@@ -166,5 +167,7 @@ in {
 
   system.autoUpgrade.enable = true;
   programs.hyprland.enable = true;
+
+  
 
 }
