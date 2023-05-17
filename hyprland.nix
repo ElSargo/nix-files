@@ -98,7 +98,7 @@ let
 in {
   wayland.windowManager.hyprland = {
     enable = true;
-    extraConfig = # zig
+    extraConfig = # nix
       ''
         bindm = SUPER, mouse:272, movewindow
         bindm = SUPER, mouse:273, resizewindow
@@ -116,7 +116,7 @@ in {
         input {
             kb_layout = us
             # kb_variant = colemak
-            kb_options=caps:escape
+            # kb_options=caps:escape
             repeat_rate=69
             repeat_delay=150
             follow_mouse = 1
