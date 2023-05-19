@@ -53,7 +53,9 @@ in {
       };
       rebuild = {
         body = # fish
-          "sudo cp /home/sargo/nix-files/*.nix /etc/nixos/ && sudo nixos-rebuild switch ";
+          ''
+            sudo nixos-rebuild switch --flake ~/nix-files/;
+          '';
         description = "Rebuild the system configuration";
       };
       toggle_eye_saver = {

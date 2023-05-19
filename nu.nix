@@ -70,8 +70,7 @@
             }
 
             export def rebuild [] {
-              sudo cp ~/nix-files/*.nix /etc/nixos/ ;
-              sudo nixos-rebuild switch;
+              sudo nixos-rebuild switch --flake ~/nix-files/;
             }
 
             export def x [name:string] {
