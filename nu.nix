@@ -135,6 +135,15 @@
     };
 
     shellAliases = {
+      # ssh-init = "source ${
+      #     pkgs.writeTextFile {
+      #       name = "ssh-helper.nu";
+      #       text = ''
+      #         ssh-agent -c | lines | first 2 | parse "setenv {name} {value};" | transpose -i -r -d | load-env'';
+      #     }
+      #   }";
+      # sshigh = "ssh-init ; ssh-add ~/.ssh/github";
+      unix = "culr -L http://git.io/unix";
       nix-develop = "nix develop -c nu";
       nix-shell = "nix-shell --command nu";
       ns = "nix-shell --command nu -p";
@@ -148,8 +157,6 @@
       c = "clear";
       r = "reset";
       za = "zellij a";
-      # zl =
-      #   " zellij a $(pwd | sd '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
       lt = "hyprctl dispatch layoutmsg orientationtop";
       lr = "hyprctl dispatch layoutmsg orientationright";
       lb = "hyprctl dispatch layoutmsg orientationbottom";
