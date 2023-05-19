@@ -9,7 +9,7 @@ in {
     settings = let
       main_format = builtins.concatStringsSep
         "[](fg:${bg} bg:${sep})[](fg:${sep} bg:${bg})" [
-          "[❆](bg:${bg} fg:${palette.br_blue})"
+          "[  ](bg:${bg} fg:${palette.br_blue})"
           "$time"
           "$directory"
           "$git_branch$git_metrics$git_status"
@@ -27,12 +27,12 @@ in {
         format =
           "[ $path](bg:${bg} fg:${palette.br_yellow})[$read_only](bg:${bg})";
         substitutions = {
-          "Documents" = "";
+          "Documents" = " ";
           "Downloads" = " ";
           "Music" = " ";
           "Pictures" = " ";
-          "nix-files" = "❆";
-          "~/projects" = "";
+          "nix-files" = " ";
+          "~/projects" = " ";
         };
       };
       git_branch = {
@@ -60,7 +60,7 @@ in {
         style = "bg:${bg} fg:${palette.br_purple}";
       };
       nix_shell = {
-        format = "[ ❆ $state shell](fg:${palette.br_blue} bg:${bg})";
+        format = "[   $state shell](fg:${palette.br_blue} bg:${bg})";
       };
       palettes = {
         gruvbox = {
