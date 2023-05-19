@@ -26,32 +26,26 @@ let
   hyprland = (import flake-compat {
     src = fetchGit {
       url = "https://github.com/hyprwm/Hyprland";
-      rev = "f2725a374a5921903bf918fdfd8111b537cbf18f";
+      rev = "79b8576df9630ea1c0fb1c6e399a424c3dcdcd47";
     };
   }).defaultNix;
 
-  # cargo-builder = import ./build-cargo.nix;
 in {
 
   imports = [
+    ./remaps.nix
     ./hardware-configuration.nix
     (import ./sargo.nix { inherit pkgs hyprland nuscripts; })
+    ./fonts.nix
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default
   ];
 
-  environment.systemPackages = pkgs.lib.flatten [
-    (import ./system-packages.nix { inherit pkgs; })
-    # (cargo-builder {
-    #   inherit mozillaOverlay;
-    #   src = new-termainal-hyprland-src;
-    # })
-  ];
+  environment.systemPackages =
+    pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  # User setup
-  #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   users.defaultUserShell = pkgs.unstable.nushell;
 
   # Enable networking
@@ -166,25 +160,5 @@ in {
 
   system.autoUpgrade.enable = true;
   programs.hyprland.enable = true;
-
-  environment.etc."dual-function-keys.yaml".text = ''
-    MAPPINGS:
-      - KEY: KEY_CAPSLOCK
-        TAP: KEY_ESC
-        HOLD: KEY_LEFTMETA
-      - KEY: KEY_TAB
-        TAP: KEY_TAB
-        HOLD: KEY_LEFTCTRL
-  '';
-  services.interception-tools = {
-    enable = true;
-    plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
-    udevmonConfig = ''
-      - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /etc/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
-        DEVICE:
-          EVENTS:
-            EV_KEY: [KEY_CAPSLOCK, KEY_ESC, KEY_TAB ]
-    '';
-  };
 
 }
