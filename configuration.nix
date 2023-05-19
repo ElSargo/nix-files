@@ -75,10 +75,6 @@
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
   # Enable swap on luks
-  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".device =
-    "/dev/disk/by-uuid/1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17";
-  boot.initrd.luks.devices."luks-1f0c2cca-43f6-47a6-8e5c-3b2cd4ecbf17".keyFile =
-    "/crypto_keyfile.bin";
 
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   programs.mtr.enable = true;
