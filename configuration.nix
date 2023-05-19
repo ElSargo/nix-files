@@ -1,37 +1,4 @@
-{ config, pkgs, ... }:
-let
-  home-manager = fetchGit {
-    url = "https://github.com/nix-community/home-manager";
-    rev = "6142193635ecdafb9a231bd7d1880b9b7b210d19";
-  };
-
-  unstableTarball = fetchTarball
-    "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-
-  flake-compat = fetchGit {
-    url = "https://github.com/edolstra/flake-compat";
-    rev = "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9";
-  };
-
-  nuscripts = fetchGit {
-    url = "https://github.com/nushell/nu_scripts/";
-    rev = "3645bae992faa14c820d76d5879ae102c8c4a9ee";
-  };
-
-  hosts = fetchGit {
-    url = "https://github.com/StevenBlack/hosts/";
-    rev = "8faee7e8423d8c74c28392ccc7ab8e3e24a0ab8c";
-  };
-
-  hyprland = (import flake-compat {
-    src = fetchGit {
-      url = "https://github.com/hyprwm/Hyprland";
-      rev = "79b8576df9630ea1c0fb1c6e399a424c3dcdcd47";
-    };
-  }).defaultNix;
-
-in {
-
+{ pkgs, hyprland, nuscripts, home-manager, hosts, ... }: {
   imports = [
     ./remaps.nix
     ./hardware-configuration.nix
@@ -50,7 +17,6 @@ in {
 
   # Enable networking
   networking.firewall.allowedTCPPorts = [ 22 ];
-  networking.hostName = "SargoSummit"; # Define your hostname.
   networking.networkmanager.enable = true;
   networking.nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
   networking.extraHosts = builtins.concatStringsSep "\n" [
@@ -58,7 +24,6 @@ in {
     "192.168.1.201 SargoLaptop"
     "192.168.1.202 SargoPi"
   ];
-  networking.defaultGateway = "192.168.1.200";
 
   services.xserver = {
     enable = true;
@@ -103,7 +68,6 @@ in {
     [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
 
   # Bootloader.
-  # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -137,10 +101,6 @@ in {
       });
     })
   ];
-
-  nixpkgs.config.packageOverrides = pkgs: {
-    unstable = import unstableTarball { config = config.nixpkgs.config; };
-  };
 
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Pacific/Auckland";
