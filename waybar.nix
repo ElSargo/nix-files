@@ -9,7 +9,6 @@
         modules-center = [ "clock" ];
         modules-right = [
           "custom/eye_saver"
-          "idle_inhibitor"
           "pulseaudio"
           "network"
           "cpu"
@@ -32,24 +31,17 @@
           on-click = "activate";
           sort-by-number = true;
         };
-        "idle_inhibitor" = {
-          format = "{icon}";
-          format-icons = {
-            activated = "";
-            deactivated = "";
-          };
-        };
         "clock" = {
           interval = 1;
           format = "{:%T}";
         };
         "cpu" = {
-          format = "{usage}% ";
+          format = " {usage}%";
           tooltip = false;
           on-click = "kitty -e htop";
         };
         "memory" = {
-          format = "{}% ";
+          format = " {}%";
           on-click = "kitty -e htop";
         };
         "battery" = {
@@ -58,19 +50,18 @@
             warning = 30;
             critical = 1;
           };
-          format = "{capacity}% {icon}";
+          format = "{capacity}% {icon} ";
           format-charging = "{capacity}% ";
           format-plugged = "{capacity}% ";
           format-alt = "{time} {icon}";
           format-icons = [ "" "" "" "" "" ];
         };
         "network" = {
-          format-wifi = "{essid} ({signalStrength}%) ";
-          format-ethernet = "{ipaddr}/{cidr} ";
+          format-wifi = "";
+          format-ethernet = "";
           tooltip-format = "{ifname} via {gwaddr} ";
           format-linked = "{ifname} (No IP) ";
           format-disconnected = "Disconnected ⚠";
-          format-alt = "{ifname} = {ipaddr}/{cidr}";
           on-click = "nm-connection-editor";
         };
         "pulseaudio" = {
@@ -108,7 +99,7 @@
 
         * {
             /* `otf-font-awesome` is required to be installed for icons */
-            font-family: JetBrainsMono;
+            font-family: JetBrainsMono Nerd Font;
             font-size: 15px;
             transition: all 0.1s cubic-bezier(.55,-0.68,.48,1.68);
         }
