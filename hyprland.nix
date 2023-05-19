@@ -95,28 +95,38 @@ let
 
   }));
 
+  mouse-keybinds = pkgs.lib.strings.concatMapStrings (s: ''
+    bindm = ${s} 
+  '') (map (concatStringsSep ", ") (smoosh {
+    SUPER = {
+      "mouse:272" = "movewindow";
+      "mouse:273" = "resizewindow";
+    };
+  }));
+
+  unbinds = concatStringsSep "\n"
+    (attrValues (mapAttrs (k: v: "unbind, ${k}, ${v}") { SUPER = "M"; }));
+
+  execs = concatStringsSep "\n" (map (s: "exec = ${s}") [
+    "fish -c 'pidof waybar || waybar & disown'"
+    "fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'"
+  ]);
+
 in {
   wayland.windowManager.hyprland = {
     enable = true;
-    extraConfig = # nix
+    extraConfig = # zig
       ''
-        bindm = SUPER, mouse:272, movewindow
-        bindm = SUPER, mouse:273, resizewindow
-
-
-        unbind, SUPER, M
-
+        ${execs}      
+        ${unbinds}
+        ${keybinds}
+        ${mouse-keybinds}
         monitor=HDMI-A-1,preferred,auto,1
         monitor=HDMI-A-1,transform,1
         workspace=HDMI-A-1,1
 
-
-        exec = fish -c 'pidof waybar || waybar & disown'
-        exec = fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'
         input {
             kb_layout = us
-            # kb_variant = colemak
-            # kb_options=caps:escape
             repeat_rate=69
             repeat_delay=150
             follow_mouse = 1
@@ -180,7 +190,6 @@ in {
           enable_swallow = true
           swallow_regex = ^(kitty)|(Alacritty)$
         }
-
-      '' + keybinds;
+      '';
   };
 }
