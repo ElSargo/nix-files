@@ -24,6 +24,8 @@
     "192.168.1.202 SargoPi"
   ];
 
+  services.power-profiles-daemon.enable = false;
+  services.tlp.enable = true;
   services.xserver = {
     enable = true;
     desktopManager = {
