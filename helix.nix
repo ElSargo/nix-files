@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{  helix-pkg, ... }: {
   programs.helix = {
     enable = true;
-    package = pkgs.unstable.helix;
+    package = helix-pkg;
     settings = {
       theme = "gruvbox";
       editor = {
@@ -42,7 +42,10 @@
             "goto_line_end"
             "normal_mode"
           ];
-          "esc" = [ "collapse_selection" "keep_primary_selection" ];
+          "A-9" = [
+            
+          ];
+          esc = [ "collapse_selection" "keep_primary_selection" ];
           space = { n = [ ":write-all" ":sh nixfmt *.nix" ":reload-all" ]; };
         };
       };
