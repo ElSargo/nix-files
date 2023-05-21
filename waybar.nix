@@ -87,7 +87,7 @@
     style = # css
       ''
         @define-color base      rgba(0.15625, 0.15625, 0.15625, 0.85);
-        @define-color base2     ${palette.br_bg};
+        @define-color base2     rgba(0.2352 , 0.2196 , 0.2118 ,  1.0);/*${palette.br_bg};*/
         @define-color text      ${palette.br_fg};
         @define-color green     ${palette.br_green};
         @define-color yellow    ${palette.br_yellow};
