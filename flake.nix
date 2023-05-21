@@ -3,7 +3,6 @@
     nixpkgs.url = "nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
-    helix-rolling.url = "github:the-mikedavis/helix";
     flake-utils.url = "github:numtide/flake-utils";
     nuscripts = {
       url = "github:nushell/nu_scripts";
@@ -20,7 +19,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, helix-rolling, flake-utils, ... }@attrs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, ... }@attrs:
     # flake-utils.lib.eachDefaultSystem (system:
     let
       system = "x86_64-linux";
@@ -30,11 +29,10 @@
           config.allowUnfree = true;
         };
       };
-      helix-pkg = helix-rolling.outputs.packages.${system}.default;
     in {
       # replace 'joes-desktop' with your hostname here.
       nixosConfigurations.SargoSummit = nixpkgs.lib.nixosSystem {
-        specialArgs = attrs // { inherit helix-pkg; };
+        specialArgs = attrs ;
         inherit system;
         modules = [
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
@@ -52,5 +50,4 @@
         ];
       };
     };
-    # );
 }

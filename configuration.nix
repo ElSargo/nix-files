@@ -1,7 +1,7 @@
-{ pkgs, hyprland, nuscripts, home-manager, hosts, helix-pkg, ... }: {
+{ pkgs, hyprland, nuscripts, home-manager, hosts, ... }: {
   imports = [
     ./remaps.nix
-    (import ./sargo.nix { inherit pkgs hyprland nuscripts helix-pkg; })
+    (import ./sargo.nix { inherit pkgs hyprland nuscripts ; })
     ./fonts.nix
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default

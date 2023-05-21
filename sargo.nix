@@ -1,4 +1,4 @@
-{ hyprland, pkgs, nuscripts,helix-pkg, ... }: {
+{ hyprland, pkgs, nuscripts, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -43,8 +43,8 @@
 
     in {
 
-      imports =
-        map (x: import x { inherit pkgs lib palette nuscripts browser helix-pkg; }) [
+      imports = map (x:
+        import x { inherit pkgs lib palette nuscripts browser ; }) [
           ./alacritty.nix
           ./dconf.nix
           ./fish.nix
