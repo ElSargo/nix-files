@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, palette, ... }: {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar;
@@ -87,14 +87,11 @@
     style = # css
       ''
         @define-color base      rgba(0.15625, 0.15625, 0.15625, 0.85);
-        @define-color base2     rgba(0.2353 , 0.2196 , 0.2118 , 1.0 );
-        @define-color text      #ebdbb2;
-        @define-color blue      #83a598;
-        @define-color green     #b8bb26;
-        @define-color yellow    #fabd2f;
-        @define-color red       #fb4934;
-        @define-color orange    #fe8019;
-        @define-color rosewater #d3869b;
+        @define-color base2     ${palette.br_bg};
+        @define-color text      ${palette.br_fg};
+        @define-color green     ${palette.br_green};
+        @define-color yellow    ${palette.br_yellow};
+        @define-color red       ${palette.br_red};
 
 
         * {

@@ -1,6 +1,7 @@
-{ pkgs, browser, ... }:
+{ pkgs, browser, palette,... }:
 with builtins;
 let
+  colors = builtins.mapAttrs (k: v: builtins.substring 1 6 v) palette;
   helper = f: node:
     if isAttrs node then
       concatLists (attrValues
@@ -139,8 +140,8 @@ in {
             gaps_in = 5
             gaps_out = 7
             border_size = 2
-            col.active_border = rgb(fe8019) 
-            col.inactive_border = rgb(282828)
+            col.active_border = rgb(${colors.br_orange}) 
+            col.inactive_border = rgb(${colors.bg})
             layout = master
         }
         decoration {
