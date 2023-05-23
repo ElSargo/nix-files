@@ -1,4 +1,4 @@
-{ pkgs, browser, palette,... }:
+{ pkgs, browser, palette, ... }:
 with builtins;
 let
   colors = builtins.mapAttrs (k: v: builtins.substring 1 6 v) palette;
