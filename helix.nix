@@ -1,4 +1,4 @@
-{pkgs,  ... }: {
+{ pkgs, ... }: {
   programs.helix = {
     enable = true;
     package = pkgs.unstable.helix;
@@ -35,7 +35,8 @@
         };
       };
       keys = {
-        normal = let quote-file = pkgs.writeText "quote" "\""; in {
+        normal = let quote-file = pkgs.writeText "quote" ''"'';
+        in {
           X = [
             "goto_first_nonwhitespace"
             "select_mode"
