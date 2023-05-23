@@ -4,6 +4,7 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
+    unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
     nuscripts = {
       url = "github:nushell/nu_scripts";
       flake = false;
@@ -32,7 +33,7 @@
     in {
       # replace 'joes-desktop' with your hostname here.
       nixosConfigurations.SargoSummit = nixpkgs.lib.nixosSystem {
-        specialArgs = attrs ;
+        specialArgs = attrs // { inherit system; };
         inherit system;
         modules = [
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })

@@ -1,14 +1,17 @@
-{ pkgs, hyprland, nuscripts, home-manager, hosts, ... }: {
+{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks
+, config, ... }: {
   imports = [
     ./remaps.nix
-    (import ./sargo.nix { inherit pkgs hyprland nuscripts ; })
+    (import ./sargo.nix { inherit pkgs hyprland nuscripts config; })
     ./fonts.nix
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default
   ];
 
-  environment.systemPackages =
-    pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
+  environment.systemPackages = pkgs.lib.flatten [
+    (import ./system-packages.nix { inherit pkgs; })
+    unix-chad-bookmarks.defaultPackage.${system}
+  ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -23,7 +26,7 @@
     "192.168.1.201 SargoLaptop"
     "192.168.1.202 SargoPi"
   ];
-
+  security.polkit.enable = true;
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
   services.xserver = {

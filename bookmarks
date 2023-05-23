@@ -1,0 +1,42 @@
+Nix
+configuration.nix      | kitty --directory ~/nix-files -e hx configuration.nix
+sargo.nix              | kitty --directory ~/nix-files -e hx sargo.nix
+hyprland               | kitty --directory ~/nix-files -e hx sargo.nix:110
+starship               | kitty --directory ~/nix-files -e hx sargo.nix:509
+
+Rust
+relay crunch           | kitty --directory ~/projects/relay_crunch -e hx src/main.rs
+pvz sim                | kitty --directory ~/projects/pvz_sim hx src/main.rs
+riskydice              | kitty --directory ~/projects/riskydice hx src/main.rs
+mcsc                   | kitty zellij_open mcsc  
+glsl lsp               | kitty --directory ~/projects/glsl_lsp hx src/main.rs
+hex tiles              | kitty --directory ~/projects/hex_tiles hx src/lib.rs
+tripples               | kitty --directory ~/projects/tripples hx src/main.rs
+oopbad                 | kitty --directory ~/projects/oopbad hx   src/main.rs
+budahbrot              | kitty --directory ~/projects/budahbrot hx src/main.rs
+mandelbrot             | kitty --directory ~/projects/mandelbrot hx src/main.rs
+unix bmks              | kitty zellij_open unixchadbookmarks
+rolling-set            | kitty zellij_open rolling-set
+wikirace               | kitty zellij_open wikirace
+
+Websites 
+lib.rs                 | $BROWSER https://lib.rs
+helix github           | $BROWSER https://github.com/helix-editor/helix
+openbsd raspbery pi    | $BROWSER https://dev.to/spacial/installing-openbsd-7-on-raspberry-pi-3-1f98
+mcsc github            | $BROWSER https://github.com/ElSargo/mcsc
+instagram              | $BROWSER https://instagram.com
+gmail                  | $BROWSER https://www.gmail.com
+youtube                | $BROWSER https://youtube.com
+discord                | $BROWSER https://discord.app
+odysee                 | $BROWSER https://odysee.com
+grammarnet             | $BROWSER https://www.grammar.net.nz/login/
+mun                    | $BROWSER https://mun-lang.org/
+system76               | $BROWSER https://system76.com/laptops/lemp11/configure
+regex cheat            | $BROWSER https://www.rexegg.com/regex-quickstart.html
+zellij github          | $BROWSER https://github.com/zellij-org/zellij
+xplr hacks             | $BROWSER https://xplr.dev/en/awesome-hacks
+graphine install       | $BROWSER https://grapheneos.org/install/cli
+dynadot                | $BROWSER https://www.dynadot.com/account/
+
+bookmarks              | kitty --single-instance --directory ~/.config -e hx bookmarks 
+
