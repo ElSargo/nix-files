@@ -1,4 +1,4 @@
-{ pkgs, nuscripts, ... }: {
+{ pkgs, browser, nuscripts, ... }: {
   programs.nushell = {
     package = pkgs.unstable.nushell;
     enable = true;
@@ -130,6 +130,7 @@
           let-env FOO = 'BAR'
           let-env DIRENV_LOG_FORMAT = ""
           let-env EDITOR = "hx"
+          let-env BROWSER = "${browser}"
         '';
     };
 
