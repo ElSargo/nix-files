@@ -30,10 +30,11 @@
           config.allowUnfree = true;
         };
       };
+      args = attrs // { inherit system; };
     in {
       # replace 'joes-desktop' with your hostname here.
       nixosConfigurations.SargoSummit = nixpkgs.lib.nixosSystem {
-        specialArgs = attrs // { inherit system; };
+        specialArgs = args;
         inherit system;
         modules = [
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
@@ -42,7 +43,7 @@
         ];
       };
       nixosConfigurations.SargoLaptop = nixpkgs.lib.nixosSystem {
-        specialArgs = attrs;
+        specialArgs = args;
         inherit system;
         modules = [
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
