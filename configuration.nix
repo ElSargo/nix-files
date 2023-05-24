@@ -26,6 +26,7 @@
     "192.168.1.201 SargoLaptop"
     "192.168.1.202 SargoPi"
   ];
+  services.flatpak.enable = true;
   security.polkit.enable = true;
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
