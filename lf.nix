@@ -1,5 +1,4 @@
 { pkgs, ... }: {
-
   programs.lf = {
     enable = true;
     settings = {
@@ -43,4 +42,6 @@
       T = "push $touch<space>";
     };
   };
+
+  
 }
