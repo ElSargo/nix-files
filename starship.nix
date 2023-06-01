@@ -9,7 +9,7 @@ in {
     settings = let
       main_format = builtins.concatStringsSep
         "[](fg:${bg} bg:${sep})[](fg:${sep} bg:${bg})" [
-          "[  ](bg:${bg} fg:${palette.br_blue})"
+          "[](fg:${bg})[  ](bg:${bg} fg:${palette.br_blue})"
           "$time"
           "$directory"
           "$git_branch$git_metrics$git_status"

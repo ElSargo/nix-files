@@ -6,11 +6,13 @@ let
     pavucontrol
     pulseaudio
     unstable.ncspot
+    unstable.psst
     unstable.qpwgraph
     unstable.jamesdsp
   ];
 
   gnome = with pkgs; [
+    unstable.gnomeExtensions.removable-drive-menu
     unstable.gnomeExtensions.custom-accent-colors
     unstable.gnomeExtensions.fuzzy-app-search
     unstable.gnomeExtensions.caffeine

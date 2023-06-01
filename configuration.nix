@@ -76,7 +76,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
+  boot.loader.grub.configurationLimit = 10;
+  boot.cleanTmpDir = true;
   # Setup keyfile
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
@@ -94,7 +95,6 @@
   services.openssh.permitRootLogin = "no";
   hardware.bluetooth.enable = true;
 
-  system.stateVersion = "22.11";
   nixpkgs.overlays = [
     (self: super: {
       waybar = super.waybar.overrideAttrs (oldAttrs: {
