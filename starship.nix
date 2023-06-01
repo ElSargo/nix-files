@@ -9,7 +9,8 @@ in {
     settings = let
       main_format = builtins.concatStringsSep
         "[](fg:${bg} bg:${sep})[](fg:${sep} bg:${bg})" [
-          "[](fg:${bg})[  ](bg:${bg} fg:${palette.br_blue})"
+          "[](fg:${bg})[ ](bg:${bg} fg:${palette.br_blue})"
+          "$shell$shlvl"
           "$time"
           "$directory"
           "$git_branch$git_metrics$git_status"
@@ -34,6 +35,26 @@ in {
           "nix-files" = " ";
           "~/projects" = " ";
         };
+      };
+      shell = {
+        disabled = false;
+        bash_indicator = " ";
+        fish_indicator = "󰈺 ";
+        zsh_indicator = "󰫫 ";
+        powershell_indicator = "󰨊 ";
+        nu_indicator = "󰟆 ";
+        unknown_indicator = "?";
+        ion_indicator = " ";
+        elvish_indicator = "λ";
+        style = "bg:${bg} fg:${palette.br_orange}";
+        format = "[ $indicator]($style)";
+      };
+      shlvl = {
+        disabled = false;
+        symbol = " ";
+        style = "bg:${bg}";
+        format = "[$symbol$shlvl]($style)";
+
       };
       git_branch = {
         style = "bg:${bg} fg:${palette.br_blue}";

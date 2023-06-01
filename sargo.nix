@@ -90,13 +90,14 @@
           userEmail = "sargo@sargo.cc";
           delta.enable = true;
         };
+        bash.enable = true;
       };
 
       services.pueue.enable = true;
 
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
-      home.stateVersion = "22.11";
+      home.stateVersion = "23.05";
 
       # home.file.".cargo/config.toml".text = /*toml*/ ''
 
@@ -251,13 +252,15 @@
     *.lua           
     *.java          
     *.sh            
-    *.fish          
-    *.bash          
-    *.zsh           
+    *.fish          󰈺
+    *.nu            󰟆
+    *.bash          
+    *.ion           
+    *.zsh           󰫫
     *.ksh           
     *.csh           
     *.awk           
-    *.ps1           
+    *.ps1           󰨊
     *.ml            λ
     *.mli           λ
     *.diff          

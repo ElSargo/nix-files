@@ -150,7 +150,7 @@
       nd = "nix develop --command nu";
       xc = "wl-copy";
       clip = "wl-copy";
-      lf = "fish -c lfcd";
+      lf = "cd (fish -c ' lfcd ; pwd ')";
       i = "nix-env -iA nixos.";
       q = "exit";
       ":q" = "exit";
