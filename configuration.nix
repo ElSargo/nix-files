@@ -43,9 +43,9 @@
     layout = "us";
   };
 
-  qt5.enable = true;
-  qt5.platformTheme = "gtk2";
-  qt5.style = "gtk2";
+  qt.enable = true;
+  qt.platformTheme = "gtk2";
+  qt.style = "gtk2";
   xdg.portal.wlr.enable = true;
 
   services.printing.enable = true;
@@ -77,7 +77,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.grub.configurationLimit = 10;
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot= true;
   # Setup keyfile
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
@@ -92,7 +92,7 @@
   services.dbus.enable = true;
   services.blueman.enable = true;
   services.openssh.enable = true;
-  services.openssh.permitRootLogin = "no";
+  services.openssh.settings.PermitRootLogin = "no";
   hardware.bluetooth.enable = true;
 
   nixpkgs.overlays = [
@@ -121,5 +121,5 @@
 
   system.autoUpgrade.enable = true;
   programs.hyprland.enable = true;
-
+  system.stateVersion = "23.05";
 }
