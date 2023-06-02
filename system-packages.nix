@@ -58,6 +58,7 @@ let
   ];
 
   cli = with pkgs; [
+    wezterm
     any-nix-shell
     unzip
     killall
