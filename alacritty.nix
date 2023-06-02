@@ -2,9 +2,9 @@
 
   programs.alacritty = {
     package = pkgs.unstable.alacritty;
-    enable = false;
+    enable = true;
     settings = {
-      font.normal.family = "JetbrainsMono";
+      font.normal.family = "JetbrainsMono Nerd Font";
       colors = {
         primary = {
           background = palette.bg; # base
