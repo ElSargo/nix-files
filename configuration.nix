@@ -27,7 +27,6 @@
     "192.168.1.201 SargoLaptop"
     "192.168.1.202 SargoPi"
   ];
-  virtualisation.waydroid.enable = true;
   services.flatpak.enable = true;
   security.polkit.enable = true;
   services.power-profiles-daemon.enable = false;
@@ -45,8 +44,8 @@
     layout = "us";
   };
 
-  environment.gnome.excludePackages = (with pkgs; [ gnome-photos ])
-    ++ (with pkgs.gnome; [
+  environment.gnome.excludePackages = 
+    with pkgs.gnome; [
       cheese # webcam tool
       gnome-music
       gnome-terminal
@@ -56,9 +55,7 @@
       iagno # go game
       hitori # sudoku game
       atomix # puzzle game
-    ]);
-  programs.dconf.enable = true;
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    ];
   qt.enable = true;
   qt.platformTheme = "gtk2";
   qt.style = "gtk2";
