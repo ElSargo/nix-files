@@ -21,35 +21,32 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, ... }@attrs:
-    # flake-utils.lib.eachDefaultSystem (system:
+
     let
       system = "x86_64-linux";
-      overlay-unstable = final: prev: {
+      unstable-overlay = final: prev: {
         unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
         };
       };
-      args = attrs // { inherit system; };
+      unstable-module =
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ unstable-overlay ]; });
+      specialArgs = attrs // { inherit system; };
     in {
-      # replace 'joes-desktop' with your hostname here.
-      nixosConfigurations.SargoSummit = nixpkgs.lib.nixosSystem {
-        specialArgs = args;
-        inherit system;
-        modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
-          ./configuration.nix
-          ./summit.nix
-        ];
-      };
-      nixosConfigurations.SargoLaptop = nixpkgs.lib.nixosSystem {
-        specialArgs = args;
-        inherit system;
-        modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
-          ./configuration.nix
-          ./laptop.nix
-        ];
+
+      nixosConfigurations = {
+
+        SargoSummit = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = [ unstable-module ./configuration.nix ./summit.nix ];
+        };
+
+        SargoLaptop = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = [ unstable-module ./configuration.nix ./laptop.nix ];
+        };
+
       };
     };
 }
