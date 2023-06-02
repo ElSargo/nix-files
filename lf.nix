@@ -34,6 +34,7 @@
       trash = "%trash-put $fx";
     };
     keybindings = {
+      x = ''nu -c "x $f"'';
       Z = "push :z<space>";
       "<enter>" = "push $hx<space>$f<enter>";
       O = "push $fish<space>-c<space>fhx<enter>";
@@ -43,5 +44,4 @@
     };
   };
 
-  
 }
