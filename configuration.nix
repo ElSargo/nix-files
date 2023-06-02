@@ -11,6 +11,7 @@
   environment.systemPackages = pkgs.lib.flatten [
     (import ./system-packages.nix { inherit pkgs; })
     unix-chad-bookmarks.defaultPackage.${system}
+    pkgs.gnome.adwaita-icon-theme
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -43,6 +44,20 @@
     layout = "us";
   };
 
+  environment.gnome.excludePackages = (with pkgs; [ gnome-photos ])
+    ++ (with pkgs.gnome; [
+      cheese # webcam tool
+      gnome-music
+      gnome-terminal
+      gedit # text editor
+      epiphany # web browser
+      tali # poker game
+      iagno # go game
+      hitori # sudoku game
+      atomix # puzzle game
+    ]);
+  programs.dconf.enable = true;
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   qt.enable = true;
   qt.platformTheme = "gtk2";
   qt.style = "gtk2";
