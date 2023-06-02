@@ -92,7 +92,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.grub.configurationLimit = 10;
-  boot.tmp.cleanOnBoot= true;
+  boot.tmp.cleanOnBoot = true;
   # Setup keyfile
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
