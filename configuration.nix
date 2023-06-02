@@ -29,8 +29,10 @@
   ];
   services.flatpak.enable = true;
   security.polkit.enable = true;
-  services.power-profiles-daemon.enable = false;
-  services.tlp.enable = true;
+  services.upower.enable = true;
+  services.cpupower-gui.enable = true;
+  # services.power-profiles-daemon.enable = false;
+  # services.tlp.enable = true;
   services.xserver = {
     enable = true;
     desktopManager = {
@@ -102,7 +104,10 @@
     enable = true;
     enableSSHSupport = true;
   };
-  services.dbus.enable = true;
+  services.dbus = {
+    enable = true;
+    implementation = "broker";
+  };
   services.blueman.enable = true;
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "no";
@@ -132,7 +137,6 @@
     };
   };
 
-  system.autoUpgrade.enable = true;
   programs.hyprland.enable = true;
   system.stateVersion = "23.05";
 }

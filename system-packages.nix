@@ -14,7 +14,7 @@ let
   gnome = with pkgs; [
     unstable.gnomeExtensions.removable-drive-menu
     unstable.gnomeExtensions.custom-accent-colors
-    unstable.gnomeExtensions.fuzzy-app-search
+    # unstable.gnomeExtensions.fuzzy-app-search
     unstable.gnomeExtensions.caffeine
     unstable.gnomeExtensions.dash-to-dock
     unstable.gnomeExtensions.blur-my-shell
@@ -110,6 +110,10 @@ let
     libreoffice
   ];
 
+  system = with pkgs; [
+    cpupower-gui
+  ];
+
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
 
   browsers = with pkgs; [ unstable.librewolf unstable.vivaldi ];
@@ -127,5 +131,6 @@ in [
   desktop
   compat
   browsers
+  system
 ]
 
