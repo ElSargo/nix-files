@@ -143,7 +143,7 @@
       #     }
       #   }";
       # sshigh = "ssh-init ; ssh-add ~/.ssh/github";
-      unix = "culr -L http://git.io/unix";
+      unix = "curl -L http://git.io/unix";
       nix-develop = "nix develop -c nu";
       nix-shell = "nix-shell --command nu";
       ns = "nix-shell --command nu -p";
