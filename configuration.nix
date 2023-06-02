@@ -27,6 +27,7 @@
     "192.168.1.201 SargoLaptop"
     "192.168.1.202 SargoPi"
   ];
+  virtualisation.waydroid.enable = true;
   services.flatpak.enable = true;
   security.polkit.enable = true;
   services.power-profiles-daemon.enable = false;
