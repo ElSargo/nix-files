@@ -1,5 +1,5 @@
-{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks,
- config, ... }: {
+{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks
+, config, ... }: {
   imports = [
     ./remaps.nix
     (import ./sargo.nix { inherit pkgs hyprland nuscripts config; })
@@ -46,18 +46,17 @@
     layout = "us";
   };
 
-  environment.gnome.excludePackages = 
-    with pkgs.gnome; [
-      cheese # webcam tool
-      gnome-music
-      gnome-terminal
-      gedit # text editor
-      epiphany # web browser
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-    ];
+  environment.gnome.excludePackages = with pkgs.gnome; [
+    cheese # webcam tool
+    gnome-music
+    gnome-terminal
+    gedit # text editor
+    epiphany # web browser
+    tali # poker game
+    iagno # go game
+    hitori # sudoku game
+    atomix # puzzle game
+  ];
   qt.enable = true;
   qt.platformTheme = "gtk2";
   qt.style = "gtk2";

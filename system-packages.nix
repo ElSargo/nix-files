@@ -111,9 +111,7 @@ let
     libreoffice
   ];
 
-  system = with pkgs; [
-    cpupower-gui
-  ];
+  system = with pkgs; [ cpupower-gui ];
 
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
 

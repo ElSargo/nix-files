@@ -21,7 +21,8 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, ... }@attrs:
+  outputs =
+    { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, ... }@attrs:
 
     let
       system = "x86_64-linux";
@@ -31,8 +32,9 @@
           config.allowUnfree = true;
         };
       };
-      unstable-module =
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ unstable-overlay hyprpicker.overlays.default]; });
+      unstable-module = ({ config, pkgs, ... }: {
+        nixpkgs.overlays = [ unstable-overlay hyprpicker.overlays.default ];
+      });
       specialArgs = attrs // { inherit system; };
     in {
 

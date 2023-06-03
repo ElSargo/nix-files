@@ -118,81 +118,81 @@ in {
     enable = true;
     extraConfig = # zig
       ''
-      exec-once = "nm-applet";
-      exec-once = "waybar";
-      exec-once = "swaybg -i ~/nix-files/gruv-material-texture.png ";
-        ${unbinds}
-        ${keybinds}
-        ${mouse-keybinds}
-        monitor=HDMI-A-1,preferred,auto,1
-        monitor=HDMI-A-1,transform,1
-        workspace=HDMI-A-1,1
+        exec-once = "nm-applet";
+        exec-once = "waybar";
+        exec-once = "swaybg -i ~/nix-files/gruv-material-texture.png ";
+          ${unbinds}
+          ${keybinds}
+          ${mouse-keybinds}
+          monitor=HDMI-A-1,preferred,auto,1
+          monitor=HDMI-A-1,transform,1
+          workspace=HDMI-A-1,1
 
-        input {
-            kb_layout = us
-            repeat_rate=69
-            repeat_delay=150
-            follow_mouse = 1
-            touchpad {
-                natural_scroll = no
-            }
-            sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-        }
-        general {
-            gaps_in = 5
-            gaps_out = 7
-            border_size = 2
-            col.active_border = rgb(${colors.br_orange}) 
-            col.inactive_border = rgb(${colors.bg})
-            layout = master
-        }
-        decoration {
-            screen_shader = ~/.config/hypr/shader.glsl
-            rounding = 10
-            blur = yes
-            blur_size = 4
-            blur_passes = 1
-            blur_new_optimizations = on
+          input {
+              kb_layout = us
+              repeat_rate=69
+              repeat_delay=150
+              follow_mouse = 1
+              touchpad {
+                  natural_scroll = no
+              }
+              sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+          }
+          general {
+              gaps_in = 5
+              gaps_out = 7
+              border_size = 2
+              col.active_border = rgb(${colors.br_orange}) 
+              col.inactive_border = rgb(${colors.bg})
+              layout = master
+          }
+          decoration {
+              screen_shader = ~/.config/hypr/shader.glsl
+              rounding = 10
+              blur = yes
+              blur_size = 4
+              blur_passes = 1
+              blur_new_optimizations = on
 
-            drop_shadow = true
-            shadow_range = 20
-            shadow_render_power = 3
-            col.shadow = rgba(1a1a1aee)
-            shadow_offset = [-10, -10]
-        }
-        animations {
-            enabled = yes
-            animation = windows, 1, 2, default, slide
-            animation = windowsOut, 1, 2, default, slide
-            animation = border, 1, 10, default
-            animation = fade, 1, 7, default
-            animation = workspaces, 1, 2, default
-        }
-        dwindle {
-            pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-            preserve_split = yes # you probably want this
-        }
-        master {
-            new_is_master = true
-            new_on_top = true
-        }
-        gestures {
-            # See https://wiki.hyprland.org/Configuring/Variables/ for more
-            workspace_swipe = on
-            workspace_swipe_forever = true;
-            workspace_swipe_cancel_ratio = 0.25;
-        }
-        windowrule = float, ^(blueberry.py)$
-        windowrulev2 = float,title:^(Graze.)$
-        windowrule = float, ^(nm-connection-editor)$
-        windowrule = float, ^(pavucontrol)$
-        windowrule = float, ^(galculator)$
-        windowrule = noborder, ^(glava)$
+              drop_shadow = true
+              shadow_range = 20
+              shadow_render_power = 3
+              col.shadow = rgba(1a1a1aee)
+              shadow_offset = [-10, -10]
+          }
+          animations {
+              enabled = yes
+              animation = windows, 1, 2, default, slide
+              animation = windowsOut, 1, 2, default, slide
+              animation = border, 1, 10, default
+              animation = fade, 1, 7, default
+              animation = workspaces, 1, 2, default
+          }
+          dwindle {
+              pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+              preserve_split = yes # you probably want this
+          }
+          master {
+              new_is_master = true
+              new_on_top = true
+          }
+          gestures {
+              # See https://wiki.hyprland.org/Configuring/Variables/ for more
+              workspace_swipe = on
+              workspace_swipe_forever = true;
+              workspace_swipe_cancel_ratio = 0.25;
+          }
+          windowrule = float, ^(blueberry.py)$
+          windowrulev2 = float,title:^(Graze.)$
+          windowrule = float, ^(nm-connection-editor)$
+          windowrule = float, ^(pavucontrol)$
+          windowrule = float, ^(galculator)$
+          windowrule = noborder, ^(glava)$
 
-        misc {
-          enable_swallow = true
-          swallow_regex = ^(kitty)|(Alacritty)$
-        }
+          misc {
+            enable_swallow = true
+            swallow_regex = ^(kitty)|(Alacritty)$
+          }
       '';
   };
 }

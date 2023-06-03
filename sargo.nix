@@ -50,6 +50,7 @@
           ./fish.nix
           ./helix.nix
           ./hyprland.nix
+          ./foot.nix
           ./kitty.nix
           ./nu.nix
           ./lf.nix
