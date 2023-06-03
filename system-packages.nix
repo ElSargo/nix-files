@@ -101,6 +101,7 @@ let
   ];
 
   desktop = with pkgs; [
+    hyprpicker
     waybar
     thunderbird
     glava
