@@ -108,17 +108,19 @@ let
   unbinds = concatStringsSep "\n"
     (attrValues (mapAttrs (k: v: "unbind, ${k}, ${v}") { SUPER = "M"; }));
 
-  execs = concatStringsSep "\n" (map (s: "exec = ${s}") [
-    "fish -c 'pidof waybar || waybar & disown'"
-    "fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'"
-  ]);
+  # execs = concatStringsSep "\n" (map (s: "exec = ${s}") [
+  #   "fish -c 'pidof waybar || waybar & disown'"
+  #   "fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'"
+  # ]);
 
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = # zig
       ''
-        ${execs}      
+      exec-once = "nm-applet";
+      exec-once = "waybar";
+      exec-once = "swaybg -i ~/nix-files/gruv-material-texture.png ";
         ${unbinds}
         ${keybinds}
         ${mouse-keybinds}
