@@ -5,6 +5,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
+    hyprpicker.url = "github:hyprwm/hyprpicker";
     nuscripts = {
       url = "github:nushell/nu_scripts";
       flake = false;
@@ -20,7 +21,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, ... }@attrs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, ... }@attrs:
 
     let
       system = "x86_64-linux";
@@ -31,7 +32,7 @@
         };
       };
       unstable-module =
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ unstable-overlay ]; });
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ unstable-overlay hyprpicker.overlays.default]; });
       specialArgs = attrs // { inherit system; };
     in {
 
