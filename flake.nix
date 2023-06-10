@@ -5,6 +5,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
+    new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
     hyprpicker.url = "github:hyprwm/hyprpicker";
     nuscripts = {
       url = "github:nushell/nu_scripts";

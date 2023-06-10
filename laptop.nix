@@ -1,6 +1,6 @@
-{ config, lib, pkgs, modulesPath, ... }: {
+{ config, lib, modulesPath, ... }: {
   networking.hostName = "SargoLaptop";
-  networking.defaultGateway = "192.168.1.201";
+  # networking.defaultGateway = "192.168.1.201";
 
   boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".device =
     "/dev/disk/by-uuid/4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064";

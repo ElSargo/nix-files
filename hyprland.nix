@@ -14,12 +14,20 @@ let
     bind = ${s} 
   '') (map (concatStringsSep ", ") (smoosh {
 
-    SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] kitty"; };
+    SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] foot"; };
+
+    SUPERCTRL = {
+      W = "resizeactive, 0 -60";
+      A = "resizeactive, -60 0";
+      S = "resizeactive, 0 60";
+      D = "resizeactive, 60 0";
+    };
 
     SUPER = {
+      TAB = "changegroupactive";
       mouse_up = "workspace, e-1";
       mouse_down = "workspace, e+1";
-      S = "togglespecialworkspace,";
+      T = "togglespecialworkspace,";
       "0" = "workspace, 10";
       "9" = "workspace, 9";
       "8" = "workspace, 8";
@@ -31,22 +39,27 @@ let
       "2" = "workspace, 2";
       "1" = "workspace, 1";
 
-      p = "exec, ${browser} search.nixos.org/packages?channel=22.11&query=";
-      L = "exec, fish -c toggle_layout";
-      O = "layoutmsg, addmaster";
+      p = "exec, ${browser} search.nixos.org/packages?channel=23.05&query=";
       Space = "layoutmsg, swapwithmaster";
       V = "layoutmsg, focusmaster";
-      K = "layoutmsg, cycleprev ";
-      J = "layoutmsg, cyclenext";
-      B = "exec, blueberry";
+
+      J = "cyclenext, prev ";
+      K = "cyclenext";
+
+      W = "movefocus, u";
+      A = "movefocus, l";
+      S = "movefocus, d";
+      D = "movefocus, r";
+
+      L = "exec, fish -c toggle_layout";
+
       F = "fullscreen,0";
-      W = "exec, ${browser}";
+      grave = "exec, ${browser}";
       P = "pseudo, # dwindle";
       Q = "killactive, ";
       C = "exec, fish -c open_system";
-      G = "exec, projects/unixchadbookmarks/target/release/unixchadbookmarks";
-      A = "exec, kitty zellij a";
-      Return = "exec, [size 40% 40%] kitty";
+      G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
+      Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
       N = "workspace, empty";
       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
       # Return = "exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland";
@@ -58,8 +71,8 @@ let
     };
 
     SUPERSHIFT = {
-
-      S = "movetoworkspace,special";
+      TAB = "togglegroup";
+      T = "movetoworkspace,special";
       "0" = "movetoworkspace, 10";
       "9" = "movetoworkspace, 9";
       "8" = "movetoworkspace, 8";
@@ -70,17 +83,18 @@ let
       "3" = "movetoworkspace, 3";
       "2" = "movetoworkspace, 2";
       "1" = "movetoworkspace, 1";
-      L = "exec, wlogout";
-      O = "layoutmsg, removemaster";
-      K = "layoutmsg, swapprev ";
-      J = "layoutmsg, swapnext";
+      K = "swapnext";
+      J = "swapnext, prev";
       Z = "exec, kitty fish '-c zn'";
-      W = "exec, nm-connection-editor";
-      Q = "exec, wlogout";
+      Q = "exit";
       Return = "exec, wofi --show drun";
       Space = "togglefloating, ";
-      F = "exec, pcmanfm";
-
+      F = "fakefullscreen";
+      B = "exec, blueberry";
+      W = "movewindow, u";
+      A = "movewindow, l";
+      S = "movewindow, d";
+      D = "movewindow, r";
     };
 
     "" = {
@@ -91,7 +105,6 @@ let
       XF86Mail = "exec, thunderbird";
       XF86MonBrightnessUp = "exec, sudo light -A 5";
       XF86MonBrightnessDown = "exec, sudo light -U 5";
-
     };
 
   }));
@@ -108,19 +121,14 @@ let
   unbinds = concatStringsSep "\n"
     (attrValues (mapAttrs (k: v: "unbind, ${k}, ${v}") { SUPER = "M"; }));
 
-  # execs = concatStringsSep "\n" (map (s: "exec = ${s}") [
-  #   "fish -c 'pidof waybar || waybar & disown'"
-  #   "fish -c 'pidof swaybg || swaybg -i ~/nix-files/gruv-material-texture.png & disown'"
-  # ]);
-
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = # zig
       ''
-        exec-once = "nm-applet";
-        exec-once = "waybar";
-        exec-once = "swaybg -i ~/nix-files/gruv-material-texture.png ";
+        exec-once=nm-applet
+        exec-once=waybar
+        exec-once=swaybg -i ~/nix-files/gruv-material-texture.png 
           ${unbinds}
           ${keybinds}
           ${mouse-keybinds}
@@ -142,8 +150,13 @@ in {
               gaps_in = 5
               gaps_out = 7
               border_size = 2
+              
               col.active_border = rgb(${colors.br_orange}) 
               col.inactive_border = rgb(${colors.bg})
+
+              col.group_border = rgb(${colors.bg2})
+              col.group_border_active = rgb(${colors.br_blue})
+              cursor_inactive_timeout = 5
               layout = master
           }
           decoration {
@@ -191,7 +204,8 @@ in {
 
           misc {
             enable_swallow = true
-            swallow_regex = ^(kitty)|(Alacritty)$
+            swallow_regex = ^(kitty)|(Alacritty)|(foot)$
+            animate_manual_resizes = true
           }
       '';
   };

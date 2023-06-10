@@ -1,4 +1,4 @@
-{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks
+{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks, new-terminal-hyprland
 , config, ... }: {
   imports = [
     ./remaps.nix
@@ -11,6 +11,7 @@
   environment.systemPackages = pkgs.lib.flatten [
     (import ./system-packages.nix { inherit pkgs; })
     unix-chad-bookmarks.defaultPackage.${system}
+    new-terminal-hyprland.defaultPackage.${system}
     pkgs.gnome.adwaita-icon-theme
   ];
 

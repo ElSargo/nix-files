@@ -2,8 +2,17 @@
   programs.helix = {
     enable = true;
     package = pkgs.unstable.helix;
+    themes = {
+      gruvy = {
+        inherits = "gruvbox";
+        "ui.background" = {
+          fg = "foreground";
+          bg = "background";
+        };
+      };
+    };
     settings = {
-      theme = "gruvbox";
+      theme = "gruvy";
       editor = {
         statusline = {
           left = [ "mode" "spinner" "file-name" "file-modification-indicator" ];

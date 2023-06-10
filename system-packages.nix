@@ -54,10 +54,10 @@ let
     cmake
     unstable.helix
     unstable.lapce
-
+    taplo
   ];
 
-  cli = with pkgs; [
+  terminal = with pkgs; [
     wezterm
     any-nix-shell
     unzip
@@ -123,7 +123,7 @@ in [
   networking
   utils
   coding
-  cli
+  terminal
   gtk
   desktop-portal
   fonts

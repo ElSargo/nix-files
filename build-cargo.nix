@@ -1,4 +1,4 @@
-{ mozillaOverlay, src, ... }:
+{ , src, ... }:
 let
   pkgs = import <nixpkgs> { overlays = [ mozillaOverlay ]; };
   rust = (pkgs.rustChannelOf { channel = "nightly"; }).rust.override {
