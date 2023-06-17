@@ -15,7 +15,7 @@ let
   '') (map (concatStringsSep ", ") (smoosh {
 
     SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] foot"; };
-
+    ALT = {Return = "exec, unixchadbookmarks ~/nix-files/bookmarks";};
     SUPERCTRL = {
       W = "resizeactive, 0 -60";
       A = "resizeactive, -60 0";
@@ -43,8 +43,8 @@ let
       Space = "layoutmsg, swapwithmaster";
       V = "layoutmsg, focusmaster";
 
-      J = "cyclenext, prev ";
-      K = "cyclenext";
+      K = "layoutmsg, cycleprev";
+      J = "layoutmsg, cyclenext";
 
       W = "movefocus, u";
       A = "movefocus, l";
@@ -83,9 +83,9 @@ let
       "3" = "movetoworkspace, 3";
       "2" = "movetoworkspace, 2";
       "1" = "movetoworkspace, 1";
-      K = "swapnext";
-      J = "swapnext, prev";
-      Z = "exec, kitty fish '-c zn'";
+      J = "layoutmsg, swapnext";
+      K = "layoutmsg, swapprev";
+      Z = "exec, foot fish '-c zn'";
       Q = "exit";
       Return = "exec, wofi --show drun";
       Space = "togglefloating, ";
@@ -160,7 +160,7 @@ in {
               layout = master
           }
           decoration {
-              screen_shader = ~/.config/hypr/shader.glsl
+              # screen_shader = ~/.config/hypr/shader.glsl
               rounding = 10
               blur = yes
               blur_size = 4
@@ -199,6 +199,7 @@ in {
           windowrulev2 = float,title:^(Graze.)$
           windowrule = float, ^(nm-connection-editor)$
           windowrule = float, ^(pavucontrol)$
+          windowrule = float, \A\Z|\A\Z*|\A\Z+
           windowrule = float, ^(galculator)$
           windowrule = noborder, ^(glava)$
 

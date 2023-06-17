@@ -1,23 +1,24 @@
 Nix
-configuration.nix      | kitty --directory ~/nix-files -e hx configuration.nix
-sargo.nix              | kitty --directory ~/nix-files -e hx sargo.nix
-hyprland               | kitty --directory ~/nix-files -e hx sargo.nix:110
-starship               | kitty --directory ~/nix-files -e hx sargo.nix:509
+system flake           | foot -D ~/nix-files hx flake.nix
+configuration.nix      | foot -D ~/nix-files -e hx configuration.nix
+sargo.nix              | foot -D ~/nix-files -e hx sargo.nix
+hyprland               | foot -D ~/nix-files -e hx sargo.nix:110
+starship               | foot -D ~/nix-files -e hx sargo.nix:509
 
 Rust
-relay crunch           | kitty --directory ~/projects/relay_crunch -e hx src/main.rs
-pvz sim                | kitty --directory ~/projects/pvz_sim hx src/main.rs
-riskydice              | kitty --directory ~/projects/riskydice hx src/main.rs
-mcsc                   | kitty zellij_open mcsc  
-glsl lsp               | kitty --directory ~/projects/glsl_lsp hx src/main.rs
-hex tiles              | kitty --directory ~/projects/hex_tiles hx src/lib.rs
-tripples               | kitty --directory ~/projects/tripples hx src/main.rs
-oopbad                 | kitty --directory ~/projects/oopbad hx   src/main.rs
-budahbrot              | kitty --directory ~/projects/budahbrot hx src/main.rs
-mandelbrot             | kitty --directory ~/projects/mandelbrot hx src/main.rs
-unix bmks              | kitty zellij_open unixchadbookmarks
-rolling-set            | kitty zellij_open rolling-set
-wikirace               | kitty zellij_open wikirace
+relay crunch           | foot -D ~/projects/relay_crunch -e hx src/main.rs
+pvz sim                | foot -D ~/projects/pvz_sim hx src/main.rs
+riskydice              | foot -D ~/projects/riskydice hx src/main.rs
+mcsc                   | foot zellij_open mcsc  
+glsl lsp               | foot -D ~/projects/glsl_lsp hx src/main.rs
+hex tiles              | foot -D ~/projects/hex_tiles hx src/lib.rs
+tripples               | foot -D ~/projects/tripples hx src/main.rs
+oopbad                 | foot -D ~/projects/oopbad hx   src/main.rs
+budahbrot              | foot -D ~/projects/budahbrot hx src/main.rs
+mandelbrot             | foot -D ~/projects/mandelbrot hx src/main.rs
+unix bmks              | foot zellij_open unixchadbookmarks
+rolling-set            | foot zellij_open rolling-set
+wikirace               | foot zellij_open wikirace
 
 Websites 
 lib.rs                 | librewolf https://lib.rs
@@ -38,5 +39,5 @@ xplr hacks             | librewolf https://xplr.dev/en/awesome-hacks
 graphine install       | librewolf https://grapheneos.org/install/cli
 dynadot                | librewolf https://www.dynadot.com/account/
 
-bookmarks              | kitty --single-instance --directory ~/.config -e hx bookmarks 
+bookmarks              | foot -D ~/nix-files hx bookmarks 
 

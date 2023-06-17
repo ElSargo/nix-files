@@ -1,5 +1,5 @@
-{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks, new-terminal-hyprland
-, config, ... }: {
+{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks
+, new-terminal-hyprland, config, ... }: {
   imports = [
     ./remaps.nix
     (import ./sargo.nix { inherit pkgs hyprland nuscripts config; })

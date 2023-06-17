@@ -6,6 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
     new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
+    grub-themes.url = "github:vinceliuice/grub2-themes";
     hyprpicker.url = "github:hyprwm/hyprpicker";
     nuscripts = {
       url = "github:nushell/nu_scripts";
@@ -23,7 +24,7 @@
   };
 
   outputs =
-    { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, ... }@attrs:
+    { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, grub-themes, ... }@attrs:
 
     let
       system = "x86_64-linux";
@@ -36,14 +37,14 @@
       unstable-module = ({ config, pkgs, ... }: {
         nixpkgs.overlays = [ unstable-overlay hyprpicker.overlays.default ];
       });
-      specialArgs = attrs // { inherit system; };
+      specialArgs = attrs // { inherit system; theme = "stylish"; };
     in {
-
+      formatter.${system} = (import nixpkgs-unstable { inherit system; }).nil;
       nixosConfigurations = {
 
         SargoSummit = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = [ unstable-module ./configuration.nix ./summit.nix ];
+          modules = [ unstable-module grub-themes.nixosModules.default ./configuration.nix ./summit.nix ];
         };
 
         SargoLaptop = nixpkgs.lib.nixosSystem {

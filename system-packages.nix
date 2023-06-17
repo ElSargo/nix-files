@@ -80,6 +80,8 @@ let
     cargo
   ];
 
+  graphics = with pkgs; [ blender ];
+
   gtk = with pkgs; [
     unstable.gtk-engine-murrine
     gruvbox-dark-gtk
@@ -109,6 +111,7 @@ let
     swaybg
     feh
     libreoffice
+    polkit_gnome
   ];
 
   system = with pkgs; [ cpupower-gui ];
@@ -131,5 +134,6 @@ in [
   compat
   browsers
   system
+  graphics
 ]
 

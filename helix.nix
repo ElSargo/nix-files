@@ -9,6 +9,20 @@
           fg = "foreground";
           bg = "background";
         };
+        # "comment" = {  modifiers = ["italic"]; };
+        # "function" = {  modifiers = ["italic"]; };
+        # "keyword" = {  modifiers = ["italic"]; };
+        # "keyword.function" = {  modifiers = ["italic"]; };
+        # "variable.parameter" = {  modifiers = ["italic"]; };
+        # "markup.italic" = {  modifiers = ["italic"]; };
+        # "markup.quote" = {  modifiers = ["italic"]; };
+      };
+      tokio = {
+        inherits = "tokyonight_storm";
+        "ui.background" = {
+          fg = "foreground";
+          bg = "background";
+        };
       };
     };
     settings = {

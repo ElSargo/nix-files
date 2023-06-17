@@ -6,8 +6,7 @@
     configFile = {
       text = # nu
         ''
-            let-env PATH = (["~/.cargo/bin"] | prepend $env.PATH )
-            let-env config = {
+              let-env config = {
               table: {
                 mode: rounded
               }
@@ -127,6 +126,7 @@
     envFile = {
       text = # nu
         ''
+          let-env PATH = ($env.PATH | split row (char esep) | append $"($env.HOME)/.cargo/bin/")
           let-env FOO = 'BAR'
           let-env DIRENV_LOG_FORMAT = ""
           let-env EDITOR = "hx"
