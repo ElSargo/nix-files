@@ -1,4 +1,4 @@
-{  pkgs,   src, ... }:
+{ pkgs, src, ... }:
 
 pkgs.rustPlatform.buildRustPackage {
   name = "wgsl-analyzer";

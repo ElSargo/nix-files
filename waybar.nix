@@ -1,4 +1,7 @@
-{ pkgs, palette, ... }: {
+{ pkgs, palette, terminal, ... }:
+let pk = name: "${pkgs.${name}}/bin/${name}";
+in {
+  home.packages = with pkgs; [ networkmanagerapplet ];
   programs.waybar = {
     enable = true;
     package = pkgs.waybar;
@@ -19,11 +22,11 @@
         ];
         "custom/eye_saver" = {
           format = "👁";
-          on-click = "fish -c toggle_eye_saver";
+          on-click = "${pk "fish"} -c toggle_eye_saver";
         };
         "custom/logout" = {
           format = "⏼";
-          on-click = "wlogout";
+          on-click = "${pk "wlogout"}";
         };
         "custom/gttfg" = { format = "Go to the fucking gym!"; };
         "wlr/workspaces" = {
@@ -38,11 +41,11 @@
         "cpu" = {
           format = " {usage}%";
           tooltip = false;
-          on-click = "kitty -e htop";
+          on-click = "${terminal} -e htop";
         };
         "memory" = {
           format = " {}%";
-          on-click = "kitty -e htop";
+          on-click = "${terminal} -e htop";
         };
         "battery" = {
           states = {
@@ -80,7 +83,7 @@
             car = "";
             default = [ "" "" "" ];
           };
-          on-click = "pavucontrol";
+          on-click = "${pk "pavucontrol"}";
         };
       };
     };
@@ -95,7 +98,6 @@
 
 
         * {
-            /* `otf-font-awesome` is required to be installed for icons */
             font-family: JetBrainsMono Nerd Font;
             font-size: 15px;
             transition: all 0.1s cubic-bezier(.55,-0.68,.48,1.68);

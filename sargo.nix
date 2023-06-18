@@ -1,10 +1,11 @@
-{ hyprland, pkgs, nuscripts, ... }: {
+{ hyprland, pkgs, nuscripts, new-terminal-hyprland, unix-chad-bookmarks, ...
+}: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
       "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "adbusers" ];
   };
   home-manager.users.sargo = { lib, ... }:
     let
@@ -40,11 +41,15 @@
       };
 
       browser = "librewolf";
+      terminal = "${pkgs.foot}/bin/foot";
 
     in {
 
-      imports =
-        map (x: import x { inherit pkgs lib palette nuscripts browser; }) [
+      imports = map (x:
+        import x {
+          inherit pkgs lib palette nuscripts browser new-terminal-hyprland
+            unix-chad-bookmarks terminal;
+        }) [
           ./alacritty.nix
           ./dconf.nix
           ./fish.nix
@@ -132,8 +137,7 @@
 
               vec4 pixColor = texture2D(tex, v_texcoord);
 
-              pixColor.rgb = smoothstep(0.,1.,pixColor.rgb) 
-                  * vec3(1, 0.5, .2) * 0.3;    
+              pixColor.rgb = smoothstep(0.,1.,pixColor.rgb) * vec3(1, 0.5, .2) * 0.3;    
 
               gl_FragColor = pixColor;
           }

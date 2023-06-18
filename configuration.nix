@@ -2,126 +2,208 @@
 , new-terminal-hyprland, config, ... }: {
   imports = [
     ./remaps.nix
-    (import ./sargo.nix { inherit pkgs hyprland nuscripts config; })
+    (import ./sargo.nix {
+      inherit pkgs hyprland nuscripts config new-terminal-hyprland
+        unix-chad-bookmarks;
+    })
     ./fonts.nix
     (import "${home-manager}/nixos")
     hyprland.nixosModules.default
   ];
 
-  environment.systemPackages = pkgs.lib.flatten [
-    (import ./system-packages.nix { inherit pkgs; })
-    unix-chad-bookmarks.defaultPackage.${system}
-    new-terminal-hyprland.defaultPackage.${system}
-    pkgs.gnome.adwaita-icon-theme
-  ];
+  environment = {
+    gnome.excludePackages = with pkgs.gnome; [
+      cheese # webcam tool
+      gnome-music
+      gnome-terminal
+      gedit # text editor
+      epiphany # web browser
+      tali # poker game
+      iagno # go game
+      hitori # sudoku game
+      atomix # puzzle game
+    ];
+    systemPackages = pkgs.lib.flatten [
+      (import ./system-packages.nix { inherit pkgs; })
+      unix-chad-bookmarks.defaultPackage.${system}
+      new-terminal-hyprland.defaultPackage.${system}
+      pkgs.gnome.adwaita-icon-theme
+      pkgs.eww
+    ];
+  };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    settings = {
+      warn-dirty = false;
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+
+  };
 
   users.defaultUserShell = pkgs.unstable.nushell;
 
   # Enable networking
-  networking.firewall.allowedTCPPorts = [ 22 ];
-  networking.networkmanager.enable = true;
-  networking.nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
-  networking.extraHosts = builtins.concatStringsSep "\n" [
-    (builtins.readFile "${hosts}/hosts")
-    "192.168.1.201 SargoLaptop"
-    "192.168.1.202 SargoPi"
-  ];
-  services.flatpak.enable = true;
-  security.polkit.enable = true;
-  services.upower.enable = true;
-  services.cpupower-gui.enable = true;
-  # services.power-profiles-daemon.enable = false;
-  # services.tlp.enable = true;
-  services.xserver = {
-    enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      gnome.enable = true;
-    };
-    displayManager.gdm.enable = true;
-    libinput.enable = true;
-    excludePackages =
-      [ pkgs.xterm pkgs.gnome.gnome-terminal pkgs.gnome-console ];
-    layout = "us";
+  networking = {
+    networkmanager.enable = true;
+    firewall.allowedTCPPorts = [ 22 ];
+    nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
+    extraHosts = builtins.concatStringsSep "\n" [
+      (builtins.readFile "${hosts}/hosts")
+      "192.168.1.201 SargoLaptop"
+      "192.168.1.202 SargoPi"
+    ];
+
   };
 
-  environment.gnome.excludePackages = with pkgs.gnome; [
-    cheese # webcam tool
-    gnome-music
-    gnome-terminal
-    gedit # text editor
-    epiphany # web browser
-    tali # poker game
-    iagno # go game
-    hitori # sudoku game
-    atomix # puzzle game
-  ];
-  qt.enable = true;
-  qt.platformTheme = "gtk2";
-  qt.style = "gtk2";
-  xdg.portal.wlr.enable = true;
+  services = {
 
-  services.printing.enable = true;
+    #  udev.packages = [
+    #   pkgs.android-udev-rules
+    # ];
+
+    blueman.enable = true;
+    cpupower-gui.enable = true;
+    dbus = {
+      enable = true;
+      implementation = "broker";
+    };
+    flatpak.enable = true;
+    openssh.enable = true;
+    openssh.settings.PermitRootLogin = "no";
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
+    printing.enable = true;
+    upower.enable = true;
+    xserver = {
+      enable = true;
+      desktopManager = {
+        xterm.enable = false;
+        gnome.enable = true;
+      };
+      displayManager.gdm.enable = true;
+      libinput.enable = true;
+      excludePackages =
+        [ pkgs.xterm pkgs.gnome.gnome-terminal pkgs.gnome-console ];
+      layout = "us";
+    };
+  };
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+    sudo.extraRules = [{
+      users = [ "sargo" ];
+      commands = [{
+        command = "ALL";
+        options =
+          [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
+      }];
+    }];
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "gtk2";
+    style = "gtk2";
+  };
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+  };
 
   sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # jack.enable = true;
-  };
-  security.sudo.extraRules = [{
-    users = [ "sargo" ];
-    commands = [{
-      command = "ALL";
-      options =
-        [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
-    }];
-  }];
-
-  boot.binfmt.emulatedSystems =
-    [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.loader.grub.configurationLimit = 10;
-  boot.tmp.cleanOnBoot = true;
-  # Setup keyfile
-  boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
-
-  # Enable swap on luks
-
-  boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+  boot = {
+    binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.grub.configurationLimit = 10;
+    tmp.cleanOnBoot = true;
+    initrd.secrets = { "/crypto_keyfile.bin" = null; };
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
   };
-  services.dbus = {
-    enable = true;
-    implementation = "broker";
+
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart =
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
   };
-  services.blueman.enable = true;
-  services.openssh.enable = true;
-  services.openssh.settings.PermitRootLogin = "no";
-  hardware.bluetooth.enable = true;
+  # systemd.user.services.sway-polkit-authentication-agent = {
+  #   Unit = {
+  #     Description = "Sway Polkit authentication agent";
+  #     Documentation = "https://gitlab.freedesktop.org/polkit/polkit/";
+  #     After = [ "graphical-session-pre.target" ];
+  #     PartOf = [ "graphical-session.target" ];
+  #   };
 
-  nixpkgs.overlays = [
-    (self: super: {
-      waybar = super.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      });
-    })
-  ];
+  #   Service = {
+  #     ExecStart =
+  #       "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+  #     Restart = "always";
+  #     BusName = "org.freedesktop.PolicyKit1.Authority";
+  #   };
 
-  nixpkgs.config.allowUnfree = true;
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
+
+  programs = {
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+    hyprland.enable = true;
+    adb.enable = true;
+  };
+
+  hardware = {
+    pulseaudio.enable = false;
+    bluetooth.enable = true;
+    # hackrf.enable = true;
+  };
+
+  users.groups.plugdev = {
+    members = [ "sargo" ];
+  };
+  # users.groups.adbusers.members = [ "sargo" ];
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (self: super: {
+        waybar = super.waybar.overrideAttrs (oldAttrs: {
+          mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+        });
+      })
+    ];
+  };
+
   time.timeZone = "Pacific/Auckland";
   i18n = {
     extraLocaleSettings = {
@@ -137,6 +219,5 @@
     };
   };
 
-  programs.hyprland.enable = true;
   system.stateVersion = "23.05";
 }

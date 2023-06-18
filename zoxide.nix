@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   programs.zoxide = {
-    package = pkgs.unstable.zoxide;
+    package = pkgs.zoxide;
     enable = true;
   };
 }

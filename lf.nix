@@ -1,4 +1,15 @@
 { pkgs, ... }: {
+  home.packages = with pkgs; [
+    bat
+    coreutils
+    p7zip
+    poppler_utils
+    unrar
+    zoxide
+    skim
+    ripgrep
+    fish
+  ];
   programs.lf = {
     enable = true;
     settings = {

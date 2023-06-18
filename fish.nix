@@ -1,8 +1,12 @@
 { pkgs, palette, browser, ... }:
 with builtins;
-let color = mapAttrs (k: v: builtins.substring 1 6 v) palette;
+let
+  color = mapAttrs (k: v: builtins.substring 1 6 v) palette;
+  pk = name: "${pkgs.${name}}/bin/${name}";
+
 in {
 
+  home.packages = with pkgs; [ ripgrep openssh coreutils wl-clipboard ];
   programs.fish = {
     enable = true;
     functions = {
@@ -10,14 +14,14 @@ in {
         description = "Initialise the ssh agent for github";
         body = # fish
           ''
-            eval $(ssh-agent -c)
+            eval $( ssh-agent -c)
             ssh-add ~/.ssh/github
           '';
       };
       fhx = {
         body = # fish
           ''
-            hx $(sk --ansi -i -c 'rg --line-number "{}"' | cut -d : -f1,2)
+            ${pkgs.unstable.helix}/bin/hx $(${pkgs.skim}/bin/sk --ansi -i -c 'rg --line-number "{}"' | cut  -d : -f1,2)
           '';
         description = "Fuzzy find conntentes of files and open in hx";
       };
@@ -26,7 +30,7 @@ in {
           ''
             set tmp (mktemp)
               # `command` is needed in case `lfcd` is aliased to `lf`
-              command lf -last-dir-path=$tmp $argv
+              command ${pk "lf"} -last-dir-path=$tmp $argv
               if test -f "$tmp"
                   set dir (cat $tmp)
                   rm -f $tmp
@@ -70,23 +74,16 @@ in {
           '';
         description = "Toggle the eye saver shader";
       };
-      open_system = {
-        body = # fish
-          ''
-            ~/projects/open_system/target/release/hyprtest
-          '';
-        description = "Goto the session or open it";
-      };
       dmenu = {
         body = # fish
           ''
-            wofi --show dmenu 
+            ${pk "wofi"} --show dmenu 
           '';
         description = "Dmenu for wayland or x using wofi or rofi";
       };
       copy_history = {
         body = # fish
-          "history | fzf | xc";
+          "history | ${pk "fzf"}| xc";
         description = "Copy a previously run command";
       };
     };
@@ -96,18 +93,17 @@ in {
       lf = "lfcd";
     };
     shellAbbrs = {
-      hxb = "~/.cargo/bin/hx --config ~/.config/helix/bleeding_config.toml";
       i = "nix-env -iA nixos.";
       q = "exit";
       ":q" = "exit";
       c = "clear";
-      ls = "exa -l";
+      ls = "${pk "exa"}-l";
       r = "reset";
-      xplr = "cd $(/usr/bin/env xplr)";
+      xplr = "cd $(/usr/bin/env ${pk "xplr"})";
       ns = "nix-shell";
-      za = "zellij a";
+      za = "${pkgs.unstable.zellij}/bin/zellij a";
       zl =
-        " zellij a $(pwd | sd '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
+        " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
       lt = "hyprctl dispatch layoutmsg orientationtop";
       lr = "hyprctl dispatch layoutmsg orientationright";
       lb = "hyprctl dispatch layoutmsg orientationbottom";

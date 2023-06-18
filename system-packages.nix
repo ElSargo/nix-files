@@ -14,7 +14,6 @@ let
   gnome = with pkgs; [
     unstable.gnomeExtensions.removable-drive-menu
     unstable.gnomeExtensions.custom-accent-colors
-    # unstable.gnomeExtensions.fuzzy-app-search
     unstable.gnomeExtensions.caffeine
     unstable.gnomeExtensions.dash-to-dock
     unstable.gnomeExtensions.blur-my-shell
@@ -25,20 +24,12 @@ let
     unstable.gnome.gnome-themes-extra
   ];
 
-  networking = with pkgs; [
-    blueberry
-    blueman
-    networkmanagerapplet
-
-  ];
+  networking = with pkgs; [ blueberry blueman ];
 
   utils = with pkgs; [
     unstable.slides
     nix-prefetch-git
-    light
-    cachix
     speedcrunch
-    galculator
     wlogout
     keepassxc
     wl-clipboard
@@ -47,32 +38,18 @@ let
     kitty
   ];
 
-  coding = with pkgs; [
-    unstable.nil
-    unstable.marksman
-    sccache
-    cmake
-    unstable.helix
-    unstable.lapce
-    taplo
-  ];
+  coding = with pkgs; [ unstable.helix sccache cmake unstable.lapce ];
 
   terminal = with pkgs; [
-    wezterm
     any-nix-shell
     unzip
     killall
-    skim
-    sd
     exa
     wget
     ripgrep
-    fzf
-    xplr
     trash-cli
     delta
     htop
-    chafa
     nixfmt
     typos
     gitui
@@ -89,29 +66,16 @@ let
     catppuccin-gtk
   ];
 
-  desktop-portal = with pkgs; [
-    xdg-desktop-portal
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-  ];
-
-  fonts = with pkgs; [
-    unstable.fontconfig
-    unstable.freetype
-    font-awesome
-    jetbrains-mono
-  ];
+  fonts = with pkgs; [ fontconfig freetype ];
 
   desktop = with pkgs; [
     hyprpicker
-    waybar
     thunderbird
     glava
     inlyne
     swaybg
     feh
     libreoffice
-    polkit_gnome
   ];
 
   system = with pkgs; [ cpupower-gui ];
@@ -128,12 +92,12 @@ in [
   coding
   terminal
   gtk
-  desktop-portal
   fonts
   desktop
   compat
   browsers
   system
   graphics
+
 ]
 

@@ -1,4 +1,17 @@
 { pkgs, browser, nuscripts, ... }: {
+  home.packages = with pkgs; [
+    fish
+    nix-index
+    wl-clipboard
+    zellij
+    bzip2
+    unrar
+    gnutar
+    unzip
+    gzip
+    cargo
+    curl
+  ];
   programs.nushell = {
     package = pkgs.unstable.nushell;
     enable = true;

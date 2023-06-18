@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  home.packages = with pkgs.unstable; [ nil marksman taplo ];
   programs.helix = {
     enable = true;
     package = pkgs.unstable.helix;

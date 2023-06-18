@@ -5,6 +5,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
+    eww-bar.url = "github:ElSargo/eww-bar";
     new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
     grub-themes.url = "github:vinceliuice/grub2-themes";
     hyprpicker.url = "github:hyprwm/hyprpicker";
@@ -23,8 +24,8 @@
     };
   };
 
-  outputs =
-    { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, grub-themes, ... }@attrs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker
+    , grub-themes, eww-bar, ... }@attrs:
 
     let
       system = "x86_64-linux";
@@ -34,22 +35,34 @@
           config.allowUnfree = true;
         };
       };
-      unstable-module = ({ config, pkgs, ... }: {
-        nixpkgs.overlays = [ unstable-overlay hyprpicker.overlays.default ];
+      overlays = ({ config, pkgs, ... }: {
+        nixpkgs.overlays = [
+          unstable-overlay
+          hyprpicker.overlays.default
+          eww-bar.overlays.${system}.default
+        ];
       });
-      specialArgs = attrs // { inherit system; theme = "stylish"; };
+      specialArgs = attrs // {
+        inherit system;
+        theme = "stylish";
+      };
     in {
       formatter.${system} = (import nixpkgs-unstable { inherit system; }).nil;
       nixosConfigurations = {
 
         SargoSummit = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = [ unstable-module grub-themes.nixosModules.default ./configuration.nix ./summit.nix ];
+          modules = [
+            overlays
+            grub-themes.nixosModules.default
+            ./configuration.nix
+            ./summit.nix
+          ];
         };
 
         SargoLaptop = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = [ unstable-module ./configuration.nix ./laptop.nix ];
+          modules = [ overlays ./configuration.nix ./laptop.nix ];
         };
 
       };

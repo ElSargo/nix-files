@@ -1,6 +1,7 @@
-{ pkgs, browser, palette, ... }:
+{ pkgs, browser, palette, unix-chad-bookmarks, new-terminal-hyprland, ... }:
 with builtins;
 let
+  pk = name: "${pkgs.${name}}/bin/${name}";
   colors = builtins.mapAttrs (k: v: builtins.substring 1 6 v) palette;
   helper = f: node:
     if isAttrs node then
@@ -15,7 +16,6 @@ let
   '') (map (concatStringsSep ", ") (smoosh {
 
     SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] foot"; };
-    ALT = {Return = "exec, unixchadbookmarks ~/nix-files/bookmarks";};
     SUPERCTRL = {
       W = "resizeactive, 0 -60";
       A = "resizeactive, -60 0";
@@ -51,13 +51,13 @@ let
       S = "movefocus, d";
       D = "movefocus, r";
 
-      L = "exec, fish -c toggle_layout";
+      L = "exec, ${pk "fish"} -c toggle_layout";
 
       F = "fullscreen,0";
       grave = "exec, ${browser}";
       P = "pseudo, # dwindle";
       Q = "killactive, ";
-      C = "exec, fish -c open_system";
+      C = "exec, ${pk "fish"} -c open_system";
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
       N = "workspace, empty";
@@ -67,7 +67,6 @@ let
       # bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
       # bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
       # bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
-
     };
 
     SUPERSHIFT = {
@@ -95,13 +94,14 @@ let
       A = "movewindow, l";
       S = "movewindow, d";
       D = "movewindow, r";
+      L = "exec, new-terminal-hyprland foot lazygit";
     };
 
     "" = {
       XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
       XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
       XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
-      XF86Calculator = "exec, galculator 	";
+      XF86Calculator = "exec, galculator";
       XF86Mail = "exec, thunderbird";
       XF86MonBrightnessUp = "exec, sudo light -A 5";
       XF86MonBrightnessDown = "exec, sudo light -U 5";
@@ -122,13 +122,24 @@ let
     (attrValues (mapAttrs (k: v: "unbind, ${k}, ${v}") { SUPER = "M"; }));
 
 in {
+  home.packages = with pkgs; [
+    pulseaudio
+    foot
+    eww
+    swaybg
+    lazygit
+    light
+    galculator
+    thunderbird
+    wofi
+  ];
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = # zig
       ''
-        exec-once=nm-applet
-        exec-once=waybar
-        exec-once=swaybg -i ~/nix-files/gruv-material-texture.png 
+        # exec-once=nm-applet
+        exec-once=eww open-many bar bar2
+        exec-once=swaybg -i ~/Pictures/5472x3648.jpg
           ${unbinds}
           ${keybinds}
           ${mouse-keybinds}
