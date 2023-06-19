@@ -64,6 +64,7 @@
           ./zellij.nix
           ./zoxide.nix
         ] ++ [ hyprland.homeManagerModules.default ];
+      services.mpris-proxy.enable = true;
       programs = {
         home-manager.enable = true;
         nix-index.enable = true;
