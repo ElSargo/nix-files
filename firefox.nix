@@ -71,7 +71,6 @@
             trackmenot
             clearurls
             decentraleyes
-            privacy-redirect
             adnauseam
             keepassxc-browser
             re-enable-right-click
