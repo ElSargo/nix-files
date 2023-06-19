@@ -1,5 +1,5 @@
-{ hyprland, pkgs, nuscripts, new-terminal-hyprland, unix-chad-bookmarks, ...
-}: {
+{ hyprland, config, pkgs, nuscripts, new-terminal-hyprland, unix-chad-bookmarks
+, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -39,16 +39,15 @@
         white = "#fbf1c7";
         yellow = "#d79921";
       };
-
-      browser = "librewolf";
+       browser = "firefox";
       terminal = "${pkgs.foot}/bin/foot";
 
     in {
 
       imports = map (x:
         import x {
-          inherit pkgs lib palette nuscripts browser new-terminal-hyprland
-            unix-chad-bookmarks terminal;
+          inherit pkgs config lib palette nuscripts browser
+            new-terminal-hyprland unix-chad-bookmarks terminal;
         }) [
           ./alacritty.nix
           ./dconf.nix
@@ -56,6 +55,7 @@
           ./helix.nix
           ./hyprland.nix
           ./foot.nix
+          ./firefox.nix
           ./kitty.nix
           ./nu.nix
           ./lf.nix

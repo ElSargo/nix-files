@@ -82,7 +82,7 @@ let
 
   compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
 
-  browsers = with pkgs; [ unstable.librewolf unstable.vivaldi ];
+  browsers = with pkgs; [ unstable.librewolf ];
 
 in [
   audio
@@ -98,6 +98,5 @@ in [
   browsers
   system
   graphics
-
 ]
 

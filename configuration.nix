@@ -188,9 +188,7 @@
     # hackrf.enable = true;
   };
 
-  users.groups.plugdev = {
-    members = [ "sargo" ];
-  };
+  users.groups.plugdev = { members = [ "sargo" ]; };
   # users.groups.adbusers.members = [ "sargo" ];
 
   nixpkgs = {
