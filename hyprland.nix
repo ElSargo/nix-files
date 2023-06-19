@@ -1,4 +1,4 @@
-{ pkgs, browser, palette, unix-chad-bookmarks, new-terminal-hyprland, ... }:
+{ pkgs, browser, palette,  ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
