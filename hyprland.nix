@@ -158,15 +158,15 @@ in {
               sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
           }
           general {
-              gaps_in = 5
-              gaps_out = 7
-              border_size = 2
+              gaps_in = 3
+              gaps_out = 5
+              border_size = 1
               
               col.active_border = rgb(${colors.br_orange}) 
               col.inactive_border = rgb(${colors.bg})
 
               col.group_border = rgba(0.0,0.0,0.0,0.0)
-              col.group_border_active = rgb(${colors.br_blue})
+              col.group_border_active = rgb(${colors.br_green})
               cursor_inactive_timeout = 5
               layout = master
           }
