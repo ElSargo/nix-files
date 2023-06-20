@@ -39,7 +39,7 @@
         white = "#fbf1c7";
         yellow = "#d79921";
       };
-       browser = "firefox";
+      browser = "firefox";
       terminal = "${pkgs.foot}/bin/foot";
 
     in {
@@ -97,11 +97,14 @@
           userEmail = "sargo@sargo.cc";
           delta.enable = true;
         };
-        bash.enable = true;
+        bash = { enable = true; };
       };
 
       services.pueue.enable = true;
-
+      # services.gnome-keyring = {
+      #   enable = true;
+      #   components = [ "pkcs11" "secrets" "ssh" ];
+      # };
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "23.05";

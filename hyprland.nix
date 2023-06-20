@@ -1,4 +1,4 @@
-{ pkgs, browser, palette,  ... }:
+{ pkgs, browser, palette, ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
@@ -165,7 +165,7 @@ in {
               col.active_border = rgb(${colors.br_orange}) 
               col.inactive_border = rgb(${colors.bg})
 
-              col.group_border = rgb(${colors.bg2})
+              col.group_border = rgba(0.0,0.0,0.0,0.0)
               col.group_border_active = rgb(${colors.br_blue})
               cursor_inactive_timeout = 5
               layout = master

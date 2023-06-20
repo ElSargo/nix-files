@@ -21,23 +21,23 @@ rolling-set            | foot zellij_open rolling-set
 wikirace               | foot zellij_open wikirace
 
 Websites 
-lib.rs                 | librewolf https://lib.rs
-helix github           | librewolf https://github.com/helix-editor/helix
-openbsd raspbery pi    | librewolf https://dev.to/spacial/installing-openbsd-7-on-raspberry-pi-3-1f98
-mcsc github            | librewolf https://github.com/ElSargo/mcsc
-instagram              | librewolf https://instagram.com
-gmail                  | librewolf https://www.gmail.com
-youtube                | librewolf https://youtube.com
-discord                | librewolf https://discord.app
-odysee                 | librewolf https://odysee.com
-grammarnet             | librewolf https://www.grammar.net.nz/login/
-mun                    | librewolf https://mun-lang.org/
-system76               | librewolf https://system76.com/laptops/lemp11/configure
-regex cheat            | librewolf https://www.rexegg.com/regex-quickstart.html
-zellij github          | librewolf https://github.com/zellij-org/zellij
-xplr hacks             | librewolf https://xplr.dev/en/awesome-hacks
-graphine install       | librewolf https://grapheneos.org/install/cli
-dynadot                | librewolf https://www.dynadot.com/account/
+lib.rs                 | firefox https://lib.rs
+helix github           | firefox https://github.com/helix-editor/helix
+openbsd raspbery pi    | firefox https://dev.to/spacial/installing-openbsd-7-on-raspberry-pi-3-1f98
+mcsc github            | firefox https://github.com/ElSargo/mcsc
+instagram              | firefox https://instagram.com
+gmail                  | firefox https://www.gmail.com
+youtube                | firefox https://youtube.com
+discord                | firefox https://discord.app
+odysee                 | firefox https://odysee.com
+grammarnet             | firefox https://www.grammar.net.nz/login/
+mun                    | firefox https://mun-lang.org/
+system76               | firefox https://system76.com/laptops/lemp11/configure
+regex cheat            | firefox https://www.rexegg.com/regex-quickstart.html
+zellij github          | firefox https://github.com/zellij-org/zellij
+xplr hacks             | firefox https://xplr.dev/en/awesome-hacks
+graphine install       | firefox https://grapheneos.org/install/cli
+dynadot                | firefox https://www.dynadot.com/account/
 
 bookmarks              | foot -D ~/nix-files hx bookmarks 
 
