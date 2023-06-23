@@ -38,35 +38,24 @@ let
       "3" = "workspace, 3";
       "2" = "workspace, 2";
       "1" = "workspace, 1";
-
       p = "exec, ${browser} search.nixos.org/packages?channel=23.05&query=";
       Space = "layoutmsg, swapwithmaster";
       V = "layoutmsg, focusmaster";
-
       K = "layoutmsg, cycleprev";
       J = "layoutmsg, cyclenext";
-
+      H = "workspace, e-1";
+      L = "workspace, e+1";
       W = "movefocus, u";
       A = "movefocus, l";
       S = "movefocus, d";
       D = "movefocus, r";
-
-      L = "exec, ${pk "fish"} -c toggle_layout";
-
       F = "fullscreen,0";
       grave = "exec, ${browser}";
       P = "pseudo, # dwindle";
       Q = "killactive, ";
-      C = "exec, ${pk "fish"} -c open_system";
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
       N = "workspace, empty";
-      # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-      # Return = "exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland";
-      # bind = SUPER, L, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland lazygit
-      # bind = SUPER, T, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo test
-      # bind = SUPER, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run
-      # bind = SUPERSHIFT, R, exec, projects/new-terminal-hyprland/target/release/new-terminal-hyprland cargo run --release
     };
 
     SUPERSHIFT = {
@@ -84,6 +73,7 @@ let
       "1" = "movetoworkspace, 1";
       J = "layoutmsg, swapnext";
       K = "layoutmsg, swapprev";
+      L = "exec, ${pk "fish"} -c toggle_layout";
       Z = "exec, foot fish '-c zn'";
       Q = "exit";
       Return = "exec, wofi --show drun";
@@ -94,7 +84,6 @@ let
       A = "movewindow, l";
       S = "movewindow, d";
       D = "movewindow, r";
-      L = "exec, new-terminal-hyprland foot lazygit";
     };
 
     "" = {
@@ -160,12 +149,12 @@ in {
           general {
               gaps_in = 3
               gaps_out = 5
-              border_size = 1
+              border_size = 2
               
               col.active_border = rgb(${colors.br_orange}) 
               col.inactive_border = rgb(${colors.bg})
 
-              col.group_border = rgba(0.0,0.0,0.0,0.0)
+              col.group_border = rgba(00000000)
               col.group_border_active = rgb(${colors.br_green})
               cursor_inactive_timeout = 5
               layout = master
