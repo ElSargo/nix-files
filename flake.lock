@@ -7,11 +7,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1687116767,
-        "narHash": "sha256-m9d32YQq2iGVEPtMbsTt47+FCFo0ad631wCJ+i47h8U=",
+        "lastModified": 1687570696,
+        "narHash": "sha256-8jRGaw/sr/9jWAjjb8H1oyWv6hhGN+SvRIEvwd0du80=",
         "owner": "ElSargo",
         "repo": "eww-bar",
-        "rev": "41f2066dd62976bc132c695ac31497047d8b7a09",
+        "rev": "620561a8ae931e378de663ff3399d8aee53c7c55",
         "type": "github"
       },
       "original": {
@@ -271,11 +271,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1686437198,
-        "narHash": "sha256-1yUtzlz51NTlsiNgqTHZyAZPJtHO2LGiCxuIpS65ZhM=",
+        "lastModified": 1688081089,
+        "narHash": "sha256-cnJ9AYtbDwepB+/16H1/qiQqniW+RIeHr/C/pJzw0uk=",
         "owner": "ElSargo",
         "repo": "new-terminal-hyprland",
-        "rev": "59ba2cc9d4b9d90d5dba32c94f7f26d6ef550b69",
+        "rev": "9baf890b77bbc10894aed1f57863a8203ec9b87a",
         "type": "github"
       },
       "original": {

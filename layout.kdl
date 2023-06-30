@@ -8,7 +8,7 @@ layout {
 
 	tab name="Rebuild #2" {
 		pane split_direction="vertical"{ 
-			pane command="fish" start_suspended=true {
+			pane command="nu" start_suspended=true {
 				args "-c" "rebuild"
 			}
 		}	    
