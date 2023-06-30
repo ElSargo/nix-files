@@ -3,7 +3,7 @@ let pk = name: "${pkgs.${name}}/bin/${name}";
 in {
   home.packages = with pkgs; [ networkmanagerapplet ];
   programs.waybar = {
-    enable = true;
+    enable = false;
     package = pkgs.waybar;
     settings = {
       mainbar = {

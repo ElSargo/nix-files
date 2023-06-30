@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, palette, ... }: {
   home.packages = with pkgs.unstable; [ nil marksman taplo ];
   programs.helix = {
     enable = true;
@@ -19,7 +19,7 @@
         # "markup.quote" = {  modifiers = ["italic"]; };
       };
       tokio = {
-        inherits = "tokyonight_storm";
+        inherits = "tokyonight";
         "ui.background" = {
           fg = "foreground";
           bg = "background";
@@ -27,7 +27,7 @@
       };
     };
     settings = {
-      theme = "gruvy";
+      theme = palette.helix_theme;
       editor = {
         statusline = {
           left = [ "mode" "spinner" "file-name" "file-modification-indicator" ];

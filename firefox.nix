@@ -394,7 +394,7 @@
             // Enter your scrolling prefs below this line:
             user_pref("general.smoothScroll",                       true); // DEFAULT
             user_pref("mousewheel.default.delta_multiplier_y",      275);  // 250-400
-        
+
 
             /****************************************************************************
              * START: MY OVERRIDES                                                      *

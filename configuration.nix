@@ -194,13 +194,13 @@
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      (self: super: {
-        waybar = super.waybar.overrideAttrs (oldAttrs: {
-          mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-        });
-      })
-    ];
+    # overlays = [
+    #   (self: super: {
+    #     waybar = super.waybar.overrideAttrs (oldAttrs: {
+    #       mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    #     });
+    #   })
+    # ];
   };
 
   time.timeZone = "Pacific/Auckland";
