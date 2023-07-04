@@ -1,15 +1,11 @@
 { helix, pkgs, system, home-manager, unix-chad-bookmarks, nvim
-, new-terminal-hyprland, config, ... }@inputs: {
+, new-terminal-hyprland, ... }@args: {
   imports = [
     ./remaps.nix
-    (import ./sargo.nix ({
-      inherit pkgs config new-terminal-hyprland unix-chad-bookmarks system
-        home-manager;
-      helix-pkg = helix.packages.${system}.default;
-    } // inputs))
     ./fonts.nix
     (import "${home-manager}/nixos")
-    # hyprland.nixosModules.default
+    (import ./sargo.nix
+      (args // { helix-pkg = helix.packages.${system}.default; }))
   ];
 
   environment = {
@@ -68,10 +64,6 @@
 
   services = {
 
-    #  udev.packages = [
-    #   pkgs.android-udev-rules
-    # ];
-
     blueman.enable = true;
     cpupower-gui.enable = true;
     dbus = {
@@ -117,16 +109,15 @@
     }];
   };
 
-  # qt = {
-  #   enable = true;
-  #   platformTheme = "gtk2";
-  #   style = "gtk2";
-  # };
+  qt = {
+    enable = true;
+    platformTheme = "gtk2";
+    style = "gtk2";
+  };
 
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
   sound.enable = true;
@@ -159,23 +150,6 @@
       };
     };
   };
-  # systemd.user.services.sway-polkit-authentication-agent = {
-  #   Unit = {
-  #     Description = "Sway Polkit authentication agent";
-  #     Documentation = "https://gitlab.freedesktop.org/polkit/polkit/";
-  #     After = [ "graphical-session-pre.target" ];
-  #     PartOf = [ "graphical-session.target" ];
-  #   };
-
-  #   Service = {
-  #     ExecStart =
-  #       "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-  #     Restart = "always";
-  #     BusName = "org.freedesktop.PolicyKit1.Authority";
-  #   };
-
-  #   Install.WantedBy = [ "graphical-session.target" ];
-  # };
 
   programs = {
     mtr.enable = true;
@@ -184,28 +158,14 @@
       enableSSHSupport = true;
     };
     hyprland.enable = true;
-    adb.enable = true;
   };
 
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;
-    # hackrf.enable = true;
   };
 
-  users.groups.plugdev = { members = [ "sargo" ]; };
-  # users.groups.adbusers.members = [ "sargo" ];
-
-  nixpkgs = {
-    config.allowUnfree = true;
-    # overlays = [
-    #   (self: super: {
-    #     waybar = super.waybar.overrideAttrs (oldAttrs: {
-    #       mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-    #     });
-    #   })
-    # ];
-  };
+  nixpkgs = { config.allowUnfree = true; };
 
   time.timeZone = "Pacific/Auckland";
   i18n = {
