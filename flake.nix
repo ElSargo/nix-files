@@ -11,18 +11,13 @@
     helix.url = "github:the-mikedavis/helix";
     new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
     nvim.url = "github:ElSargo/nvim";
-    nuscripts = {
-      url = "github:nushell/nu_scripts";
-      flake = false;
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
-      flake = false;
-    };
+    nuscripts.url = "github:nushell/nu_scripts";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, eww-bar, nur
     , home-manager, ... }@attrs:
+    with builtins;
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -37,6 +32,8 @@
             [ unstable-overlay eww-bar.overlays.${system}.default ];
         });
         specialArgs = attrs // { inherit system; };
+        default_modules =
+          [ overlays nur.nixosModules.nur ./configuration.nix ./sargo.nix ];
       in {
         packages = {
           formatter.${system} =
@@ -45,17 +42,12 @@
 
             SargoSummit = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
-              modules = [
-                overlays
-                nur.nixosModules.nur
-                ./configuration.nix
-                ./summit.nix
-              ];
+              modules = concatLists [ default_modules [ ./summit.nix ] ];
             };
 
             SargoLaptop = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
-              modules = [ overlays ./configuration.nix ./laptop.nix ];
+              modules = concatLists [ default_modules [ ./laptop.nix ] ];
             };
 
           };

@@ -1,12 +1,5 @@
-{ helix, pkgs, system, home-manager, unix-chad-bookmarks, nvim
-, new-terminal-hyprland, ... }@args: {
-  imports = [
-    ./remaps.nix
-    ./fonts.nix
-    (import "${home-manager}/nixos")
-    (import ./sargo.nix
-      (args // { helix-pkg = helix.packages.${system}.default; }))
-  ];
+{ pkgs, ... }: {
+  imports = [ ./remaps.nix ./fonts.nix ];
 
   environment = {
     gnome.excludePackages = with pkgs.gnome; [
@@ -20,14 +13,8 @@
       hitori # sudoku game
       atomix # puzzle game
     ];
-    systemPackages = pkgs.lib.flatten [
-      (import ./system-packages.nix { inherit pkgs; })
-      unix-chad-bookmarks.defaultPackage.${system}
-      new-terminal-hyprland.defaultPackage.${system}
-      nvim.packages.${system}.default
-      pkgs.gnome.adwaita-icon-theme
-      pkgs.eww
-    ];
+    systemPackages =
+      pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
   };
 
   nix = {

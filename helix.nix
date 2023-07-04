@@ -1,8 +1,8 @@
-{ helix-pkg, pkgs, palette, ... }: {
+{ helix ? pkgs.helix, pkgs, system, palette, ... }: {
   home.packages = with pkgs.unstable; [ nil marksman taplo ];
   programs.helix = {
     enable = true;
-    package = helix-pkg;
+    package = helix.packages.${system}.default;
 
     themes = {
       gruvy = {
