@@ -17,7 +17,6 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, eww-bar, nur
     , home-manager, ... }@attrs:
-    with builtins;
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -42,12 +41,12 @@
 
             SargoSummit = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
-              modules = concatLists [ default_modules [ ./summit.nix ] ];
+              modules = default_modules ++ [ ./summit.nix ];
             };
 
             SargoLaptop = nixpkgs.lib.nixosSystem {
-              inherit system specialArgs;
-              modules = concatLists [ default_modules [ ./laptop.nix ] ];
+              inherit specialArgs;
+              modules = default_modules ++ [ ./laptop.nix ];
             };
 
           };
