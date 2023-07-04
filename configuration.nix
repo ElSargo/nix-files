@@ -1,9 +1,10 @@
-{ helix, pkgs, system, home-manager, hosts, unix-chad-bookmarks, nvim
+{ helix, pkgs, system, home-manager, unix-chad-bookmarks, nvim
 , new-terminal-hyprland, config, ... }@inputs: {
   imports = [
     ./remaps.nix
     (import ./sargo.nix ({
-      inherit pkgs config new-terminal-hyprland unix-chad-bookmarks system home-manager;
+      inherit pkgs config new-terminal-hyprland unix-chad-bookmarks system
+        home-manager;
       helix-pkg = helix.packages.${system}.default;
     } // inputs))
     ./fonts.nix
@@ -56,11 +57,13 @@
     firewall.allowedTCPPorts = [ 22 ];
     nameservers = [ "192.168.1.1" "1.1.1.1" "8.8.8.8" ];
     extraHosts = builtins.concatStringsSep "\n" [
-      (builtins.readFile "${hosts}/hosts")
       "192.168.1.201 SargoLaptop"
       "192.168.1.202 SargoPi"
     ];
-
+    stevenblack = {
+      block = [ "fakenews" "gambling" "porn" "social" ];
+      enable = true;
+    };
   };
 
   services = {

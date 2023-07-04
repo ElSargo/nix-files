@@ -1,5 +1,5 @@
 { helix-pkg, hyprland, config, pkgs, nuscripts, new-terminal-hyprland
-, unix-chad-bookmarks,supabar, system,... }: {
+, unix-chad-bookmarks, supabar, system, ... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =

@@ -41,17 +41,19 @@
       };
     };
   };
-  home.file.".config/zellij/layouts/default.kdl".text = #kdl 
-  ''
-    layout {
-        default_tab_template {
-            // the default zellij tab-bar and status bar plugins
-            children
-            pane size=1 borderless=true {
-                plugin location="file:${supabar.packages.${system}.default}/bin/zellij-supabar.wasm"
-            }
-        }
-    }
+  home.file.".config/zellij/layouts/default.kdl".text = # kdl
+    ''
+      layout {
+          default_tab_template {
+              // the default zellij tab-bar and status bar plugins
+              children
+              pane size=1 borderless=true {
+                  plugin location="file:${
+                    supabar.packages.${system}.default
+                  }/bin/zellij-supabar.wasm"
+              }
+          }
+      }
 
-  '';
+    '';
 }

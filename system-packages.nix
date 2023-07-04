@@ -68,15 +68,7 @@ let
 
   fonts = with pkgs; [ fontconfig freetype ];
 
-  desktop = with pkgs; [
-    hyprpicker
-    thunderbird
-    glava
-    inlyne
-    swaybg
-    feh
-    libreoffice
-  ];
+  desktop = with pkgs; [ thunderbird glava inlyne swaybg feh libreoffice ];
 
   system = with pkgs; [ cpupower-gui ];
 
