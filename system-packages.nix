@@ -38,7 +38,7 @@ let
     kitty
   ];
 
-  coding = with pkgs; [ unstable.helix unstable.neovim sccache cmake unstable.lapce ];
+  coding = with pkgs; [ unstable.helix sccache neovide cmake unstable.lapce ];
 
   terminal = with pkgs; [
     any-nix-shell

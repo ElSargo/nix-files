@@ -1,8 +1,9 @@
-{ pkgs, palette, ... }: {
+{ helix-pkg, pkgs, palette, ... }: {
   home.packages = with pkgs.unstable; [ nil marksman taplo ];
   programs.helix = {
     enable = true;
-    package = pkgs.unstable.helix;
+    package = helix-pkg;
+
     themes = {
       gruvy = {
         inherits = "gruvbox";
@@ -10,8 +11,41 @@
           fg = "foreground";
           bg = "background";
         };
+        rainbow = [
+          {
+            fg = palette.br_orange;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_red;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_green;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_yellow;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_blue;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_aqua;
+            modifiers = [ "bold" ];
+          }
+          {
+            fg = palette.br_purple;
+            modifiers = [ "bold" ];
+          }
+        ];
         # "comment" = {  modifiers = ["italic"]; };
-        # "function" = {  modifiers = ["italic"]; };
+        "keyword" = {
+          fg = palette.br_red;
+          modifiers = [ "italic" ];
+        };
         # "keyword" = {  modifiers = ["italic"]; };
         # "keyword.function" = {  modifiers = ["italic"]; };
         # "variable.parameter" = {  modifiers = ["italic"]; };
@@ -28,7 +62,9 @@
     };
     settings = {
       theme = palette.helix_theme;
+      # rainbow-brackets = false;
       editor = {
+        soft-wrap = { enable = false; };
         statusline = {
           left = [ "mode" "spinner" "file-name" "file-modification-indicator" ];
           center = [ "workspace-diagnostics" "version-control" ];

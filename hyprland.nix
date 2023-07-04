@@ -27,7 +27,6 @@ let
       TAB = "changegroupactive";
       mouse_up = "workspace, e-1";
       mouse_down = "workspace, e+1";
-      T = "togglespecialworkspace,";
       "0" = "workspace, 10";
       "9" = "workspace, 9";
       "8" = "workspace, 8";
@@ -50,7 +49,8 @@ let
       S = "movefocus, d";
       D = "movefocus, r";
       F = "fullscreen,0";
-      grave = "exec, ${browser}";
+      B = "exec, ${browser}";
+      grave = "togglespecialworkspace,";
       P = "pseudo, # dwindle";
       Q = "killactive, ";
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
@@ -113,7 +113,7 @@ let
 in {
   home.packages = with pkgs; [
     pulseaudio
-    foot
+    unstable.foot
     eww
     swaybg
     lazygit
@@ -123,6 +123,7 @@ in {
     wofi
   ];
   wayland.windowManager.hyprland = {
+    package = pkgs.unstable.hyprland;
     enable = true;
     extraConfig = # zig
       ''

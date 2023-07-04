@@ -5,17 +5,19 @@
     hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
+    supabar.url = "github:ElSargo/supabar";
     eww-bar.url = "github:ElSargo/eww-bar";
+    helix.url = "github:the-mikedavis/helix";
     new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
     hyprpicker.url = "github:hyprwm/hyprpicker";
     nur.url = "github:nix-community/NUR";
+    nvim.url = "github:ElSargo/nvim";
     nuscripts = {
       url = "github:nushell/nu_scripts";
       flake = false;
     };
     home-manager = {
-      url =
-        "github:nix-community/home-manager/6142193635ecdafb9a231bd7d1880b9b7b210d19";
+      url = "github:nix-community/home-manager/release-23.05";
       flake = false;
     };
     hosts = {
@@ -25,7 +27,7 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, hyprpicker, eww-bar
-    , nur, ... }@attrs:
+    , nur, home-manager, ... }@attrs:
 
     let
       system = "x86_64-linux";

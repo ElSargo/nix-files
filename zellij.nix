@@ -1,9 +1,11 @@
-{ pkgs, palette, ... }: {
+{ pkgs, palette, supabar, system, ... }: {
   programs.zellij = {
     enable = true;
+
     package = pkgs.unstable.zellij;
+    enableZshIntegration = false;
     settings = {
-      default_layout = "compact";
+      # default_layout = "compact";
       ui = { pane_frames = { rounded_corners = true; }; };
       keybinds = {
         unbind = "Ctrl o";
@@ -39,4 +41,17 @@
       };
     };
   };
+  home.file.".config/zellij/layouts/default.kdl".text = #kdl 
+  ''
+    layout {
+        default_tab_template {
+            // the default zellij tab-bar and status bar plugins
+            children
+            pane size=1 borderless=true {
+                plugin location="file:${supabar.packages.${system}.default}/bin/zellij-supabar.wasm"
+            }
+        }
+    }
+
+  '';
 }

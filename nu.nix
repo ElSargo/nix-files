@@ -1,9 +1,10 @@
 { pkgs, browser, nuscripts, ... }: {
   home.packages = with pkgs; [
+    neovim-remote
     fish
     nix-index
     wl-clipboard
-    zellij
+    unstable.zellij
     bzip2
     unrar
     gnutar
@@ -143,6 +144,7 @@
           let-env FOO = 'BAR'
           let-env DIRENV_LOG_FORMAT = ""
           let-env EDITOR = "hx"
+          let-env VISUAL = "hx"
           let-env BROWSER = "${browser}"
         '';
     };

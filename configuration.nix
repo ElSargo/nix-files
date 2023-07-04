@@ -1,14 +1,14 @@
-{ pkgs, system, hyprland, nuscripts, home-manager, hosts, unix-chad-bookmarks
-, new-terminal-hyprland, config, ... }: {
+{ helix, pkgs, system, home-manager, hosts, unix-chad-bookmarks, nvim
+, new-terminal-hyprland, config, ... }@inputs: {
   imports = [
     ./remaps.nix
-    (import ./sargo.nix {
-      inherit pkgs hyprland nuscripts config new-terminal-hyprland
-        unix-chad-bookmarks;
-    })
+    (import ./sargo.nix ({
+      inherit pkgs config new-terminal-hyprland unix-chad-bookmarks system home-manager;
+      helix-pkg = helix.packages.${system}.default;
+    } // inputs))
     ./fonts.nix
     (import "${home-manager}/nixos")
-    hyprland.nixosModules.default
+    # hyprland.nixosModules.default
   ];
 
   environment = {
@@ -27,6 +27,7 @@
       (import ./system-packages.nix { inherit pkgs; })
       unix-chad-bookmarks.defaultPackage.${system}
       new-terminal-hyprland.defaultPackage.${system}
+      nvim.packages.${system}.default
       pkgs.gnome.adwaita-icon-theme
       pkgs.eww
     ];
@@ -113,11 +114,11 @@
     }];
   };
 
-  qt = {
-    enable = true;
-    platformTheme = "gtk2";
-    style = "gtk2";
-  };
+  # qt = {
+  #   enable = true;
+  #   platformTheme = "gtk2";
+  #   style = "gtk2";
+  # };
 
   xdg.portal = {
     enable = true;

@@ -97,7 +97,7 @@ in {
       q = "exit";
       ":q" = "exit";
       c = "clear";
-      ls = "${pk "exa"}-l";
+      ls = "${pk "exa"} -l";
       r = "reset";
       xplr = "cd $(/usr/bin/env ${pk "xplr"})";
       ns = "nix-shell";

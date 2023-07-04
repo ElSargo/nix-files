@@ -1,5 +1,5 @@
-{ hyprland, config, pkgs, nuscripts, new-terminal-hyprland, unix-chad-bookmarks
-, ... }: {
+{ helix-pkg, hyprland, config, pkgs, nuscripts, new-terminal-hyprland
+, unix-chad-bookmarks,supabar, system,... }: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -41,7 +41,7 @@
           white = "#fbf1c7";
           yellow = "#d79921";
         };
-        tokionight= rec {
+        tokionight = rec {
           helix_theme = "tokio";
           aqua = "#89ddff";
           bg = "#16161e"; # main background
@@ -76,14 +76,14 @@
 
       palette = palettes.gruvbox;
       browser = "firefox";
-      terminal = "${pkgs.foot}/bin/foot";
+      terminal = "foot";
 
     in {
 
       imports = map (x:
         import x {
-          inherit pkgs config lib palette nuscripts browser
-            new-terminal-hyprland unix-chad-bookmarks terminal;
+          inherit pkgs config lib palette nuscripts browser helix-pkg
+            new-terminal-hyprland unix-chad-bookmarks terminal supabar system;
         }) [
           ./alacritty.nix
           ./dconf.nix
