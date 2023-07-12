@@ -32,7 +32,7 @@
 
   };
 
-  users.defaultUserShell = pkgs.unstable.nushell;
+  users.defaultUserShell = pkgs.unstable.fish;
 
   # Enable networking
   networking = {
