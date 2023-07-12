@@ -8,7 +8,7 @@
     unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
     supabar.url = "github:ElSargo/supabar";
     eww-bar.url = "github:ElSargo/eww-bar";
-    helix.url = "github:the-mikedavis/helix";
+    helix-flake.url = "github:the-mikedavis/helix";
     new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
     nvim.url = "github:ElSargo/nvim";
     nuscripts.url = "github:nushell/nu_scripts";
@@ -16,7 +16,7 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, eww-bar, nur
-    , home-manager, ... }@attrs:
+    , home-manager, helix-flake, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -26,11 +26,12 @@
             config.allowUnfree = true;
           };
         };
+        helix = helix-flake.packages.${system}.default;
         overlays = ({ config, pkgs, ... }: {
           nixpkgs.overlays =
             [ unstable-overlay eww-bar.overlays.${system}.default ];
         });
-        specialArgs = attrs // { inherit system; };
+        specialArgs = attrs // { inherit system helix; };
         default_modules =
           [ overlays nur.nixosModules.nur ./configuration.nix ./sargo.nix ];
       in {
@@ -49,6 +50,22 @@
               modules = default_modules ++ [ ./laptop.nix ];
             };
 
+          };
+
+        };
+        devShells = {
+          default = let pkgs = nixpkgs.legacyPackages.${system};
+          in pkgs.mkShell {
+            NIX_CONFIG = "experimental-features = nix-command flakes";
+            nativeBuildInputs = with pkgs; [
+              nix
+              git
+              nil
+              helix
+              wget
+              ripgrep
+              zellij
+            ];
           };
         };
       });

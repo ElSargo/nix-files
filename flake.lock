@@ -44,57 +44,57 @@
     "dream2nix": {
       "inputs": {
         "all-cabal-json": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "crane": "crane",
         "devshell": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "drv-parts": "drv-parts",
         "flake-compat": "flake-compat",
         "flake-parts": [
-          "helix",
+          "helix-flake",
           "nci",
           "parts"
         ],
         "flake-utils-pre-commit": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "ghc-utils": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "gomod2nix": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "mach-nix": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "nix-pypi-fetcher": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "nixpkgs": [
-          "helix",
+          "helix-flake",
           "nci",
           "nixpkgs"
         ],
         "nixpkgsV1": "nixpkgsV1",
         "poetry2nix": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "pre-commit-hooks": [
-          "helix",
+          "helix-flake",
           "nci"
         ],
         "pruned-racket-catalog": [
-          "helix",
+          "helix-flake",
           "nci"
         ]
       },
@@ -115,19 +115,19 @@
     "drv-parts": {
       "inputs": {
         "flake-compat": [
-          "helix",
+          "helix-flake",
           "nci",
           "dream2nix",
           "flake-compat"
         ],
         "flake-parts": [
-          "helix",
+          "helix-flake",
           "nci",
           "dream2nix",
           "flake-parts"
         ],
         "nixpkgs": [
-          "helix",
+          "helix-flake",
           "nci",
           "dream2nix",
           "nixpkgs"
@@ -442,7 +442,7 @@
         "type": "github"
       }
     },
-    "helix": {
+    "helix-flake": {
       "inputs": {
         "nci": "nci",
         "nixpkgs": "nixpkgs_3",
@@ -450,11 +450,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1687998090,
-        "narHash": "sha256-Fl8vCjlYHToNOStqBLRuE0dCOrNfDcW6Z9nEi1Bbbgk=",
+        "lastModified": 1689036122,
+        "narHash": "sha256-m1dU5zN3X4JNwNou1Rq5fFGEDb77AaAQV0zeT+YKD7s=",
         "owner": "the-mikedavis",
         "repo": "helix",
-        "rev": "9fdfd7b7bc5987dc11f9ab4b19e82ebfe3ca6d92",
+        "rev": "de08c7b480879339a353ad9db6d057bb5fa95538",
         "type": "github"
       },
       "original": {
@@ -597,12 +597,12 @@
         "dream2nix": "dream2nix",
         "mk-naked-shell": "mk-naked-shell",
         "nixpkgs": [
-          "helix",
+          "helix-flake",
           "nixpkgs"
         ],
         "parts": "parts",
         "rust-overlay": [
-          "helix",
+          "helix-flake",
           "rust-overlay"
         ]
       },
@@ -627,11 +627,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1688081089,
-        "narHash": "sha256-cnJ9AYtbDwepB+/16H1/qiQqniW+RIeHr/C/pJzw0uk=",
+        "lastModified": 1688697332,
+        "narHash": "sha256-rO750ob4srYH9v3n/afnO5UHaiUvt8PcddjNAOf70Oc=",
         "owner": "ElSargo",
         "repo": "new-terminal-hyprland",
-        "rev": "9baf890b77bbc10894aed1f57863a8203ec9b87a",
+        "rev": "0915e2f97c4726a2cdf853162e82dbbae07ce57e",
         "type": "github"
       },
       "original": {
@@ -947,7 +947,7 @@
     "parts": {
       "inputs": {
         "nixpkgs-lib": [
-          "helix",
+          "helix-flake",
           "nci",
           "nixpkgs"
         ]
@@ -1043,7 +1043,7 @@
       "inputs": {
         "eww-bar": "eww-bar",
         "flake-utils": "flake-utils_2",
-        "helix": "helix",
+        "helix-flake": "helix-flake",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "new-terminal-hyprland": "new-terminal-hyprland",
@@ -1094,7 +1094,7 @@
       "inputs": {
         "flake-utils": "flake-utils_3",
         "nixpkgs": [
-          "helix",
+          "helix-flake",
           "nixpkgs"
         ]
       },
