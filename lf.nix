@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  home.file.".config/lf/icons".text = builtins.readFile ./lficons;
   home.packages = with pkgs; [
     bat
     coreutils

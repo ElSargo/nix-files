@@ -145,51 +145,10 @@
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "23.05";
 
-      home.file.".config/hypr/shader.glsl".text = # glsl
-        ''
-          precision mediump float;
-          varying vec2 v_texcoord;
-          uniform sampler2D tex;
-
-          void main() {
-
-              vec4 pixColor = texture2D(tex, v_texcoord);
-              pixColor.xyz = smoothstep(0.,1.,pixColor.xyz);
-
-              gl_FragColor = pixColor;
-          }
-        '';
-
-      home.file.".config/hypr/shader_eye_saver.glsl".text = # glsl
-        ''
-          precision mediump float;
-          varying vec2 v_texcoord;
-          uniform sampler2D tex;
-
-          void main() {
-
-              vec4 pixColor = texture2D(tex, v_texcoord);
-
-              pixColor.rgb = smoothstep(0.,1.,pixColor.rgb) * vec3(1, 0.5, .2) * 0.3;    
-
-              gl_FragColor = pixColor;
-          }
-        '';
-
-      home.file.".config/hypr/hyprpaper.conf".text = # toml
-        ''
-          preload = ~/nix-files/gruv-material-texture.png
-
-          wallpaper = HDMI-A-1,~/nix-files/gruv-material-texture.png
-          wallpaper = eDP-1,~/nix-files/gruv-material-texture.png
-        '';
-
       home.file.".config/wofi/style.css".text = # css
         ''
           @define-color base   #24273a; @define-color mantle #1e2030; @define-color crust  #181926;  @define-color text     #cad3f5; @define-color subtext0 #a5adcb; @define-color subtext1 #b8c0e0;  @define-color surface0 #363a4f; @define-color surface1 #494d64; @define-color surface2 #5b6078;  @define-color overlay0 #6e738d; @define-color overlay1 #8087a2; @define-color overlay2 #939ab7;  @define-color blue      #8aadf4; @define-color lavender  #b7bdf8; @define-color sapphire  #7dc4e4; @define-color sky       #91d7e3; @define-color teal      #8bd5ca; @define-color green     #a6da95; @define-color yellow    #eed49f; @define-color peach     #f5a97f; @define-color maroon    #ee99a0; @define-color red       #ed8796; @define-color mauve     #c6a0f6; @define-color pink      #f5bde6; @define-color flamingo  #f0c6c6; @define-color rosewater #f4dbd6;  window { margin: 0px; border-radius: 30px; border: 2px solid #fe8019; }  #input { margin: 5px; border: none; border-radius: 30px; }  #inner-box { margin: 5px; border: none; border-radius: 30px; }  #outer-box { margin: 15px; border: none; }  #scroll { margin: 0px; border: none; }  #text { margin: 5px; border: none; }   #entry:selected { border-radius: 20px; outline: none; }  #entry:selected * { border-radius: 20px; outline: none; } 
         '';
-
-      home.file.".config/lf/icons".text = builtins.readFile ./lficons;
     };
 }
 
