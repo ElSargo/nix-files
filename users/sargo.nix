@@ -15,13 +15,13 @@
     ];
   };
   security.sudo.extraRules = [{
-  users = [ "sargo" ];
-  commands = [{
-    command = "ALL";
-    options =
-      [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
+    users = [ "sargo" ];
+    commands = [{
+      command = "ALL";
+      options =
+        [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
+    }];
   }];
-}];
   imports = [ (import "${home-manager}/nixos") ];
   home-manager.users.sargo = { lib, ... }:
     let
@@ -95,8 +95,8 @@
       terminal = "foot";
 
     in {
-      imports = map
-        (x: import (x) (args // { inherit palette browser terminal lib pkgs; })) [
+      imports = map (x:
+        import (x) (args // { inherit palette browser terminal lib pkgs; })) [
           ../home/alacritty.nix
           ../home/dconf.nix
           ../home/fish.nix
@@ -152,8 +152,6 @@
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "23.05";
-
-
 
       home.file.".config/wofi/style.css".text = # css
         ''
