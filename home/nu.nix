@@ -1,4 +1,4 @@
-{ pkgs, browser, nuscripts, ... }: {
+{ pkgs, browser ? "brave", nuscripts, ... }: {
   home.packages = with pkgs; [
     neovim-remote
     fish
