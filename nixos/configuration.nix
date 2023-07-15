@@ -44,7 +44,7 @@
       "192.168.1.202 SargoPi"
     ];
     stevenblack = {
-      block = [ "fakenews" "gambling" "porn" "social" ];
+      block = [ "fakenews" "gambling" "porn" ];
       enable = true;
     };
   };
@@ -83,17 +83,8 @@
     };
   };
   security = {
-
     polkit.enable = true;
     rtkit.enable = true;
-    sudo.extraRules = [{
-      users = [ "sargo" ];
-      commands = [{
-        command = "ALL";
-        options =
-          [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
-      }];
-    }];
   };
 
   qt = {

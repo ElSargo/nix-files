@@ -38,7 +38,7 @@ let
     kitty
   ];
 
-  coding = with pkgs; [ unstable.helix sccache neovide cmake unstable.lapce ];
+  coding = with pkgs; [ unstable.helix sccache neovide cmake unstable.lapce rnix-lsp ];
 
   terminal = with pkgs; [
     any-nix-shell

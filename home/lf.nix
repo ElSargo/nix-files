@@ -1,11 +1,12 @@
 { pkgs, ... }: {
-  home.file.".config/lf/icons".text = builtins.readFile ./lficons;
+  home.file.".config/lf/icons".text = builtins.readFile ../misc/lficons;
   home.packages = with pkgs; [
     bat
     coreutils
     p7zip
     poppler_utils
     unrar
+    lsix
     zoxide
     skim
     ripgrep
@@ -27,6 +28,8 @@
           *.rar) unrar l "$1";;
           *.7z) 7z l "$1";;
           *.pdf) pdftotext "$1" -;;
+          *.png) lsix "$1" ;;
+          *.jpg) lsix "$1" ;;
           *) bat --paging=never --style=numbers --terminal-width $(($2-5)) -f "$1" ;;
       esac
     '';

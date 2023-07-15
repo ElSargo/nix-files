@@ -1,5 +1,4 @@
-{ hyprland, system, home-manager, pkgs, unix-chad-bookmarks, nvim
-, new-terminal-hyprland, ... }@args: {
+{ hyprland, system, home-manager, pkgs, ... }@args: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -7,13 +6,22 @@
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = [
-      unix-chad-bookmarks.defaultPackage.${system}
-      new-terminal-hyprland.defaultPackage.${system}
-      nvim.packages.${system}.default
+      args.unix-chad-bookmarks.defaultPackage.${system}
+      args.new-terminal-hyprland.defaultPackage.${system}
+      args.nvim.packages.${system}.default
+      args.wgsl.packages.${system}.default
       pkgs.eww
 
     ];
   };
+  security.sudo.extraRules = [{
+  users = [ "sargo" ];
+  commands = [{
+    command = "ALL";
+    options =
+      [ "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
+  }];
+}];
   imports = [ (import "${home-manager}/nixos") ];
   home-manager.users.sargo = { lib, ... }:
     let
@@ -88,21 +96,21 @@
 
     in {
       imports = map
-        (x: import x (args // { inherit palette browser terminal lib pkgs; })) [
-          ./alacritty.nix
-          ./dconf.nix
-          ./fish.nix
-          ./helix.nix
-          ./hyprland.nix
-          ./foot.nix
-          ./firefox.nix
-          ./kitty.nix
-          ./nu.nix
-          ./lf.nix
-          ./starship.nix
-          ./waybar.nix
-          ./zellij.nix
-          ./zoxide.nix
+        (x: import (x) (args // { inherit palette browser terminal lib pkgs; })) [
+          ../home/alacritty.nix
+          ../home/dconf.nix
+          ../home/fish.nix
+          ../home/helix.nix
+          ../home/hyprland.nix
+          ../home/foot.nix
+          ../home/firefox.nix
+          ../home/kitty.nix
+          ../home/nu.nix
+          ../home/lf.nix
+          ../home/starship.nix
+          ../home/waybar.nix
+          ../home/zellij.nix
+          ../home/zoxide.nix
         ] ++ [ hyprland.homeManagerModules.default ];
       services.mpris-proxy.enable = true;
       programs = {
@@ -144,6 +152,8 @@
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "23.05";
+
+
 
       home.file.".config/wofi/style.css".text = # css
         ''
