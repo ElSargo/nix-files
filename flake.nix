@@ -41,6 +41,7 @@
           nur.nixosModules.nur
           ./nixos/configuration.nix
           ./users/sargo.nix
+          ./users/root.nix
         ];
       in {
         packages = {
