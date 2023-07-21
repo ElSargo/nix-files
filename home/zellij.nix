@@ -1,11 +1,11 @@
 { pkgs, palette, supabar, system, ... }: {
   programs.zellij = {
     enable = true;
-
     package = pkgs.unstable.zellij;
     enableZshIntegration = false;
     settings = {
       default_layout = "supa";
+      pane_frames = true;
       ui = { pane_frames = { rounded_corners = true; }; };
       keybinds = {
         unbind = "Ctrl o";

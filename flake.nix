@@ -6,21 +6,56 @@
     nur.url = "github:nix-community/NUR";
 
     home-manager.url = "github:nix-community/home-manager/release-23.05";
-    hyprland.url = "github:hyprwm/Hyprland";
     flake-utils.url = "github:numtide/flake-utils";
-    helix-flake.url = "github:the-mikedavis/helix";
     nuscripts.url = "github:nushell/nu_scripts";
 
-    unix-chad-bookmarks.url = "github:ElSargo/unix-chad-bookmarks";
-    supabar.url = "github:ElSargo/supabar";
-    eww-bar.url = "github:ElSargo/eww-bar";
-    new-terminal-hyprland.url = "github:ElSargo/new-terminal-hyprland";
-    nvim.url = "github:ElSargo/nvim";
-    wgsl.url = "github:ElSargo/wgsl-analyzer";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    helix-flake = {
+      url = "github:the-mikedavis/helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    xhmm = {
+      url = "https://github.com/schuelermine/xhmm/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    unix-chad-bookmarks = {
+      url = "github:ElSargo/unix-chad-bookmarks";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    supabar = {
+      url = "github:ElSargo/supabar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    eww-bar = {
+      url = "github:ElSargo/eww-bar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    new-terminal-hyprland = {
+      url = "github:ElSargo/new-terminal-hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvim = {
+      url = "github:ElSargo/nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wgsl = {
+      url = "github:ElSargo/wgsl-analyzer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zellij-runner = {
+      url = "github:ElSargo/zellij-runner";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, eww-bar, nur
-    , home-manager, helix-flake, ... }@attrs:
+    , home-manager, helix-flake, unix-chad-bookmarks, supabar,
+
+    new-terminal-hyprland, nvim, wgsl, zellij-runner, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -32,8 +67,16 @@
         };
         helix = helix-flake.packages.${system}.default;
         overlays = ({ config, pkgs, ... }: {
-          nixpkgs.overlays =
-            [ unstable-overlay eww-bar.overlays.${system}.default ];
+          nixpkgs.overlays = [
+            unstable-overlay
+            unix-chad-bookmarks.overlays.${system}.default
+            # supabar.overlays.${system}.default
+            eww-bar.overlays.${system}.default
+            new-terminal-hyprland.overlays.${system}.default
+            nvim.overlays.${system}.default
+            wgsl.overlays.${system}.default
+            zellij-runner.overlays.${system}.default
+          ];
         });
         specialArgs = attrs // { inherit system helix; };
         default_modules = [
@@ -51,7 +94,8 @@
 
             SargoSummit = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
-              modules = default_modules ++ [ ./hosts/summit.nix ];
+              modules = default_modules
+                ++ [ ./hosts/summit.nix ./nixos/finger_print.nix ];
             };
 
             SargoLaptop = nixpkgs.lib.nixosSystem {
@@ -63,7 +107,7 @@
 
         };
         devShells = {
-          default = let pkgs = nixpkgs.legacyPackages.${system};
+          bootstrap = let pkgs = nixpkgs.legacyPackages.${system};
           in pkgs.mkShell {
             NIX_CONFIG = "experimental-features = nix-command flakes";
             nativeBuildInputs = with pkgs; [

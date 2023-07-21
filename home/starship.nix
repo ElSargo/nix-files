@@ -20,7 +20,7 @@ in {
         ];
     in {
       format = ''
-        ${main_format}[](fg:${bg})
+         ${main_format}[](fg:${bg})
         $jobs$character'';
 
       palette = "gruvbox";

@@ -91,13 +91,12 @@ in {
       xc = "wl-copy";
       clip = "wl-copy";
       lf = "lfcd";
+      ls = "${pk "exa"} -l";
     };
     shellAbbrs = {
-      i = "nix-env -iA nixos.";
       q = "exit";
       ":q" = "exit";
       c = "clear";
-      ls = "${pk "exa"} -l";
       r = "reset";
       xplr = "cd $(/usr/bin/env ${pk "xplr"})";
       ns = "nix-shell";
@@ -193,6 +192,15 @@ in {
           sha256 = "sha256-oYVZoDCmY9zl5pLAKmO8xvMCSAe6vxf+yFpB6o8koos=";
         };
       }
+      # {
+      #   name = "async-prompt";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "acomagu";
+      #     repo = "fish-async-prompt";
+      #     rev = "4c732cc043b8dd04e64a169ec6bbf3a9b394819f";
+      #     sha256 = "sha256-YgqZINmY4nKphlqwHo2B0NfP4nmSxIIuAMUuoftI9Lg=";
+      #   };
+      # }
     ];
   };
 }

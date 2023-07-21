@@ -160,7 +160,7 @@ in {
       ''
         # exec-once=nm-applet
         exec-once=eww open-many bar bar2
-        exec-once=swaybg -i ~/Pictures/5472x3648.jpg
+        exec-once=swaybg -i ~/Pictures/13.jpg
           ${unbinds}
           ${keybinds}
           ${mouse-keybinds}

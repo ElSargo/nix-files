@@ -1,18 +1,10 @@
-{ hyprland, system, home-manager, pkgs, ... }@args: {
+{ hyprland, home-manager, pkgs, ... }@args: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
       "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
     description = "Oliver Sargison";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = [
-      args.unix-chad-bookmarks.defaultPackage.${system}
-      args.new-terminal-hyprland.defaultPackage.${system}
-      args.nvim.packages.${system}.default
-      args.wgsl.packages.${system}.default
-      pkgs.eww
-
-    ];
   };
   security.sudo.extraRules = [{
     users = [ "sargo" ];
@@ -83,7 +75,7 @@
         bash = { enable = true; };
       };
 
-      services.pueue.enable = true;
+      # services.pueue.enable = true;
       home.username = "sargo";
       home.homeDirectory = "/home/sargo";
       home.stateVersion = "23.05";
