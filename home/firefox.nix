@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, firefox-gnome-theme , ... }: {
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
@@ -406,12 +406,16 @@
             ****************************************************************************/
           '';
         userChrome = ''
+          @import "firefox-gnome-theme/userChrome.css";
           # a css 
         '';
         userContent = ''
+          @import "firefox-gnome-theme/userContent.css";
           # Here too
-        '';
+        '' ;
+
       };
     };
   };
+        home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source = "${firefox-gnome-theme}" ;
 }

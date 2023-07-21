@@ -21,8 +21,8 @@ let
     gnomeExtensions.user-themes
     gnomeExtensions.gsconnect
     gnomeExtensions.grand-theft-focus
-    gnome.gnome-tweaks
-    gnome.gnome-themes-extra
+    # gnome.gnome-tweaks
+    # gnome.gnome-themes-extra
 
   ];
 

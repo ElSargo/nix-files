@@ -8,6 +8,10 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     flake-utils.url = "github:numtide/flake-utils";
     nuscripts.url = "github:nushell/nu_scripts";
+    firefox-gnome-theme = {
+      url = "github:rafaelmardojai/firefox-gnome-theme";
+      flake = false;
+    };
 
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -15,10 +19,6 @@
     };
     helix-flake = {
       url = "github:the-mikedavis/helix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    xhmm = {
-      url = "https://github.com/schuelermine/xhmm/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -40,7 +40,7 @@
     };
     nvim = {
       url = "github:ElSargo/nvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     wgsl = {
       url = "github:ElSargo/wgsl-analyzer";

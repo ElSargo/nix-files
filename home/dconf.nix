@@ -1,4 +1,4 @@
-{ lib, browser, ... }: {
+{ lib, browser ? "firefox" , ... }: {
   dconf.settings = with builtins;
     with lib;
     let
@@ -39,7 +39,6 @@
       "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings =
         mkreg binds;
       "org/gnome/desktop/wm/keybindings" = {
-
         switch-to-workspace-1 = [ "<Super>1" ];
         switch-to-workspace-2 = [ "<Super>2" ];
         switch-to-workspace-3 = [ "<Super>3" ];
@@ -101,7 +100,6 @@
         favorite-apps = [
           "${browser}.desktop"
           "kitty.desktop"
-          "armcord.desktop"
           "org.keepassxc.KeePassXC.desktop"
           "org.gnome.Nautilus.desktop"
         ];
@@ -155,4 +153,8 @@
         repeat = true;
       };
     };
+
+    home.file.".config/geary/user-style.css".text = ''
+      @media (prefers-color-scheme: dark) { :root, *:not(a) { color: #eeeeec !important; background-color: #353535 !important; } } 
+    '';
 }
