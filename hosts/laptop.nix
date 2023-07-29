@@ -1,6 +1,18 @@
-{ config, lib, modulesPath, ... }: {
+{ config, lib, modulesPath, pkgs , ... }: {
   networking.hostName = "SargoLaptop";
   # networking.defaultGateway = "192.168.1.201";
+
+  # Bootloader.
+  boot = {
+    # binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.grub.configurationLimit = 10;
+    tmp.cleanOnBoot = true;
+    initrd.secrets = { "/crypto_keyfile.bin" = null; };
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
+  };  
 
   boot.initrd.luks.devices."luks-4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064".device =
     "/dev/disk/by-uuid/4955bc2c-1e9b-4a8b-ab6d-125ca5b3e064";

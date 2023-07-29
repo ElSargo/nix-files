@@ -100,17 +100,6 @@
 
   sound.enable = true;
 
-  # Bootloader.
-  boot = {
-    binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    loader.efi.efiSysMountPoint = "/boot/efi";
-    loader.grub.configurationLimit = 10;
-    tmp.cleanOnBoot = true;
-    initrd.secrets = { "/crypto_keyfile.bin" = null; };
-    kernelPackages = pkgs.unstable.linuxPackages_latest;
-  };
 
   programs = {
     mtr.enable = true;

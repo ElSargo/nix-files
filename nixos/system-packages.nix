@@ -81,7 +81,7 @@ let
 
   system = with pkgs; [ cpupower-gui ];
 
-  compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland ];
+  compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland git ];
 
   browsers = with pkgs; [ unstable.firefox ];
 
