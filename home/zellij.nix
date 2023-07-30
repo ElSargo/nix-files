@@ -1,4 +1,4 @@
-{ pkgs, palette, supabar, system, ... }: {
+{ pkgs, palette, supabar, ... }: {
   programs.zellij = {
     enable = true;
     package = pkgs.unstable.zellij;
@@ -48,7 +48,7 @@
               children
               pane size=1 borderless=true {
                   plugin location="file:${
-                    supabar.packages.${system}.default
+                supabar
                   }/bin/zellij-supabar.wasm"
               }
           }
@@ -57,7 +57,7 @@
            children
            pane size=1 borderless=true {
               plugin location="file:${
-                supabar.packages.${system}.default
+                supabar
               }/bin/zellij-supabar.wasm"
            }
         }

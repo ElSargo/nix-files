@@ -13,10 +13,6 @@
       flake = false;
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     helix-flake = {
       url = "github:the-mikedavis/helix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,18 +26,7 @@
       url = "github:ElSargo/supabar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    eww-bar = {
-      url = "github:ElSargo/eww-bar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    new-terminal-hyprland = {
-      url = "github:ElSargo/new-terminal-hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nvim = {
-      url = "github:ElSargo/nvim";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nvim = { url = "github:ElSargo/nvim"; };
     wgsl = {
       url = "github:ElSargo/wgsl-analyzer";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,10 +37,9 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, eww-bar, nur
-    , home-manager, helix-flake, unix-chad-bookmarks, supabar,
-
-    new-terminal-hyprland, nvim, wgsl, zellij-runner, ... }@attrs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
+    , helix-flake, supabar, nvim, wgsl, zellij-runner, unix-chad-bookmarks, ...
+    }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -71,8 +55,6 @@
             unstable-overlay
             unix-chad-bookmarks.overlays.${system}.default
             # supabar.overlays.${system}.default
-            eww-bar.overlays.${system}.default
-            new-terminal-hyprland.overlays.${system}.default
             nvim.overlays.${system}.default
             wgsl.overlays.${system}.default
             zellij-runner.overlays.${system}.default

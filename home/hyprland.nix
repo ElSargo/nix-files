@@ -155,7 +155,7 @@ in {
   ];
   wayland.windowManager.hyprland = {
     package = pkgs.unstable.hyprland;
-    enable = true;
+    enable = false;
     extraConfig = # zig
       ''
         # exec-once=nm-applet
@@ -243,3 +243,73 @@ in {
       '';
   };
 }
+
+
+# From nu.nix
+# lt = "hyprctl dispatch layoutmsg orientationtop";
+# lr = "hyprctl dispatch layoutmsg orientationright";
+# lb = "hyprctl dispatch layoutmsg orientationbottom";
+# ll = "hyprctl dispatch layoutmsg orientationleft";
+# lc = "hyprctl dispatch layoutmsg orientationcenter";
+# From confiuration.nix
+# hyprland.enable = true;
+# new-terminal-hyprland was installed
+# From flake.nix inputs
+# new-terminal-hyprland = {
+#   url = "github:ElSargo/new-terminal-hyprland";
+#   inputs.nixpkgs.follows = "nixpkgs";
+# };
+# hyprland = {
+#   url = "github:hyprwm/Hyprland";
+#   inputs.nixpkgs.follows = "nixpkgs";
+# };
+# eww-bar = {
+#   url = "github:ElSargo/eww-bar";
+#   inputs.nixpkgs.follows = "nixpkgs";
+# };
+# eww-bar.overlays.${system}.default
+# new-terminal-hyprland.overlays.${system}.default
+#
+
+#From fish.nix
+# toggle_layout = {
+#   description = "Toggle between the hyprland master and dwindle layouts";
+#   body = # fish
+#     ''
+#       switch "$(hyprctl getoption general:layout)"
+#       case "*master*"
+#         hyprctl keyword general:layout dwindle
+#       case "*"
+#         hyprctl keyword general:layout master
+#       end
+#     '';
+# };
+#
+# toggle_eye_saver = {
+#   body = # fish
+#     ''
+#       switch "$(hyprctl getoption decoration:screen_shader)"
+#         case "*shader.glsl*" 
+#             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
+#         case '*'
+#             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
+#         end
+#     '';
+#   description = "Toggle the eye saver shader";
+# };
+# lt = "hyprctl dispatch layoutmsg orientationtop";
+# lr = "hyprctl dispatch layoutmsg orientationright";
+# lb = "hyprctl dispatch layoutmsg orientationbottom";
+# ll = "hyprctl dispatch layoutmsg orientationleft";
+# lc = "hyprctl dispatch layoutmsg orientationcenter";
+
+#From sargo.nix
+# hyprland.homeManagerModules.default
+# ../home/hyprland.nix
+
+
+# system packages
+# pulsemixer
+# pavucontrol
+# pulseaudio
+  # wlogout

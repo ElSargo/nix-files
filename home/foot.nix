@@ -4,7 +4,7 @@ let color = mapAttrs (k: v: substring 1 6 v) palette;
 in {
   programs.foot = {
     package = pkgs.unstable.foot;
-    enable = true;
+    enable = false;
 
     server.enable = true;
     settings = {

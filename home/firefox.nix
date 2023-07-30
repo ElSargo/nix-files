@@ -1,4 +1,4 @@
-{ pkgs, config, lib, firefox-gnome-theme , ... }: {
+{ pkgs, config, lib, firefox-gnome-theme, ... }: {
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
@@ -33,21 +33,6 @@
 
         extensions = with config.nur.repos.rycee.firefox-addons;
           let
-            gruvfox = buildFirefoxXpiAddon {
-              pname = "gruvfox";
-              version = "1.0";
-              addonId = "{6f5ff416-2f62-443a-87b6-c0cefa5a857a}";
-              url =
-                "https://addons.mozilla.org/firefox/downloads/file/3793275/gruvfox-1.0.xpi";
-              sha256 =
-                "fb2b22ccb79afbf0a27a7131dc66797bda12c1b6462c46136d3e3ae367802882";
-              meta = with lib; {
-                description =
-                  "Gruvfox is a minimal and flat Firefox theme based on Gruvbox. It aims to pair well with other flat-themed Gruvbox programs like: VSCode, iterm2, etc.";
-                license = licenses.cc-by-nc-sa-30;
-                platforms = platforms.all;
-              };
-            };
 
             trackmenot = buildFirefoxXpiAddon {
               pname = "trackmenot";
@@ -67,7 +52,6 @@
             };
 
           in [
-            gruvfox
             trackmenot
             clearurls
             decentraleyes
@@ -75,9 +59,7 @@
             keepassxc-browser
             re-enable-right-click
             sponsorblock
-            stylus
             tabliss
-            tab-stash
             vimium-c
             youtube-shorts-block
             terms-of-service-didnt-read
@@ -412,10 +394,11 @@
         userContent = ''
           @import "firefox-gnome-theme/userContent.css";
           # Here too
-        '' ;
+        '';
 
       };
     };
   };
-        home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source = "${firefox-gnome-theme}" ;
+  home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
+    "${firefox-gnome-theme}";
 }

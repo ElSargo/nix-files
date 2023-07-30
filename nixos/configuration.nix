@@ -2,7 +2,7 @@
   imports = [ ./remaps.nix ./fonts.nix ];
 
   environment = {
-    gnome.excludePackages = with pkgs.gnome; [
+    gnome.excludePackages =  with pkgs.gnome; [
       cheese # webcam tool
       gnome-music
       gnome-terminal
@@ -12,7 +12,7 @@
       iagno # go game
       hitori # sudoku game
       atomix # puzzle game
-    ];
+    ] ++ [ pkgs.gnome-tour ];
     systemPackages =
       pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
   };
@@ -51,8 +51,6 @@
 
   services = {
 
-    blueman.enable = true;
-    cpupower-gui.enable = true;
     dbus = {
       enable = true;
       implementation = "broker";
@@ -68,7 +66,6 @@
       jack.enable = true;
     };
     printing.enable = true;
-    upower.enable = true;
     xserver = {
       enable = true;
       desktopManager = {
@@ -100,14 +97,12 @@
 
   sound.enable = true;
 
-
   programs = {
     mtr.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    hyprland.enable = true;
   };
 
   hardware = {

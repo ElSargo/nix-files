@@ -2,9 +2,6 @@
 let
 
   audio = with pkgs; [
-    pulsemixer
-    pavucontrol
-    pulseaudio
     unstable.psst
     unstable.qpwgraph
     unstable.jamesdsp
@@ -19,13 +16,9 @@ let
     gnomeExtensions.grand-theft-focus
   ];
 
-  networking = with pkgs; [ blueberry blueman ];
-
   utils = with pkgs; [
     unstable.slides
     nix-prefetch-git
-    speedcrunch
-    wlogout
     keepassxc
     wl-clipboard
     wofi
@@ -36,10 +29,6 @@ let
   coding = with pkgs; [
     unstable.helix
     sccache
-    neovide
-    cmake
-    unstable.lapce
-    rnix-lsp
   ];
 
   terminal = with pkgs; [
@@ -59,35 +48,26 @@ let
     cargo
   ];
 
-
-  desktop = with pkgs; [ inlyne swaybg feh libreoffice ];
-
-  system = with pkgs; [ cpupower-gui ];
-
-  compat = with pkgs; [ pkg-config libxkbcommon gcc openssl unstable.wayland git ];
+  desktop = with pkgs; [ inlyne libreoffice ];
 
   browsers = with pkgs; [ unstable.firefox ];
 
   custom = with pkgs; [
     unixchadbookmarks
-    new-terminal-hyprland
     nvim
     wgsl-analyzer
     zellij-runner
-    eww-bar
   ];
 
 in [
   audio
   gnome
-  networking
   utils
   coding
   terminal
   desktop
-  compat
   browsers
-  system
+  
   custom
 ]
 

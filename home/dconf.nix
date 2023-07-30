@@ -1,4 +1,4 @@
-{ lib, browser ? "firefox" , ... }: {
+{ lib, browser ? "firefox", ... }: {
   dconf.settings = with builtins;
     with lib;
     let
@@ -32,10 +32,9 @@
         }) binds);
     in (mkbinds binds) // {
 
-      # "org/gnome/desktop/interface" = {
-      #   gtk-theme = "gruvbox-dark";
-      #   icon-theme = "oomox-gruvbox-dark";
-      # };
+      "org/gnome/desktop/interface" = {
+        gtk-theme = "Adwaita-dark";
+      };
       "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings =
         mkreg binds;
       "org/gnome/desktop/wm/keybindings" = {
@@ -82,20 +81,20 @@
 
       "org/gnome/shell" = {
         enabled-extensions = [
-          "apps-menu@gnome-shell-extensions.gcampax.github.com"
-          # "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
-          "places-menu@gnome-shell-extensions.gcampax.github.com"
-          "drive-menu@gnome-shell-extensions.gcampax.github.com"
-          "user-theme@gnome-shell-extensions.gcampax.github.com"
-          "blur-my-shell@aunetx"
-          "color-picker@tuberry"
-          "pano@elhan.io"
-          "dash-to-dock@micxgx.gmail.com"
-          "custom-accent-colors@demiskp"
-          "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
-          "gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com"
-          "caffeine@patapon.info"
-          "uptime-indicator@gniourfgniourf.gmail.com"
+        "apps-menu@gnome-shell-extensions.gcampax.github.com"
+         "places-menu@gnome-shell-extensions.gcampax.github.com"
+         "drive-menu@gnome-shell-extensions.gcampax.github.com"
+         "user-theme@gnome-shell-extensions.gcampax.github.com"
+         "blur-my-shell@aunetx"
+         "color-picker@tuberry"
+         "pano@elhan.io"
+         "dash-to-dock@micxgx.gmail.com"
+         "custom-accent-colors@demiskp"
+         "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
+         "gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com"
+         "caffeine@patapon.info"
+         "uptime-indicator@gniourfgniourf.gmail.com"
+         "grand-theft-focus@zalckos.github.com"
         ];
         favorite-apps = [
           "${browser}.desktop"
@@ -154,7 +153,7 @@
       };
     };
 
-    home.file.".config/geary/user-style.css".text = ''
-      @media (prefers-color-scheme: dark) { :root, *:not(a) { color: #eeeeec !important; background-color: #353535 !important; } } 
-    '';
+  home.file.".config/geary/user-style.css".text = ''
+    @media (prefers-color-scheme: dark) { :root, *:not(a) { color: #eeeeec !important; background-color: #353535 !important; } } 
+  '';
 }

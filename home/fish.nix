@@ -43,36 +43,12 @@ in {
           '';
         description = "Change dirs with lf";
       };
-      toggle_layout = {
-        description = "Toggle between the hyprland master and dwindle layouts";
-        body = # fish
-          ''
-            switch "$(hyprctl getoption general:layout)"
-            case "*master*"
-              hyprctl keyword general:layout dwindle
-            case "*"
-              hyprctl keyword general:layout master
-            end
-          '';
-      };
       rebuild = {
         body = # fish
           ''
             sudo nixos-rebuild switch --flake ~/nix-files/;
           '';
         description = "Rebuild the system configuration";
-      };
-      toggle_eye_saver = {
-        body = # fish
-          ''
-            switch "$(hyprctl getoption decoration:screen_shader)"
-              case "*shader.glsl*" 
-                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
-              case '*'
-                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
-              end
-          '';
-        description = "Toggle the eye saver shader";
       };
       dmenu = {
         body = # fish
@@ -103,11 +79,6 @@ in {
       za = "${pkgs.unstable.zellij}/bin/zellij a";
       zl =
         " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
-      lt = "hyprctl dispatch layoutmsg orientationtop";
-      lr = "hyprctl dispatch layoutmsg orientationright";
-      lb = "hyprctl dispatch layoutmsg orientationbottom";
-      ll = "hyprctl dispatch layoutmsg orientationleft";
-      lc = "hyprctl dispatch layoutmsg orientationcenter";
 
     };
     shellInit = # fish

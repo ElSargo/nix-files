@@ -39,11 +39,6 @@
                 sync_on_enter: true 
               }
               hooks: {
-                  # pre_prompt: { print "pre prompt hook" }
-                  # pre_execution: { print "pre exec hook" }
-                  # env_change: {
-                      # PWD: {|before, after| print $"changing directory from ($before) to ($after)" }
-                  # }
                   command_not_found: {
                       |cmd| ( 
                          let foundCommands = (nix-locate --minimal --no-group --type x --type s --top-level --whole-name --at-root ("/bin/" + $cmd) | lines | str replace ".out" "");
@@ -150,14 +145,6 @@
     };
 
     shellAliases = {
-      # ssh-init = "source ${
-      #     pkgs.writeTextFile {
-      #       name = "ssh-helper.nu";
-      #       text = ''
-      #         ssh-agent -c | lines | first 2 | parse "setenv {name} {value};" | transpose -i -r -d | load-env'';
-      #     }
-      #   }";
-      # sshigh = "ssh-init ; ssh-add ~/.ssh/github";
       unix = "curl -L http://git.io/unix";
       nix-develop = "nix develop -c nu";
       nix-shell = "nix-shell --command nu";
@@ -172,11 +159,6 @@
       c = "clear";
       r = "reset";
       za = "zellij a";
-      lt = "hyprctl dispatch layoutmsg orientationtop";
-      lr = "hyprctl dispatch layoutmsg orientationright";
-      lb = "hyprctl dispatch layoutmsg orientationbottom";
-      ll = "hyprctl dispatch layoutmsg orientationleft";
-      lc = "hyprctl dispatch layoutmsg orientationcenter";
     };
   };
 }
