@@ -1,4 +1,5 @@
-{ pkgs, palette, supabar, ... }: {
+{ pkgs, palette, ... }: let
+    supabar-wasm = ''"file:${pkgs.supabar}/bin/zellij-supabar.wasm"'' ; in {
   programs.zellij = {
     enable = true;
     package = pkgs.unstable.zellij;
@@ -47,18 +48,14 @@
           default_tab_template {
               children
               pane size=1 borderless=true {
-                  plugin location="file:${
-                supabar
-                  }/bin/zellij-supabar.wasm"
+                  plugin location=${supabar-wasm}
               }
           }
 
         tab_template name="ui" {
            children
            pane size=1 borderless=true {
-              plugin location="file:${
-                supabar
-              }/bin/zellij-supabar.wasm"
+              plugin location=${supabar-wasm}
            }
         }
 

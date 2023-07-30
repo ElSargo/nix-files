@@ -54,7 +54,7 @@
           nixpkgs.overlays = [
             unstable-overlay
             unix-chad-bookmarks.overlays.${system}.default
-            # supabar.overlays.${system}.default
+            supabar.overlays.${system}.default
             nvim.overlays.${system}.default
             wgsl.overlays.${system}.default
             zellij-runner.overlays.${system}.default
