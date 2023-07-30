@@ -50,7 +50,7 @@
   };
 
   services = {
-
+    syncthing.enable = true;
     dbus = {
       enable = true;
       implementation = "broker";
