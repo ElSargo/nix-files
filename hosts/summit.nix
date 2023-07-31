@@ -1,4 +1,4 @@
-{ config, lib, modulesPath, ... }: {
+{ config, lib, modulesPath, pkgs, ... }: {
   networking.defaultGateway = "192.168.1.200";
   networking.hostName = "SargoSummit"; # Define your hostname.
 
@@ -7,6 +7,7 @@
     binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
   };
 
   #////////////////////////////////////////////////////////////////////

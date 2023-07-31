@@ -7,13 +7,13 @@ let
     unstable.jamesdsp
   ];
 
-  gnome = with pkgs; [
-    gnomeExtensions.removable-drive-menu
-    gnomeExtensions.caffeine
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.uptime-indicator
-    gnomeExtensions.grand-theft-focus
+  gnome = with pkgs.gnomeExtensions; [
+    removable-drive-menu
+    caffeine
+    dash-to-dock
+    blur-my-shell
+    uptime-indicator
+    grand-theft-focus
   ];
 
   utils = with pkgs; [
