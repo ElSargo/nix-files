@@ -7,7 +7,9 @@ let
 in {
 
   home.packages = with pkgs; [ ripgrep openssh coreutils wl-clipboard ];
+  programs.kitty.shellIntegration.enableFishIntegration	= true;
   programs.fish = {
+    package = pkgs.fish;
     enable = true;
     functions = {
       sshigh = {

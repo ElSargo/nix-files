@@ -1,4 +1,4 @@
-{ pkgs, browser, palette, ... }:
+{ pkgs, browser ? "firefox", palette, ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
@@ -142,30 +142,18 @@ in {
       }
     '';
 
-  home.packages = with pkgs; [
-    pulseaudio
-    unstable.foot
-    eww
-    swaybg
-    lazygit
-    light
-    galculator
-    thunderbird
-    wofi
-  ];
   wayland.windowManager.hyprland = {
     package = pkgs.unstable.hyprland;
-    enable = false;
-    extraConfig = # zig
+    enable = true;
+    extraConfig = # kdl
       ''
         # exec-once=nm-applet
         exec-once=eww open-many bar bar2
-        exec-once=swaybg -i ~/Pictures/13.jpg
+        exec-once=swaybg -i ~/Pictures/flake.png
           ${unbinds}
           ${keybinds}
           ${mouse-keybinds}
           monitor=HDMI-A-1,preferred,auto,1
-          monitor=HDMI-A-1,transform,1
           workspace=HDMI-A-1,1
 
           input {
@@ -194,10 +182,9 @@ in {
           decoration {
               # screen_shader = ~/.config/hypr/shader.glsl
               rounding = 10
-              blur = yes
-              blur_size = 4
-              blur_passes = 1
-              blur_new_optimizations = on
+              blur {
+                size = 4
+              }
 
               drop_shadow = true
               shadow_range = 20
@@ -242,74 +229,68 @@ in {
           }
       '';
   };
+  home.packages = with pkgs; [
+    pulseaudio
+    swaybg
+    lazygit
+    light
+    galculator
+    thunderbird
+    wofi
+    pulsemixer
+    pavucontrol
+    pulseaudio
+    wlogout
+  ];
+
+  programs.fish = {
+    shellAliases = {
+  lt = "hyprctl dispatch layoutmsg orientationtop";
+lr = "hyprctl dispatch layoutmsg orientationright";
+lb = "hyprctl dispatch layoutmsg orientationbottom";
+ll = "hyprctl dispatch layoutmsg orientationleft";
+lc = "hyprctl dispatch layoutmsg orientationcenter";
+}    ;
+    functions = {
+ toggle_layout = {
+   description = "Toggle between the hyprland master and dwindle layouts";
+   body = # fish
+     ''
+       switch "$(hyprctl getoption general:layout)"
+       case "*master*"
+         hyprctl keyword general:layout dwindle
+       case "*"
+         hyprctl keyword general:layout master
+       end
+     '';
+ };
+
+ toggle_eye_saver = {
+   body = # fish
+     ''
+       switch "$(hyprctl getoption decoration:screen_shader)"
+         case "*shader.glsl*" 
+             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
+         case '*'
+             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
+         end
+     '';
+   description = "Toggle the eye saver shader";
+ };
+
+};
+  };
+
+  programs.nushell = {
+    shellAliases = {
+      lt = "hyprctl dispatch layoutmsg orientationtop";
+      lr = "hyprctl dispatch layoutmsg orientationright";
+      lb = "hyprctl dispatch layoutmsg orientationbottom";
+      ll = "hyprctl dispatch layoutmsg orientationleft";
+      lc = "hyprctl dispatch layoutmsg orientationcenter";
+      
+    };
+  };
+  
 }
 
-
-# From nu.nix
-# lt = "hyprctl dispatch layoutmsg orientationtop";
-# lr = "hyprctl dispatch layoutmsg orientationright";
-# lb = "hyprctl dispatch layoutmsg orientationbottom";
-# ll = "hyprctl dispatch layoutmsg orientationleft";
-# lc = "hyprctl dispatch layoutmsg orientationcenter";
-# From confiuration.nix
-# hyprland.enable = true;
-# new-terminal-hyprland was installed
-# From flake.nix inputs
-# new-terminal-hyprland = {
-#   url = "github:ElSargo/new-terminal-hyprland";
-#   inputs.nixpkgs.follows = "nixpkgs";
-# };
-# hyprland = {
-#   url = "github:hyprwm/Hyprland";
-#   inputs.nixpkgs.follows = "nixpkgs";
-# };
-# eww-bar = {
-#   url = "github:ElSargo/eww-bar";
-#   inputs.nixpkgs.follows = "nixpkgs";
-# };
-# eww-bar.overlays.${system}.default
-# new-terminal-hyprland.overlays.${system}.default
-#
-
-#From fish.nix
-# toggle_layout = {
-#   description = "Toggle between the hyprland master and dwindle layouts";
-#   body = # fish
-#     ''
-#       switch "$(hyprctl getoption general:layout)"
-#       case "*master*"
-#         hyprctl keyword general:layout dwindle
-#       case "*"
-#         hyprctl keyword general:layout master
-#       end
-#     '';
-# };
-#
-# toggle_eye_saver = {
-#   body = # fish
-#     ''
-#       switch "$(hyprctl getoption decoration:screen_shader)"
-#         case "*shader.glsl*" 
-#             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
-#         case '*'
-#             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
-#         end
-#     '';
-#   description = "Toggle the eye saver shader";
-# };
-# lt = "hyprctl dispatch layoutmsg orientationtop";
-# lr = "hyprctl dispatch layoutmsg orientationright";
-# lb = "hyprctl dispatch layoutmsg orientationbottom";
-# ll = "hyprctl dispatch layoutmsg orientationleft";
-# lc = "hyprctl dispatch layoutmsg orientationcenter";
-
-#From sargo.nix
-# hyprland.homeManagerModules.default
-# ../home/hyprland.nix
-
-
-# system packages
-# pulsemixer
-# pavucontrol
-# pulseaudio
-  # wlogout

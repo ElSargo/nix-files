@@ -4,11 +4,11 @@ let color = mapAttrs (k: v: substring 1 6 v) palette;
 in {
   programs.foot = {
     package = pkgs.unstable.foot;
-    enable = false;
+    enable = true;
 
     server.enable = true;
     settings = {
-      main = { font = "JetBrainsMono Nerd Font:size=10"; };
+      main = { font = "JetBrainsMono Nerd Font:size=15"; };
       colors = {
 
         alpha = 0.85;

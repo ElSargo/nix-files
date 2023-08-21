@@ -32,9 +32,6 @@
         }) binds);
     in (mkbinds binds) // {
 
-      "org/gnome/desktop/interface" = {
-        gtk-theme = "Adwaita-dark";
-      };
       "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings =
         mkreg binds;
       "org/gnome/desktop/wm/keybindings" = {

@@ -1,4 +1,4 @@
-{  home-manager, pkgs, ... }@args: {
+{extra-home-modules ? [], home-manager, pkgs, ... }@args: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -17,6 +17,7 @@
   imports = [
     home-manager.nixosModules.home-manager
     {
+      qt.enable = true;
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.users.sargo = { lib, ... }:
@@ -27,22 +28,18 @@
 
         in {
           imports = map (x:
-            import (x)
-            (args // { inherit palette browser terminal lib pkgs; })) [
-              ../home/alacritty.nix
-              ../home/dconf.nix
+            (if builtins.isFunction x then x else  import x)
+            (args // { inherit palette browser terminal lib pkgs ;})) ([
+              ../home/bash.nix
               ../home/fish.nix
               ../home/helix.nix
-              ../home/foot.nix
-              ../home/firefox.nix
-              ../home/kitty.nix
               ../home/nu.nix
               ../home/lf.nix
               ../home/starship.nix
               ../home/waybar.nix
               ../home/zellij.nix
               ../home/zoxide.nix
-            ] ;
+            ] ++ extra-home-modules) ;
           services.mpris-proxy.enable = true;
           programs = {
             home-manager.enable = true;

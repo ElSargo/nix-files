@@ -2,7 +2,6 @@
   home.packages = with pkgs; [
     neovim-remote
     fish
-    nix-index
     wl-clipboard
     unstable.zellij
     bzip2
@@ -14,13 +13,13 @@
     curl
   ];
   programs.nushell = {
-    package = pkgs.unstable.nushell;
+    package = pkgs.nushell;
     enable = true;
 
     configFile = {
       text = # nu
         ''
-              let-env config = {
+              $env.config = {
               table: {
                 mode: rounded
               }
@@ -106,7 +105,7 @@
               }
             }
 
-          export use "${nuscripts}/modules/background_task/job.nu"
+          # export use "${nuscripts}/modules/background_task/job.nu"
           export use "${nuscripts}/modules/network/ssh.nu"
           use "${nuscripts}/custom-completions/zellij/zellij-completions.nu" *
           use "${nuscripts}/custom-completions/git/git-completions.nu" *
@@ -135,12 +134,10 @@
     envFile = {
       text = # nu
         ''
-          let-env PATH = ($env.PATH | split row (char esep) | append $"($env.HOME)/.cargo/bin/")
-          let-env FOO = 'BAR'
-          let-env DIRENV_LOG_FORMAT = ""
-          let-env EDITOR = "hx"
-          let-env VISUAL = "hx"
-          let-env BROWSER = "${browser}"
+          $env.DIRENV_LOG_FORMAT = ""
+          $env.EDITOR = "hx"
+          $env.VISUAL = "hx"
+          $env.BROWSER = "${browser}"
         '';
     };
 

@@ -1,14 +1,26 @@
 { config, lib, modulesPath, pkgs, ... }: {
-  networking.defaultGateway = "192.168.1.200";
+  # networking.defaultGateway = "192.168.1.200";
   networking.hostName = "SargoSummit"; # Define your hostname.
-
+  services.acpid.enable = true;
   # Bootloader.
   boot = {
+    tmp.useTmpfs = true;
     binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
     kernelPackages = pkgs.unstable.linuxPackages_latest;
+    # kernelParams = ["quiet"];
   };
+
+  systemd.services.mcontrolcenter= {
+    description = "test Daemon";
+    serviceConfig = {
+      Name="mcontrolcenter.helper";
+      Exec="/home/sargo/MControlCenter/helper/mcontrolcenter-helper";
+      User="root";
+    };
+    enable = true;
+ };
 
   #////////////////////////////////////////////////////////////////////
   # From /etc/nixos/configuration.nix
@@ -30,7 +42,7 @@
     "rtsx_pci_sdmmc"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel"  "acpi_ec" "ec_sys" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

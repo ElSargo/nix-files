@@ -1,4 +1,4 @@
-{ pkgs, config, lib, firefox-gnome-theme, ... }: {
+{firefox-gnome-theme,  pkgs, config, lib,  ... }: ({
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
@@ -387,6 +387,13 @@
              * END: BETTERFOX                                                           *
             ****************************************************************************/
           '';
+
+      };
+    };
+  };
+}
+ // (if  firefox-gnome-theme == null then  { } else {
+ programs.firefox.profiles.sargo = {
         userChrome = ''
           @import "firefox-gnome-theme/userChrome.css";
           # a css 
@@ -395,10 +402,8 @@
           @import "firefox-gnome-theme/userContent.css";
           # Here too
         '';
-
-      };
-    };
-  };
+  
+  } ;
   home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
     "${firefox-gnome-theme}";
-}
+}))

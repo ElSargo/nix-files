@@ -1,18 +1,15 @@
 { pkgs, ... }: {
   imports = [ ./remaps.nix ./fonts.nix ];
 
+  systemd.watchdog.rebootTime = "10s"; 
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=10s
+  '';
+
   environment = {
-    gnome.excludePackages =  with pkgs.gnome; [
-      cheese # webcam tool
-      gnome-music
-      gnome-terminal
-      gedit # text editor
-      epiphany # web browser
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
-    ] ++ [ pkgs.gnome-tour ];
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
     systemPackages =
       pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
   };
@@ -50,10 +47,29 @@
   };
 
   services = {
+    auto-cpufreq = {
+      enable = true;
+      settings = {
+        # settings for when connected to a power source
+        charger = {
+        governor = "performance";
+        scaling_min_freq = 800000;# kHz
+        scaling_max_freq = 4700000;# kHz
+        turbo = "auto";
+        };
+        battery = {
+          governor = "powersave";
+          scaling_min_freq = 500000; # kHz
+          scaling_max_freq = 1000000;# kHz
+          turbo = "auto";
+        };
+      };
+    };
+    power-profiles-daemon.enable = false;
     syncthing.enable = true;
     dbus = {
       enable = true;
-      implementation = "broker";
+      # implementation = "broker";
     };
     flatpak.enable = true;
     openssh.enable = true;
@@ -70,9 +86,7 @@
       enable = true;
       desktopManager = {
         xterm.enable = false;
-        gnome.enable = true;
       };
-      displayManager.gdm.enable = true;
       libinput.enable = true;
       excludePackages =
         [ pkgs.xterm pkgs.gnome.gnome-terminal pkgs.gnome-console ];
@@ -86,8 +100,8 @@
 
   qt = {
     enable = true;
-    platformTheme = "gtk2";
-    style = "gtk2";
+    platformTheme = "gnome";
+    style = "adwaita-dark";
   };
 
   xdg.portal = {
@@ -98,6 +112,7 @@
   sound.enable = true;
 
   programs = {
+    command-not-found.enable = false;
     mtr.enable = true;
     gnupg.agent = {
       enable = true;
@@ -105,9 +120,15 @@
     };
   };
 
+
+  
+    
+      
+        
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;
+    opengl.enable = true;
   };
 
   nixpkgs = { config.allowUnfree = true; };

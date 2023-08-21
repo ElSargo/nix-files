@@ -6,6 +6,7 @@ in {
   imports = [ (import "${home-manager}/nixos") ];
   home-manager.users.root = { lib, ... }: {
     imports = map (x: import (x) (args // { inherit palette lib pkgs; })) [
+      ../home/bash.nix
       ../home/starship.nix
       ../home/lf.nix
       ../home/nu.nix

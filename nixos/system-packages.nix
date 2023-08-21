@@ -7,14 +7,6 @@ let
     unstable.jamesdsp
   ];
 
-  gnome = with pkgs.gnomeExtensions; [
-    removable-drive-menu
-    caffeine
-    dash-to-dock
-    blur-my-shell
-    uptime-indicator
-    grand-theft-focus
-  ];
 
   utils = with pkgs; [
     unstable.slides
@@ -61,13 +53,11 @@ let
 
 in [
   audio
-  gnome
   utils
   coding
   terminal
   desktop
   browsers
-  
   custom
 ]
 
