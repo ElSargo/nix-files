@@ -1,4 +1,4 @@
-{pkgs,...}:{
+{ pkgs, ... }: {
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -15,8 +15,7 @@
       zl =
         " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
 
-
     };
-        
+
   };
 }

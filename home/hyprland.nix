@@ -245,40 +245,40 @@ in {
 
   programs.fish = {
     shellAliases = {
-  lt = "hyprctl dispatch layoutmsg orientationtop";
-lr = "hyprctl dispatch layoutmsg orientationright";
-lb = "hyprctl dispatch layoutmsg orientationbottom";
-ll = "hyprctl dispatch layoutmsg orientationleft";
-lc = "hyprctl dispatch layoutmsg orientationcenter";
-}    ;
+      lt = "hyprctl dispatch layoutmsg orientationtop";
+      lr = "hyprctl dispatch layoutmsg orientationright";
+      lb = "hyprctl dispatch layoutmsg orientationbottom";
+      ll = "hyprctl dispatch layoutmsg orientationleft";
+      lc = "hyprctl dispatch layoutmsg orientationcenter";
+    };
     functions = {
- toggle_layout = {
-   description = "Toggle between the hyprland master and dwindle layouts";
-   body = # fish
-     ''
-       switch "$(hyprctl getoption general:layout)"
-       case "*master*"
-         hyprctl keyword general:layout dwindle
-       case "*"
-         hyprctl keyword general:layout master
-       end
-     '';
- };
+      toggle_layout = {
+        description = "Toggle between the hyprland master and dwindle layouts";
+        body = # fish
+          ''
+            switch "$(hyprctl getoption general:layout)"
+            case "*master*"
+              hyprctl keyword general:layout dwindle
+            case "*"
+              hyprctl keyword general:layout master
+            end
+          '';
+      };
 
- toggle_eye_saver = {
-   body = # fish
-     ''
-       switch "$(hyprctl getoption decoration:screen_shader)"
-         case "*shader.glsl*" 
-             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
-         case '*'
-             hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
-         end
-     '';
-   description = "Toggle the eye saver shader";
- };
+      toggle_eye_saver = {
+        body = # fish
+          ''
+            switch "$(hyprctl getoption decoration:screen_shader)"
+              case "*shader.glsl*" 
+                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader_eye_saver.glsl
+              case '*'
+                  hyprctl keyword decoration:screen_shader ~/.config/hypr/shader.glsl
+              end
+          '';
+        description = "Toggle the eye saver shader";
+      };
 
-};
+    };
   };
 
   programs.nushell = {
@@ -288,9 +288,9 @@ lc = "hyprctl dispatch layoutmsg orientationcenter";
       lb = "hyprctl dispatch layoutmsg orientationbottom";
       ll = "hyprctl dispatch layoutmsg orientationleft";
       lc = "hyprctl dispatch layoutmsg orientationcenter";
-      
+
     };
   };
-  
+
 }
 

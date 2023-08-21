@@ -1,5 +1,6 @@
-{ pkgs, palette, ... }: let
-    supabar-wasm = ''"file:${pkgs.supabar}/bin/zellij-supabar.wasm"'' ; in {
+{ pkgs, palette, ... }:
+let supabar-wasm = ''"file:${pkgs.supabar}/bin/zellij-supabar.wasm"'';
+in {
   programs.zellij = {
     enable = true;
     package = pkgs.unstable.zellij;

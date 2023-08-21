@@ -1,4 +1,4 @@
-{pkgs,...}:{
+{ pkgs, ... }: {
   gtk.enable = true;
   # gtk.cursorTheme.package = pkgs.gnome.adwaita-icon-theme;
   gtk.theme.name = "Adwaita-dark";

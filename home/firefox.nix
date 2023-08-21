@@ -1,4 +1,5 @@
-{firefox-gnome-theme,  pkgs, config, lib,  ... }: ({
+{ firefox-gnome-theme, pkgs, config, lib, ... }:
+({
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
@@ -108,6 +109,16 @@
               iconUpdateURL = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@nw" ];
+            };
+            "Home manager search" = {
+              urls = [{
+                template =
+                  "https://mipmip.github.io/home-manager-option-search/?query={searchTerms}";
+              }];
+              iconUpdateURL =
+                "https://mipmip.github.io/home-manager-option-search/images/favicon.png";
+              updateInterval = 24 * 60 * 60 * 1000;
+              definedAliases = [ "@hm" ];
             };
             "Wikipedia (en)".metaData.alias = "@wiki";
             "Google".metaData.hidden = true;
@@ -391,19 +402,20 @@
       };
     };
   };
-}
- // (if  firefox-gnome-theme == null then  { } else {
- programs.firefox.profiles.sargo = {
-        userChrome = ''
-          @import "firefox-gnome-theme/userChrome.css";
-          # a css 
-        '';
-        userContent = ''
-          @import "firefox-gnome-theme/userContent.css";
-          # Here too
-        '';
-  
-  } ;
+} // (if firefox-gnome-theme == null then
+  { }
+else {
+  programs.firefox.profiles.sargo = {
+    userChrome = ''
+      @import "firefox-gnome-theme/userChrome.css";
+      # a css 
+    '';
+    userContent = ''
+      @import "firefox-gnome-theme/userContent.css";
+      # Here too
+    '';
+
+  };
   home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
     "${firefox-gnome-theme}";
 }))

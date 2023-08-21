@@ -12,15 +12,15 @@
     # kernelParams = ["quiet"];
   };
 
-  systemd.services.mcontrolcenter= {
+  systemd.services.mcontrolcenter = {
     description = "test Daemon";
     serviceConfig = {
-      Name="mcontrolcenter.helper";
-      Exec="/home/sargo/MControlCenter/helper/mcontrolcenter-helper";
-      User="root";
+      Name = "mcontrolcenter.helper";
+      Exec = "/home/sargo/MControlCenter/helper/mcontrolcenter-helper";
+      User = "root";
     };
     enable = true;
- };
+  };
 
   #////////////////////////////////////////////////////////////////////
   # From /etc/nixos/configuration.nix
@@ -42,7 +42,7 @@
     "rtsx_pci_sdmmc"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel"  "acpi_ec" "ec_sys" ];
+  boot.kernelModules = [ "kvm-intel" "acpi_ec" "ec_sys" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

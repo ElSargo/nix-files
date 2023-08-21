@@ -7,7 +7,7 @@ let
 in {
 
   home.packages = with pkgs; [ ripgrep openssh coreutils wl-clipboard ];
-  programs.kitty.shellIntegration.enableFishIntegration	= true;
+  programs.kitty.shellIntegration.enableFishIntegration = true;
   programs.fish = {
     package = pkgs.fish;
     enable = true;
@@ -17,7 +17,7 @@ in {
         body = # fish
           ''
             eval $( ssh-agent -c)
-            ssh-add ~/.ssh/github
+            ssh-add ~/.ssh/main
           '';
       };
       fhx = {
@@ -70,18 +70,17 @@ in {
       clip = "wl-copy";
       lf = "lfcd";
       ls = "${pk "exa"} -l";
+      xplr = "cd $(/usr/bin/env ${pk "xplr"})";
+      ns = "nix-shell";
+      za = "${pkgs.unstable.zellij}/bin/zellij a";
+      zl =
+        " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
     };
     shellAbbrs = {
       q = "exit";
       ":q" = "exit";
       c = "clear";
       r = "reset";
-      xplr = "cd $(/usr/bin/env ${pk "xplr"})";
-      ns = "nix-shell";
-      za = "${pkgs.unstable.zellij}/bin/zellij a";
-      zl =
-        " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
-
     };
     shellInit = # fish
       ''
@@ -165,15 +164,6 @@ in {
           sha256 = "sha256-oYVZoDCmY9zl5pLAKmO8xvMCSAe6vxf+yFpB6o8koos=";
         };
       }
-      # {
-      #   name = "async-prompt";
-      #   src = pkgs.fetchFromGitHub {
-      #     owner = "acomagu";
-      #     repo = "fish-async-prompt";
-      #     rev = "4c732cc043b8dd04e64a169ec6bbf3a9b394819f";
-      #     sha256 = "sha256-YgqZINmY4nKphlqwHo2B0NfP4nmSxIIuAMUuoftI9Lg=";
-      #   };
-      # }
     ];
   };
 }

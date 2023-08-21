@@ -1,4 +1,4 @@
-{extra-home-modules ? [], home-manager, pkgs, ... }@args: {
+{ extra-home-modules ? [ ], home-manager, pkgs, ... }@args: {
   users.users.sargo = {
     isNormalUser = true;
     initialHashedPassword =
@@ -28,8 +28,8 @@
 
         in {
           imports = map (x:
-            (if builtins.isFunction x then x else  import x)
-            (args // { inherit palette browser terminal lib pkgs ;})) ([
+            (if builtins.isFunction x then x else import x)
+            (args // { inherit palette browser terminal lib pkgs; })) ([
               ../home/bash.nix
               ../home/fish.nix
               ../home/helix.nix
@@ -39,7 +39,7 @@
               ../home/waybar.nix
               ../home/zellij.nix
               ../home/zoxide.nix
-            ] ++ extra-home-modules) ;
+            ] ++ extra-home-modules);
           services.mpris-proxy.enable = true;
           programs = {
             home-manager.enable = true;

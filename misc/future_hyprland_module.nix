@@ -1,32 +1,28 @@
-self: {
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+self:
+{ config, lib, pkgs, ... }:
+let
   cfg = config.wayland.windowManager.hyprland;
-  defaultHyprlandPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
-    enableXWayland = cfg.xwayland.enable;
-    hidpiXWayland = cfg.xwayland.hidpi;
-    inherit (cfg) nvidiaPatches;
-  };
+  defaultHyprlandPackage =
+    self.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+      enableXWayland = cfg.xwayland.enable;
+      hidpiXWayland = cfg.xwayland.hidpi;
+      inherit (cfg) nvidiaPatches;
+    };
 in {
-  meta.maintainers = [lib.maintainers.fufexan];
+  meta.maintainers = [ lib.maintainers.fufexan ];
 
   options.wayland.windowManager.hyprland = {
-    enable =
-      lib.mkEnableOption null
-      // {
-        description = lib.mdDoc ''
-          Whether to enable Hyprland, the dynamic tiling Wayland compositor
-          that doesn't sacrifice on its looks.
+    enable = lib.mkEnableOption null // {
+      description = lib.mdDoc ''
+        Whether to enable Hyprland, the dynamic tiling Wayland compositor
+        that doesn't sacrifice on its looks.
 
-          You can manually launch Hyprland by executing {command}`Hyprland` on
-          a TTY.
+        You can manually launch Hyprland by executing {command}`Hyprland` on
+        a TTY.
 
-          See <https://wiki.hyprland.org> for more information.
-        '';
-      };
+        See <https://wiki.hyprland.org> for more information.
+      '';
+    };
 
     package = lib.mkOption {
       type = with lib.types; nullOr package;
@@ -53,7 +49,7 @@ in {
 
     plugins = lib.mkOption {
       type = with lib.types; listOf (either package path);
-      default = [];
+      default = [ ];
       description = lib.mdDoc ''
         List of hyprlad plugins to use. Can either be packages or
         absolute plugin paths.
@@ -75,28 +71,25 @@ in {
       '';
     };
 
-    disableAutoreload =
-      lib.mkEnableOption null
-      // {
-        description = lib.mdDoc ''
-          Whether to disable automatically reloading Hyprland's configuration when
-          rebuilding the Home Manager profile.
-        '';
-      };
-
-    xwayland = {
-      enable = lib.mkEnableOption (lib.mdDoc "XWayland") // {default = true;};
-      hidpi =
-        lib.mkEnableOption null
-        // {
-          description = lib.mdDoc ''
-            Enable HiDPI XWayland, based on [XWayland MR 733](https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/733).
-            See <https://wiki.hyprland.org/Nix/Options-Overrides/#xwayland-hidpi> for more info.
-          '';
-        };
+    disableAutoreload = lib.mkEnableOption null // {
+      description = lib.mdDoc ''
+        Whether to disable automatically reloading Hyprland's configuration when
+        rebuilding the Home Manager profile.
+      '';
     };
 
-    nvidiaPatches = lib.mkEnableOption (lib.mdDoc "patching wlroots for better Nvidia support.");
+    xwayland = {
+      enable = lib.mkEnableOption (lib.mdDoc "XWayland") // { default = true; };
+      hidpi = lib.mkEnableOption null // {
+        description = lib.mdDoc ''
+          Enable HiDPI XWayland, based on [XWayland MR 733](https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/733).
+          See <https://wiki.hyprland.org/Nix/Options-Overrides/#xwayland-hidpi> for more info.
+        '';
+      };
+    };
+
+    nvidiaPatches = lib.mkEnableOption
+      (lib.mdDoc "patching wlroots for better Nvidia support.");
 
     extraConfig = lib.mkOption {
       type = lib.types.nullOr lib.types.lines;
@@ -106,47 +99,46 @@ in {
       '';
     };
 
-    recommendedEnvironment =
-      lib.mkEnableOption null
-      // {
-        description = lib.mdDoc ''
-          Whether to set the recommended environment variables.
-        '';
-      };
+    recommendedEnvironment = lib.mkEnableOption null // {
+      description = lib.mdDoc ''
+        Whether to set the recommended environment variables.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    warnings =
-      if (cfg.systemdIntegration || cfg.plugins != []) && cfg.extraConfig == null then
-        [ ''You have enabled hyprland.systemdIntegration or listed plugins in hyprland.plugins.
-            Your hyprland config will be linked by home manager.
-            Set hyprland.extraConfig or unset hyprland.systemdIntegration and hyprland.plugins to remove this warning.'' ]
-      else [];
+    warnings = if (cfg.systemdIntegration || cfg.plugins != [ ])
+    && cfg.extraConfig == null then [''
+      You have enabled hyprland.systemdIntegration or listed plugins in hyprland.plugins.
+                  Your hyprland config will be linked by home manager.
+                  Set hyprland.extraConfig or unset hyprland.systemdIntegration and hyprland.plugins to remove this warning.''] else
+      [ ];
 
-    home.packages =
-      lib.optional (cfg.package != null) cfg.package
+    home.packages = lib.optional (cfg.package != null) cfg.package
       ++ lib.optional cfg.xwayland.enable pkgs.xwayland;
 
     home.sessionVariables =
-      lib.mkIf cfg.recommendedEnvironment {NIXOS_OZONE_WL = "1";};
+      lib.mkIf cfg.recommendedEnvironment { NIXOS_OZONE_WL = "1"; };
 
-    xdg.configFile."hypr/hyprland.conf" = lib.mkIf (cfg.systemdIntegration || cfg.extraConfig != null || cfg.plugins != []) {
-      text =
-        (lib.optionalString cfg.systemdIntegration ''
+    xdg.configFile."hypr/hyprland.conf" = lib.mkIf (cfg.systemdIntegration
+      || cfg.extraConfig != null || cfg.plugins != [ ]) {
+        text = (lib.optionalString cfg.systemdIntegration ''
           exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hyprland-session.target
-        '')
-        + lib.concatStrings (builtins.map (entry: let
-            plugin = if lib.types.package.check entry then "${entry}/lib/lib${entry.pname}.so" else entry;
-          in "plugin = ${plugin}\n") cfg.plugins)
-        + (if cfg.extraConfig != null then cfg.extraConfig else "");
+        '') + lib.concatStrings (builtins.map (entry:
+          let
+            plugin = if lib.types.package.check entry then
+              "${entry}/lib/lib${entry.pname}.so"
+            else
+              entry;
+          in ''
+            plugin = ${plugin}
+          '') cfg.plugins)
+          + (if cfg.extraConfig != null then cfg.extraConfig else "");
 
-      onChange = let
-        hyprlandPackage =
-          if cfg.package == null
-          then defaultHyprlandPackage
-          else cfg.package;
-      in
-        lib.mkIf (!cfg.disableAutoreload) ''
+        onChange = let
+          hyprlandPackage =
+            if cfg.package == null then defaultHyprlandPackage else cfg.package;
+        in lib.mkIf (!cfg.disableAutoreload) ''
           (  # execute in subshell so that `shopt` won't affect other scripts
             shopt -s nullglob  # so that nothing is done if /tmp/hypr/ does not exist or is empty
             for instance in /tmp/hypr/*; do
@@ -155,15 +147,15 @@ in {
             done
           )
         '';
-    };
+      };
 
     systemd.user.targets.hyprland-session = lib.mkIf cfg.systemdIntegration {
       Unit = {
         Description = "hyprland compositor session";
-        Documentation = ["man:systemd.special(7)"];
-        BindsTo = ["graphical-session.target"];
-        Wants = ["graphical-session-pre.target"];
-        After = ["graphical-session-pre.target"];
+        Documentation = [ "man:systemd.special(7)" ];
+        BindsTo = [ "graphical-session.target" ];
+        Wants = [ "graphical-session-pre.target" ];
+        After = [ "graphical-session-pre.target" ];
       };
     };
   };

@@ -1,15 +1,13 @@
 { pkgs, ... }: {
   imports = [ ./remaps.nix ./fonts.nix ];
 
-  systemd.watchdog.rebootTime = "10s"; 
+  systemd.watchdog.rebootTime = "10s";
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=10s
   '';
 
   environment = {
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
+    sessionVariables = { NIXOS_OZONE_WL = "1"; };
     systemPackages =
       pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
   };
@@ -52,15 +50,15 @@
       settings = {
         # settings for when connected to a power source
         charger = {
-        governor = "performance";
-        scaling_min_freq = 800000;# kHz
-        scaling_max_freq = 4700000;# kHz
-        turbo = "auto";
+          governor = "performance";
+          scaling_min_freq = 800000; # kHz
+          scaling_max_freq = 4700000; # kHz
+          turbo = "auto";
         };
         battery = {
           governor = "powersave";
           scaling_min_freq = 500000; # kHz
-          scaling_max_freq = 1000000;# kHz
+          scaling_max_freq = 1000000; # kHz
           turbo = "auto";
         };
       };
@@ -84,9 +82,7 @@
     printing.enable = true;
     xserver = {
       enable = true;
-      desktopManager = {
-        xterm.enable = false;
-      };
+      desktopManager = { xterm.enable = false; };
       libinput.enable = true;
       excludePackages =
         [ pkgs.xterm pkgs.gnome.gnome-terminal pkgs.gnome-console ];
@@ -120,11 +116,6 @@
     };
   };
 
-
-  
-    
-      
-        
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;

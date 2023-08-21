@@ -1,12 +1,7 @@
 { pkgs, ... }:
 let
 
-  audio = with pkgs; [
-    unstable.psst
-    unstable.qpwgraph
-    unstable.jamesdsp
-  ];
-
+  audio = with pkgs; [ unstable.psst unstable.qpwgraph unstable.jamesdsp ];
 
   utils = with pkgs; [
     unstable.slides
@@ -18,10 +13,7 @@ let
     kitty
   ];
 
-  coding = with pkgs; [
-    unstable.helix
-    sccache
-  ];
+  coding = with pkgs; [ unstable.helix sccache ];
 
   terminal = with pkgs; [
     any-nix-shell
@@ -44,20 +36,7 @@ let
 
   browsers = with pkgs; [ unstable.firefox ];
 
-  custom = with pkgs; [
-    unixchadbookmarks
-    nvim
-    wgsl-analyzer
-    zellij-runner
-  ];
+  custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer zellij-runner ];
 
-in [
-  audio
-  utils
-  coding
-  terminal
-  desktop
-  browsers
-  custom
-]
+in [ audio utils coding terminal desktop browsers custom ]
 
