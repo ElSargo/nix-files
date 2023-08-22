@@ -9,7 +9,7 @@
           name = "open-terminal";
         }
         {
-          binding = "<Super>w";
+          binding = "<Super>b";
           command = "${browser}";
           name = "open-browser";
         }

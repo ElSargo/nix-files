@@ -119,7 +119,7 @@
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;
-    opengl.enable = true;
+    # opengl.enable = true;
   };
 
   nixpkgs = { config.allowUnfree = true; };

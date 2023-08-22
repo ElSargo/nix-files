@@ -2,9 +2,7 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   environment = {
-    gnome.excludePackages = with pkgs.gnome;
-      with pkgs.gnomeExtensions;
-      [
+    gnome.excludePackages = with pkgs.gnome; [
         cheese # webcam tool
         gnome-music
         gnome-terminal
@@ -14,7 +12,8 @@
         iagno # go game
         hitori # sudoku game
         atomix # puzzle game
-      ] ++ [ pkgs.gnome-tour ] ++ [
+      ] ++ [ pkgs.gnome-tour ] ;
+      systemPackages = with pkgs.gnomeExtensions; [
         removable-drive-menu
         caffeine
         dash-to-dock

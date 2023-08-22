@@ -183,7 +183,8 @@ in {
               # screen_shader = ~/.config/hypr/shader.glsl
               rounding = 10
               blur {
-                size = 4
+                size = 8
+                passes = 2
               }
 
               drop_shadow = true
@@ -194,11 +195,11 @@ in {
           }
           animations {
               enabled = yes
-              animation = windows, 1, 2, default, slide
-              animation = windowsOut, 1, 2, default, slide
+              animation = windows, 1, 3, default, slide
+              animation = windowsOut, 1, 3, default, slide
               animation = border, 1, 10, default
-              animation = fade, 1, 7, default
-              animation = workspaces, 1, 2, default
+              animation = fade, 1, 3, default
+              animation = workspaces, 1, 3, default
           }
           dwindle {
               pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below

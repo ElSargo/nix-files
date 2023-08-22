@@ -106,6 +106,7 @@
                 ./hosts/summit.nix
                 ./nixos/finger_print.nix
                 ./nixos/gnome.nix
+                ./users/sargo.nix
               ];
             };
 

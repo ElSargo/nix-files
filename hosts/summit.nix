@@ -8,8 +8,7 @@
     binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
-    kernelPackages = pkgs.unstable.linuxPackages_latest;
-    # kernelParams = ["quiet"];
+    kernelPackages = pkgs.unstable.linuxPackages_zen;
   };
 
   systemd.services.mcontrolcenter = {

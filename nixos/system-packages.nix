@@ -30,6 +30,7 @@ let
     gitui
     pastel
     cargo
+    git
   ];
 
   desktop = with pkgs; [ inlyne libreoffice ];
