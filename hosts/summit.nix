@@ -9,8 +9,28 @@
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
     kernelPackages = pkgs.unstable.linuxPackages_zen;
+    kernelParams = [ "i915.force_probe=46a6" ];  
   };
+    
+  services.xserver.videoDrivers = [ "intel" "modsetting" ];
+  services.xserver.deviceSection = ''
+     Option "DRI" "3"   
+  '';
 
+
+    nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  
   systemd.services.mcontrolcenter = {
     description = "test Daemon";
     serviceConfig = {
