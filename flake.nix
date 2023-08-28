@@ -109,6 +109,22 @@
                 ./users/sargo.nix
               ];
             };
+            
+            PlasmaBook = nixpkgs.lib.nixosSystem {
+              inherit system;
+              specialArgs = specialArgs // {
+                firefox-gnome-theme = null;
+                extra-home-modules =
+                  [ ./home/kitty.nix ./home/firefox.nix ];
+              };
+              modules = default_modules ++ [
+                ./hosts/summit.nix
+                ./nixos/finger_print.nix
+                ./users/sargo.nix
+                ./nixos/plasma.nix
+              ];
+            };
+
 
             ChadBook = nixpkgs.lib.nixosSystem {
               inherit system;
@@ -129,6 +145,7 @@
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
                 ./nixos/waydroid.nix
+                
               ];
             };
 

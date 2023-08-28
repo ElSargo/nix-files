@@ -21,6 +21,7 @@ let
       A = "resizeactive, -60 0";
       S = "resizeactive, 0 60";
       D = "resizeactive, 60 0";
+      P = "pseudo, # dwindle";
     };
 
     SUPER = {
@@ -51,7 +52,6 @@ let
       F = "fullscreen,0";
       B = "exec, ${browser}";
       grave = "togglespecialworkspace,";
-      P = "pseudo, # dwindle";
       Q = "killactive, ";
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
@@ -92,8 +92,8 @@ let
       XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
       XF86Calculator = "exec, galculator";
       XF86Mail = "exec, thunderbird";
-      XF86MonBrightnessUp = "exec, sudo light -A 5";
-      XF86MonBrightnessDown = "exec, sudo light -U 5";
+      XF86MonBrightnessUp = "exec, sudo light -A 1";
+      XF86MonBrightnessDown = "exec, sudo light -U 1";
     };
 
   }));
@@ -183,8 +183,10 @@ in {
               # screen_shader = ~/.config/hypr/shader.glsl
               rounding = 10
               blur {
-                size = 8
-                passes = 2
+                size = 4
+                passes = 1
+                noise = 0.02
+                brightness = 1.15
               }
 
               drop_shadow = true
@@ -227,6 +229,8 @@ in {
             enable_swallow = true
             swallow_regex = ^(kitty)|(Alacritty)|(foot)$
             animate_manual_resizes = true
+            disable_hyprland_logo = true
+            disable_splash_rendering = true
           }
       '';
   };

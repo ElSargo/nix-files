@@ -1,5 +1,6 @@
 { extra-home-modules ? [ ], home-manager, pkgs, ... }@args: {
   users.users.sargo = {
+    shell = pkgs.unstable.fish;
     isNormalUser = true;
     initialHashedPassword =
       "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
@@ -17,7 +18,7 @@
   imports = [
     home-manager.nixosModules.home-manager
     {
-      qt.enable = true;
+      # qt.enable = true;
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.users.sargo = { lib, ... }:

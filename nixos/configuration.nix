@@ -94,11 +94,11 @@
     rtkit.enable = true;
   };
 
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita-dark";
-  };
+  # qt = {
+  #   enable = true;
+  #   # platformTheme = "gnome";
+  #   # style = "adwaita-dark";
+  # };
 
   xdg.portal = {
     enable = true;
@@ -119,7 +119,7 @@
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;
-    # opengl.enable = true;
+    opengl.enable = true;
   };
 
   nixpkgs = { config.allowUnfree = true; };

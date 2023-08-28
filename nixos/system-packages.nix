@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
 
-  audio = with pkgs; [ unstable.psst unstable.qpwgraph unstable.jamesdsp ];
+  audio = with pkgs; [ psst qpwgraph jamesdsp ];
 
   utils = with pkgs; [
     unstable.slides
@@ -32,12 +32,24 @@ let
     cargo
     git
   ];
-
+compat = with pkgs; [
+    vulkan-tools
+    lutris
+    vulkan-loader
+    vulkan-headers
+  vulkan-caps-viewer
+  vulkan-cts
+  vulkan-tools-lunarg
+  vulkan-extension-layer
+  vulkan-validation-layers
+  vk-bootstrap
+  vkdt-wayland
+];
   desktop = with pkgs; [ inlyne libreoffice ];
 
   browsers = with pkgs; [ unstable.firefox ];
 
   custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer zellij-runner ];
 
-in [ audio utils coding terminal desktop browsers custom ]
+in [ audio utils coding terminal desktop browsers custom compat ]
 

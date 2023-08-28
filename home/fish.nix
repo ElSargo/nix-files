@@ -46,9 +46,26 @@ in {
         description = "Change dirs with lf";
       };
       rebuild = {
+        argumentNames = ["name"];
         body = # fish
           ''
-            sudo nixos-rebuild switch --flake ~/nix-files/;
+            sudo nixos-rebuild switch --flake "/home/sargo/nix-files/#$(echo $name)" -p $name
+          '';
+        description = "Rebuild the system configuration";
+      };
+      rbs = {
+        argumentNames = ["name"];
+        body = # fish
+          ''
+            sudo nixos-rebuild switch --flake "/home/sargo/nix-files/#$(echo $name)" -p $name
+          '';
+        description = "Rebuild the system configuration";
+      };
+      rbb = {
+        argumentNames = ["name"];
+        body = # fish
+          ''
+            sudo nixos-rebuild boot --flake "/home/sargo/nix-files/#$(echo $name)" -p $name
           '';
         description = "Rebuild the system configuration";
       };
