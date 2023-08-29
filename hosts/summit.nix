@@ -8,10 +8,16 @@
     binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
-    kernelPackages = pkgs.unstable.linuxPackages_zen;
+    kernelPackages = pkgs.unstable.linuxPackages_xanmod_latest;
     kernelParams = [ "i915.force_probe=46a6" ];  
   };
-    
+
+# nix.settings.system-features = [ "gccarch-alderlake" ];
+# nixpkgs.hostPlatform.system = "x86_64-linux";
+# nixpkgs.hostPlatform.gcc.arch = "alderlake";
+# nixpkgs.hostPlatform.gcc.tune = "alderlake";
+# nixpkgs.overlays = [ (self: super: { gcc = self.gcc13; }) ]    ;
+
   services.xserver.videoDrivers = [ "intel" "modsetting" ];
   services.xserver.deviceSection = ''
      Option "DRI" "3"   
@@ -22,14 +28,30 @@
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
   hardware.opengl = {
+    driSupport = true;
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
+      intel-ocl 
     ];
   };
+  
+
+  nixpkgs.overlays = [(self: super: {
+    optimizeWithFlags = pkg: flags:
+      pkg.overrideAttrs (old: {
+        NIX_CFLAGS_COMPILE = [ (old.NIX_CFLAGS_COMPILE or "") ] ++ flags;
+      });
+
+    optimizeForThisHost = pkg:
+      self.optimizeWithFlags pkg [ "-O3" "-march=alderlake" "-fPIC" ];
+
+    hyprland = self.optimizeForThisHost super.hyprland;
+  })];
+
   
   systemd.services.mcontrolcenter = {
     description = "test Daemon";
@@ -85,7 +107,7 @@
   # networking.interfaces.eth0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  # nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;

@@ -154,55 +154,6 @@
               modules = default_modules ++ [ ./hosts/laptop.nix ];
             };
 
-            container = nixpkgs.lib.nixosSystem {
-              inherit specialArgs;
-              modules = [
-                {
-                  nixpkgs = { config.allowUnfree = true; };
-                  nixpkgs.hostPlatform = "x86_64-linux";
-                  time.timeZone = "Pacific/Auckland";
-                  i18n = {
-                    extraLocaleSettings = {
-                      LC_ADDRESS = "en_NZ.UTF-8";
-                      LC_IDENTIFICATION = "en_NZ.UTF-8";
-                      LC_MEASUREMENT = "en_NZ.UTF-8";
-                      LC_MONETARY = "en_NZ.UTF-8";
-                      LC_NAME = "en_NZ.UTF-8";
-                      LC_NUMERIC = "en_NZ.UTF-8";
-                      LC_PAPER = "en_NZ.UTF-8";
-                      LC_TELEPHONE = "en_NZ.UTF-8";
-                      LC_TIME = "en_NZ.UTF-8";
-                    };
-                  };
-                  fileSystems."/" = {
-                    fsType = "ext4";
-                    device =
-                      "/dev/disk/by-uuid/ab032e3a-09d1-43eb-85df-1b6ea66d99eb";
-                  };
-                  system.stateVersion = "23.05";
-                  boot.loader.systemd-boot.enable = true;
-                  boot.loader.efi.canTouchEfiVariables = true;
-
-                }
-                {
-                  nix.settings = {
-                    warn-dirty = false;
-                    experimental-features = [ "nix-command" "flakes" ];
-                  };
-                }
-                {
-                  users.users.sargo = {
-                    isNormalUser = true;
-                    description = "Oliver Sargison";
-                    extraGroups = [ "networkmanager" "wheel" ];
-                    initialHashedPassword =
-                      "$6$Z7Ty/RzwsUJtd43I$6dCbqpYN1HOhTr5EoEgu6XyctK8lCYu6OqJGzREOjR5L0i6mn12vl2wF.nJzrAxqTCIl5idftqSOPI8WLNVky0";
-
-                  };
-                }
-              ];
-            };
-
           };
 
         };
