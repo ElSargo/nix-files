@@ -63,11 +63,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1692692163,
-        "narHash": "sha256-boAxgGEMS/cQoFXqk/R+PFDBNt5ofmQzOU0hFe6rdNA=",
+        "lastModified": 1693425487,
+        "narHash": "sha256-ZYublAGgIKVS/nr8Cu7mKJcOMg0Q2qza68jHPRSWP+E=",
         "owner": "ElSargo",
         "repo": "eww-bar",
-        "rev": "cb8c720b27507aa21b14bbf97587c7509a1aa703",
+        "rev": "920aa97a06b50119ab31e39879d839d58f0bced5",
         "type": "github"
       },
       "original": {
