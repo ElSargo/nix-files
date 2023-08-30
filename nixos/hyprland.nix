@@ -10,6 +10,5 @@
   xdg.portal.extraPortals = [
     pkgs.xdg-desktop-portal-hyprland
   ];
-  services.cpupower-gui.enable = true;
   programs.hyprland = { enable = true; };
 }
