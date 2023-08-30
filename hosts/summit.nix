@@ -13,7 +13,6 @@
   };
 
   nix.settings.system-features = [ "gccarch-alderlake" "kvm" "nixos-test" "big-parralel" ];
-
   services.xserver.videoDrivers = [ "intel" "modsetting" ];
   services.xserver.deviceSection = ''
      Option "DRI" "3"   
@@ -35,17 +34,17 @@
   };
   
 
-  nixpkgs.overlays = [(self: super: {
-    optimizeWithFlags = pkg: flags:
-      pkg.overrideAttrs (old: {
-        NIX_CFLAGS_COMPILE = [ (old.NIX_CFLAGS_COMPILE or "") ] ++ flags;
-      });
+  # nixpkgs.overlays = [(self: super: {
+  #   optimizeWithFlags = pkg: flags:
+  #     pkg.overrideAttrs (old: {
+  #       NIX_CFLAGS_COMPILE = [ (old.NIX_CFLAGS_COMPILE or "") ] ++ flags;
+  #     });
 
-    optimizeForThisHost = pkg:
-      self.optimizeWithFlags pkg [ "-O3" "-march=alderlake" "-fPIC" ];
+  #   optimizeForThisHost = pkg:
+  #     self.optimizeWithFlags pkg [ "-O3" "-march=alderlake" "-fPIC" ];
 
-    hyprland = self.optimizeForThisHost super.hyprland;
-  })];
+  #   hyprland = self.optimizeForThisHost super.hyprland;
+  # })];
 
   
   systemd.services.mcontrolcenter = {
