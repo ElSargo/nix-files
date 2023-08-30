@@ -1,5 +1,9 @@
 { firefox-gnome-theme, pkgs, config, lib, ... }:
 ({
+
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+  };
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
