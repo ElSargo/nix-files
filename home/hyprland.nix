@@ -87,9 +87,13 @@ let
     };
 
     "" = {
-      XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
-      XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
-      XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
+
+      XF86AudioRaiseVolume = "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
+      XF86AudioLowerVolume = "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
+      XF86AudioMute = "exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+      # XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
+      # XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
+      # XF86AudioMute = "exec, pactl set-sink-volume @DEFAULT_SINK@ 0% 	";
       XF86Calculator = "exec, galculator";
       XF86Mail = "exec, thunderbird";
       XF86MonBrightnessUp = "exec, sudo light -A 1";
@@ -235,17 +239,14 @@ in {
       '';
   };
   home.packages = with pkgs; [
-    pulseaudio
     swaybg
     lazygit
     light
     galculator
     thunderbird
     wofi
-    pulsemixer
-    pavucontrol
-    pulseaudio
     wlogout
+    wireplumber
   ];
 
   programs.fish = {
