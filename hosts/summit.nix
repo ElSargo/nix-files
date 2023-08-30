@@ -12,21 +12,16 @@
     kernelParams = [ "i915.force_probe=46a6" ];  
   };
 
-# nix.settings.system-features = [ "gccarch-alderlake" ];
-# nixpkgs.hostPlatform.system = "x86_64-linux";
-# nixpkgs.hostPlatform.gcc.arch = "alderlake";
-# nixpkgs.hostPlatform.gcc.tune = "alderlake";
-# nixpkgs.overlays = [ (self: super: { gcc = self.gcc13; }) ]    ;
+  nix.settings.system-features = [ "gccarch-alderlake" "kvm" "nixos-test" "big-parralel" ];
 
   services.xserver.videoDrivers = [ "intel" "modsetting" ];
   services.xserver.deviceSection = ''
      Option "DRI" "3"   
   '';
-
-
     nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
+
   hardware.opengl = {
     driSupport = true;
     enable = true;

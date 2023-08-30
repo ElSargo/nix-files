@@ -57,17 +57,18 @@
         };
         battery = {
           governor = "powersave";
-          scaling_min_freq = 500000; # kHz
-          scaling_max_freq = 1000000; # kHz
+          scaling_min_freq = 100000; # kHz
+          scaling_max_freq = 500000; # kHz
           turbo = "auto";
         };
       };
     };
+    thermald.enable = true;
     power-profiles-daemon.enable = false;
     syncthing.enable = true;
     dbus = {
       enable = true;
-      # implementation = "broker";
+      implementation = "broker";
     };
     flatpak.enable = true;
     openssh.enable = true;
