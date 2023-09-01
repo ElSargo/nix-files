@@ -150,8 +150,23 @@
             };
 
             SargoLaptop = nixpkgs.lib.nixosSystem {
-              inherit specialArgs;
-              modules = default_modules ++ [ ./hosts/laptop.nix ];
+              inherit system;
+              specialArgs = specialArgs // {
+                inherit firefox-gnome-theme;
+                extra-home-modules = [
+                  ./misc/future_hyprland_module.nix
+                  ./home/hyprland.nix
+                  ./home/foot.nix
+                  ./home/firefox.nix
+                  ./home/dark-theme.nix
+                ];
+
+              };
+              modules = default_modules ++ [
+                ./hosts/laptop.nix
+                ./nixos/hyprland.nix
+                ./users/sargo.nix
+              ];
             };
 
           };
