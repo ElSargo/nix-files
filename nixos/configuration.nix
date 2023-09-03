@@ -8,8 +8,7 @@
 
   environment = {
     sessionVariables = { NIXOS_OZONE_WL = "1"; };
-    systemPackages =
-      pkgs.lib.flatten [ (import ./system-packages.nix { inherit pkgs; }) ];
+    systemPackages = (import ./system-packages.nix { inherit pkgs; });
   };
 
   nix = {
@@ -45,8 +44,12 @@
   };
 
   services = {
+    cpupower-gui.enable = true;
+    tlp.enable = false;
+    throttled.enable = false;
+    thermald.enable = false;
     auto-cpufreq = {
-      enable = true;
+      enable = false;
       settings = {
         # settings for when connected to a power source
         charger = {
@@ -63,7 +66,6 @@
         };
       };
     };
-    thermald.enable = true;
     power-profiles-daemon.enable = false;
     syncthing.enable = true;
     dbus = {
@@ -94,12 +96,6 @@
     polkit.enable = true;
     rtkit.enable = true;
   };
-
-  # qt = {
-  #   enable = true;
-  #   # platformTheme = "gnome";
-  #   # style = "adwaita-dark";
-  # };
 
   xdg.portal = {
     enable = true;

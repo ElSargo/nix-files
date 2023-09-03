@@ -12,7 +12,7 @@
         DisableFirefoxStudies = true;
         DisablePocket = true;
         DisableTelemetry = true;
-        DisableFirefoxAccounts = false;
+        DisableFirefoxAccounts = true;
         NoDefaultBookmarks = true;
         OfferToSaveLogins = false;
         OfferToSaveLoginsDefault = false;
@@ -33,7 +33,6 @@
     profiles = {
       sargo = {
         id = 0;
-
         name = "sargo";
 
         extensions = with config.nur.repos.rycee.firefox-addons;
@@ -403,23 +402,21 @@
             ****************************************************************************/
           '';
 
-      };
+
+      } // (if firefox-gnome-theme == null then { } else {
+        userChrome = ''
+          @import "firefox-gnome-theme/userChrome.css";
+        '';
+        userContent = ''
+          @import "firefox-gnome-theme/userContent.css";
+        '';
+        
+      });
     };
   };
 } // (if firefox-gnome-theme == null then
   { }
 else {
-  programs.firefox.profiles.sargo = {
-    userChrome = ''
-      @import "firefox-gnome-theme/userChrome.css";
-      # a css 
-    '';
-    userContent = ''
-      @import "firefox-gnome-theme/userContent.css";
-      # Here too
-    '';
-
-  };
   home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
     "${firefox-gnome-theme}";
 }))

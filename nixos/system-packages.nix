@@ -51,5 +51,5 @@ compat = with pkgs; [
 
   custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer zellij-runner ];
 
-in [ audio utils coding terminal desktop browsers custom compat ]
+in pkgs.lib.flatten  [ audio utils coding terminal desktop browsers custom compat ]
 

@@ -3,17 +3,13 @@ with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
   colors = builtins.mapAttrs (k: v: builtins.substring 1 6 v) palette;
-  helper = f: node:
-    if isAttrs node then
-      concatLists (attrValues
-        (mapAttrs (element: child: map (c: [ element ] ++ c) (f f child)) node))
-    else
-      [ [ node ] ];
-  smoosh = helper helper;
-
+  cmd = x: if isString x then [x] else x;
+  bind = (set: concatLists (attrValues (mapAttrs (k: v: map (x: [k] ++ [x]) (cmd v)) set)))  ;
+  mkbinds = m:  concatLists (attrValues(mapAttrs (k: v: ( x: map (j: [k] ++ j  ) x ) (bind v) ) m))  ;
+  
   keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bind = ${s} 
-  '') (map (concatStringsSep ", ") (smoosh {
+  '') (map (concatStringsSep ", ") (mkbinds {
 
     SUPERALT = { Return = "exec, [size 30% 30% ;silent;float] foot"; };
     SUPERCTRL = {
@@ -56,6 +52,7 @@ let
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
       N = "workspace, empty";
+      Y = ["exec, kitty" "exec, foot"];
     };
 
     SUPERSHIFT = {
@@ -104,7 +101,7 @@ let
 
   mouse-keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bindm = ${s} 
-  '') (map (concatStringsSep ", ") (smoosh {
+  '') (map (concatStringsSep ", ") (mkbinds {
     SUPER = {
       "mouse:272" = "movewindow";
       "mouse:273" = "resizewindow";
