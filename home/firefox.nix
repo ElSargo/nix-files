@@ -1,5 +1,5 @@
-{ firefox-gnome-theme, pkgs, config, lib, ... }:
-({
+{  pkgs, config, lib, ... }:
+{
 
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
@@ -113,7 +113,7 @@
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@nw" ];
             };
-            "Home manager search" = {
+            "Home manager option search" = {
               urls = [{
                 template =
                   "https://mipmip.github.io/home-manager-option-search/?query={searchTerms}";
@@ -122,6 +122,15 @@
                 "https://mipmip.github.io/home-manager-option-search/images/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@hm" ];
+            };
+            "Khan academy" = {
+              urls = [{
+                template = "https://www.khanacademy.org/search?search_again=1&page_search_query={searchTerms}";
+              }];
+              iconUpdateURL =
+                "https://cdn.kastatic.org/images/favicon.ico?logo";
+              updateInterval = 24 * 60 * 60 * 1000;
+              definedAliases = [ "@ka" "@k" ];
             };
             "Wikipedia (en)".metaData.alias = "@wiki";
             "Google".metaData.hidden = true;
@@ -396,27 +405,19 @@
              * START: MY OVERRIDES                                                      *
             ****************************************************************************/
             // Enter your personal prefs below this line:
+            user_pref("svg.context-properties.content.enabled", true);
+            user_pref("layout.css.has-selector.enabled", true);
+            user_pref("gfx.webrender.all", true);
+            user_pref("browser.toolbars.bookmarks.visibility", "never");
+            user_pref("layers.acceleration.force-enabled", true);
+            user_pref("gfx.webrender.enabled", true);
+            user_pref("layout.css.backdrop-filter.enabled", true);
 
             /****************************************************************************
              * END: BETTERFOX                                                           *
             ****************************************************************************/
           '';
-
-
-      } // (if firefox-gnome-theme == null then { } else {
-        userChrome = ''
-          @import "firefox-gnome-theme/userChrome.css";
-        '';
-        userContent = ''
-          @import "firefox-gnome-theme/userContent.css";
-        '';
-        
-      });
+      } ;
     };
   };
-} // (if firefox-gnome-theme == null then
-  { }
-else {
-  home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
-    "${firefox-gnome-theme}";
-}))
+} 

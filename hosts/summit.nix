@@ -3,16 +3,18 @@
   networking.hostName = "SargoSummit"; # Define your hostname.
   services.acpid.enable = true;
   # Bootloader.
+  # services.undervolt.enable = true;
   boot = {
-    tmp.useTmpfs = true;
-    binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
+    # tmp.useTmpfs = true;
+    # binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" ];
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;
-    kernelPackages = pkgs.unstable.linuxPackages_xanmod_latest;
+    # kernelPackages = pkgs.unstable.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.unstable.linuxPackages_6_5;
     kernelParams = [ "i915.force_probe=46a6" ];  
   };
 
-  nix.settings.system-features = [ "gccarch-alderlake" "kvm" "nixos-test" "big-parralel" ];
+  nix.settings.system-features = [ "gccarch-alderlake" "kvm" "nixos-test" "big-parallel" ];
   services.xserver.videoDrivers = [ "intel" "modsetting" ];
   services.xserver.deviceSection = ''
      Option "DRI" "3"   
@@ -33,7 +35,11 @@
     ];
   };
   
-
+    # nixpkgs.localSystem = {
+    #   gcc.arch = "alderlake";
+    #   gcc.tune = "alderlake";
+    #   system = "x86_64-linux";
+    # };
   # nixpkgs.overlays = [(self: super: {
   #   optimizeWithFlags = pkg: flags:
   #     pkg.overrideAttrs (old: {

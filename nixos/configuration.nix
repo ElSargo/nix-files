@@ -38,18 +38,18 @@
       "192.168.1.202 SargoPi"
     ];
     stevenblack = {
-      block = [ "fakenews" "gambling" "porn" ];
+      block = [ "fakenews" "gambling" "porn" "social" ];
       enable = true;
     };
   };
 
   services = {
-    cpupower-gui.enable = true;
+    # cpupower-gui.enable = true;
     tlp.enable = false;
     throttled.enable = false;
-    thermald.enable = false;
+    thermald.enable = true;
     auto-cpufreq = {
-      enable = false;
+      enable = true;
       settings = {
         # settings for when connected to a power source
         charger = {

@@ -122,14 +122,30 @@
         "type": "github"
       }
     },
+    "firefox-glass-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1693882157,
+        "narHash": "sha256-eC189cH+f4IfftEB/7zdizYsl+DVLPipvbj47zb1RrU=",
+        "owner": "ElSargo",
+        "repo": "firefox-glass",
+        "rev": "fdd612341007d13c40af9a44f7274c8cf2303485",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ElSargo",
+        "repo": "firefox-glass",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1691114147,
-        "narHash": "sha256-0IS5na2WRSNWNygHhmZOcXhdrx2aFhCDQY8XVVeHf8Q=",
+        "lastModified": 1693843314,
+        "narHash": "sha256-SnSXskFvJP1OMFuDdhuxxbFpQKzSz3YLJyoxWscmDSA=",
         "owner": "rafaelmardojai",
         "repo": "firefox-gnome-theme",
-        "rev": "08884fb6be1c74a81f5e0a35a81c3f219e109028",
+        "rev": "67cc89691b17bc09f110efa7fd6011c19d763597",
         "type": "github"
       },
       "original": {
@@ -449,11 +465,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1691156406,
-        "narHash": "sha256-xLWcsZmCIN1PM1yG1QFtZ0WCDAX4axscJDyJ3OuGX9k=",
+        "lastModified": 1693857228,
+        "narHash": "sha256-Ce4w/02rhwWzJ4N7qm1xOIIy/rInnq/7s+VmiZckHI8=",
         "owner": "the-mikedavis",
         "repo": "helix",
-        "rev": "66ccb47fe00682a04c50d6f8bebc6f56f4028ac0",
+        "rev": "d882b318c0fe018e8c6871dbee12247a318030ab",
         "type": "github"
       },
       "original": {
@@ -670,11 +686,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1693377291,
-        "narHash": "sha256-vYGY9bnqEeIncNarDZYhm6KdLKgXMS+HA2mTRaWEc80=",
+        "lastModified": 1693663421,
+        "narHash": "sha256-ImMIlWE/idjcZAfxKK8sQA7A1Gi/O58u5/CJA+mxvl8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e7f38be3775bab9659575f192ece011c033655f0",
+        "rev": "e56990880811a451abd32515698c712788be5720",
         "type": "github"
       },
       "original": {
@@ -701,16 +717,15 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1693341273,
-        "narHash": "sha256-wrsPjsIx2767909MPGhSIOmkpGELM9eufqLQOPxmZQg=",
+        "lastModified": 1694062546,
+        "narHash": "sha256-PiGI4f2BGnZcedP6slLjCLGLRLXPa9+ogGGgVPfGxys=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2ab91c8d65c00fd22a441c69bbf1bc9b420d5ea1",
+        "rev": "b200e0df08f80c32974a6108ce431d8a8a5e6547",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-23.05",
         "type": "indirect"
       }
     },
@@ -812,11 +827,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1693432386,
-        "narHash": "sha256-dXJWkqm5bGshHR7q616VRqyTpqI5a7Gk9GjkX5PVZpA=",
+        "lastModified": 1693881073,
+        "narHash": "sha256-UiK5adrmnQysbEM3bzx31hTQEuIkQ9ZdejPexa9pDk0=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "b0511c1dfa8edd999d9265142390fcdd6fa48f3f",
+        "rev": "ed84d07faf54fb0ca2e981cc23cecd349db8c5a5",
         "type": "github"
       },
       "original": {
@@ -828,11 +843,11 @@
     "nuscripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1692875499,
-        "narHash": "sha256-kpE+vgobYsQuh8sS3gK/yg68nQykquwteeuecjLtIrE=",
+        "lastModified": 1693570701,
+        "narHash": "sha256-YjpZcW1Nkkj3jgpdALpvPQFjWcDPdNptPDfy/wsYjNk=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "45c051dad0e243a63608c8274b7fddd5f0b74941",
+        "rev": "5ed3a961af0ea3dce24c36eae84580b4ec53fe35",
         "type": "github"
       },
       "original": {
@@ -919,6 +934,7 @@
     "root": {
       "inputs": {
         "eww-bar": "eww-bar",
+        "firefox-glass-theme": "firefox-glass-theme",
         "firefox-gnome-theme": "firefox-gnome-theme",
         "flake-utils": "flake-utils_2",
         "helix-flake": "helix-flake",

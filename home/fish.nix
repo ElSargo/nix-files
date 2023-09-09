@@ -92,7 +92,7 @@ in {
       xc = "wl-copy";
       clip = "wl-copy";
       lf = "lfcd";
-      ls = "${pk "exa"} -l";
+      ls = "${pk "eza"} -l";
       xplr = "cd $(/usr/bin/env ${pk "xplr"})";
       ns = "nix-shell";
       za = "${pkgs.unstable.zellij}/bin/zellij a";

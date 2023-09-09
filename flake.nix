@@ -11,6 +11,10 @@
       url = "github:nushell/nu_scripts";
       flake = false;
     };
+    firefox-glass-theme = {
+      url = "github:ElSargo/firefox-glass";
+      flake = false;
+    };
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";
       flake = false;
@@ -57,8 +61,8 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
     , helix-flake, supabar, nvim, wgsl, zellij-runner, unix-chad-bookmarks
-    , firefox-gnome-theme, eww-bar, new-terminal-hyprland, hyprland, ...
-    }@attrs:
+    , firefox-gnome-theme, firefox-glass-theme, eww-bar, new-terminal-hyprland
+    , hyprland, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -98,9 +102,9 @@
             SargoSummit = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
-                inherit firefox-gnome-theme;
+                firefox-theme = firefox-gnome-theme;
                 extra-home-modules =
-                  [ ./home/dconf.nix ./home/kitty.nix ./home/firefox.nix ];
+                  [ ./home/dconf.nix ./home/kitty.nix ./home/firefox.nix ./home/firefox_gnome_theme.nix ];
               };
               modules = default_modules ++ [
                 ./hosts/summit.nix
@@ -109,13 +113,12 @@
                 ./users/sargo.nix
               ];
             };
-            
+
             PlasmaBook = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
-                firefox-gnome-theme = null;
-                extra-home-modules =
-                  [ ./home/kitty.nix ./home/firefox.nix ];
+                firefox-theme = null;
+                extra-home-modules = [ ./home/kitty.nix ./home/firefox.nix ];
               };
               modules = default_modules ++ [
                 ./hosts/summit.nix
@@ -125,17 +128,17 @@
               ];
             };
 
-
             ChadBook = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
-                firefox-gnome-theme = null;
+                firefox-theme = firefox-glass-theme;
                 extra-home-modules = [
                   ./misc/future_hyprland_module.nix
                   ./home/hyprland.nix
                   ./home/foot.nix
                   ./home/firefox.nix
                   ./home/dark-theme.nix
+                  ./home/firefox_glass_theme.nix
                 ];
 
               };
@@ -144,21 +147,23 @@
                 ./nixos/finger_print.nix
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
-                ./nixos/waydroid.nix
-                
+                # ./nixos/waydroid.nix
+                ./nixos/virt-manager.nix
+
               ];
             };
 
             SargoLaptop = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
-                inherit firefox-gnome-theme;
+                firefox-theme = firefox-gnome-theme;
                 extra-home-modules = [
                   ./misc/future_hyprland_module.nix
                   ./home/hyprland.nix
                   ./home/foot.nix
                   ./home/firefox.nix
                   ./home/dark-theme.nix
+                  ./home/firefox_glass_theme.nix
                 ];
 
               };

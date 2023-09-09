@@ -19,7 +19,7 @@ let
     any-nix-shell
     unzip
     killall
-    exa
+    eza
     wget
     ripgrep
     trash-cli
@@ -51,5 +51,5 @@ compat = with pkgs; [
 
   custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer zellij-runner ];
 
-in pkgs.lib.flatten  [ audio utils coding terminal desktop browsers custom compat ]
+in pkgs.lib.flatten  [ audio utils coding terminal desktop browsers custom compat pkgs.nixVersions.nix_2_17 ]
 

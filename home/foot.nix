@@ -11,7 +11,7 @@ in {
       main = { font = "JetBrainsMono Nerd Font:size=15"; };
       colors = {
 
-        alpha = 0.7;
+        alpha = 0.4;
         background = color.bg;
         foreground = color.fg;
 

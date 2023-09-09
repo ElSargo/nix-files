@@ -144,18 +144,20 @@ in {
     '';
 
   wayland.windowManager.hyprland = {
-    package = pkgs.unstable.hyprland;
+    package = pkgs.unstable.hyprland.override { stdenv = pkgs.unstable.llvmPackages_16.stdenv ;};
     enable = true;
     extraConfig = # kdl
       ''
-        # exec-once=nm-applet
         exec-once=eww open-many bar bar2
-        exec-once=swaybg -i ~/Pictures/flake.png
+        # exec-once=swaybg -i ~/Pictures/flake.png
+        exec-once=${import ../misc/change_wall.nix { inherit pkgs; }}
           ${unbinds}
           ${keybinds}
           ${mouse-keybinds}
           monitor=HDMI-A-1,preferred,auto,1
+          monitor=HDMI-A-1, 1920x1080, 1920x0, 1
           workspace=HDMI-A-1,1
+
 
           input {
               kb_layout = us
@@ -185,9 +187,9 @@ in {
               rounding = 10
               blur {
                 size = 4
-                passes = 1
+                passes = 2
                 noise = 0.02
-                brightness = 1.15
+                brightness = 1.
               }
 
               drop_shadow = true
@@ -225,6 +227,11 @@ in {
           windowrule = float, \A\Z|\A\Z*|\A\Z+
           windowrule = float, ^(galculator)$
           windowrule = noborder, ^(glava)$
+          layerrule = blur, gtk-layer-shell
+          layerrule = ignorezero, gtk-layer-shell
+          windowrule = opacity 0.99,^(firefox)$ 
+          windowrule = opacity 0.99 0.99,^(firefox)$ 
+          windowrulev2 = fakefullscreen, title:(Discord)
 
           misc {
             enable_swallow = true
