@@ -20,11 +20,11 @@
       flake = false;
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland/51a930f802c71a0e67f05e7b176ded74e8e95f87";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland_plugins.url = "github:hyprwm/hyprland-plugins";
 
+    nixd.url = "github:nix-community/nixd";
+  
     eww-bar = {
       url = "github:ElSargo/eww-bar";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,7 +62,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
     , helix-flake, supabar, nvim, wgsl, zellij-runner, unix-chad-bookmarks
     , firefox-gnome-theme, firefox-glass-theme, eww-bar, new-terminal-hyprland
-    , hyprland, ... }@attrs:
+    , hyprland, hyprland_plugins, nixd, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -71,6 +71,9 @@
             inherit system;
             config.allowUnfree = true;
           };
+        };
+        nixd-overlay = final: prev: {
+          nixd = nixd.packages.${system}.default;
         };
         helix = helix-flake.packages.${system}.default;
         overlays = ({ config, pkgs, ... }: {
@@ -81,8 +84,8 @@
             nvim.overlays.${system}.default
             wgsl.overlays.${system}.default
             eww-bar.overlays.${system}.default
+            nixd-overlay
             new-terminal-hyprland.overlays.${system}.default
-
             zellij-runner.overlays.${system}.default
           ];
         });
@@ -103,8 +106,12 @@
               inherit system;
               specialArgs = specialArgs // {
                 firefox-theme = firefox-gnome-theme;
-                extra-home-modules =
-                  [ ./home/dconf.nix ./home/kitty.nix ./home/firefox.nix ./home/firefox_gnome_theme.nix ];
+                extra-home-modules = [
+                  ./home/dconf.nix
+                  ./home/kitty.nix
+                  ./home/firefox.nix
+                  ./home/firefox_gnome_theme.nix
+                ];
               };
               modules = default_modules ++ [
                 ./hosts/summit.nix
@@ -132,6 +139,8 @@
               inherit system;
               specialArgs = specialArgs // {
                 firefox-theme = firefox-glass-theme;
+                # enabled_hyprland_plugins = [ hyprland_plugins.packages.${system}.hyprbars ];
+                # hyprland_package = hyprland.packages.${system}.default;
                 extra-home-modules = [
                   ./misc/future_hyprland_module.nix
                   ./home/hyprland.nix

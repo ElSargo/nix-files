@@ -19,7 +19,7 @@ let
     any-nix-shell
     unzip
     killall
-    eza
+    exa
     wget
     ripgrep
     trash-cli

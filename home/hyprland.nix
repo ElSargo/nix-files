@@ -1,4 +1,4 @@
-{ pkgs, browser ? "firefox", palette, ... }:
+{ enabled_hyprland_plugins ? [], pkgs, browser ? "firefox", palette, ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
@@ -6,7 +6,9 @@ let
   cmd = x: if isString x then [x] else x;
   bind = (set: concatLists (attrValues (mapAttrs (k: v: map (x: [k] ++ [x]) (cmd v)) set)))  ;
   mkbinds = m:  concatLists (attrValues(mapAttrs (k: v: ( x: map (j: [k] ++ j  ) x ) (bind v) ) m))  ;
-  
+  # hypr_stdenv =  pkgs.stdenv ;
+  plugin_snipet = builtins.concatStringsSep "\n" 
+  (builtins.map (p: "plugin = ${ builtins.trace ( builtins.toString p) p}") enabled_hyprland_plugins) ;
   keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bind = ${s} 
   '') (map (concatStringsSep ", ") (mkbinds {
@@ -144,102 +146,105 @@ in {
     '';
 
   wayland.windowManager.hyprland = {
-    package = pkgs.unstable.hyprland.override { stdenv = pkgs.unstable.llvmPackages_16.stdenv ;};
+    package = pkgs.unstable.hyprland;
     enable = true;
     extraConfig = # kdl
       ''
         exec-once=eww open-many bar bar2
         # exec-once=swaybg -i ~/Pictures/flake.png
         exec-once=${import ../misc/change_wall.nix { inherit pkgs; }}
-          ${unbinds}
-          ${keybinds}
-          ${mouse-keybinds}
-          monitor=HDMI-A-1,preferred,auto,1
-          monitor=HDMI-A-1, 1920x1080, 1920x0, 1
-          workspace=HDMI-A-1,1
+        ${unbinds}
+        ${keybinds}
+        ${mouse-keybinds}
+        monitor=HDMI-A-1,preferred,auto,1
+        monitor=HDMI-A-1, 1920x1080, 1920x0, 1
+        workspace=HDMI-A-1,1
 
+        xwayland {
+          force_zero_scaling = true
+        }
+        input {
+            kb_layout = us
+            repeat_rate=69
+            repeat_delay=150
+            follow_mouse = 1
+            touchpad {
+                natural_scroll = no
+            }
+            sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+        }
+        general {
+            gaps_in = 3
+            gaps_out = 5
+            border_size = 2
+            
+            col.active_border = rgb(${colors.br_orange}) 
+            col.inactive_border = rgb(${colors.bg})
 
-          input {
-              kb_layout = us
-              repeat_rate=69
-              repeat_delay=150
-              follow_mouse = 1
-              touchpad {
-                  natural_scroll = no
-              }
-              sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-          }
-          general {
-              gaps_in = 3
-              gaps_out = 5
-              border_size = 2
-              
-              col.active_border = rgb(${colors.br_orange}) 
-              col.inactive_border = rgb(${colors.bg})
+            col.group_border = rgba(00000000)
+            col.group_border_active = rgb(${colors.br_green})
+            cursor_inactive_timeout = 5
+            layout = master
+        }
+        decoration {
+            # screen_shader = ~/.config/hypr/shader.glsl
+            rounding = 10
+            blur {
+              size = 4
+              passes = 2
+              noise = 0.02
+              brightness = 1.
+            }
 
-              col.group_border = rgba(00000000)
-              col.group_border_active = rgb(${colors.br_green})
-              cursor_inactive_timeout = 5
-              layout = master
-          }
-          decoration {
-              # screen_shader = ~/.config/hypr/shader.glsl
-              rounding = 10
-              blur {
-                size = 4
-                passes = 2
-                noise = 0.02
-                brightness = 1.
-              }
+            drop_shadow = true
+            shadow_range = 20
+            shadow_render_power = 3
+            col.shadow = rgba(1a1a1aee)
+            shadow_offset = [-10, -10]
+        }
+        animations {
+            enabled = yes
+            animation = windows, 1, 3, default, slide
+            animation = windowsOut, 1, 3, default, slide
+            animation = border, 1, 10, default
+            animation = fade, 1, 3, default
+            animation = workspaces, 1, 3, default
+        }
+        dwindle {
+            pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+            preserve_split = yes # you probably want this
+        }
+        master {
+            new_is_master = true
+            new_on_top = true
+        }
+        gestures {
+            # See https://wiki.hyprland.org/Configuring/Variables/ for more
+            workspace_swipe = on
+            workspace_swipe_forever = true;
+            workspace_swipe_cancel_ratio = 0.25;
+        }
+        windowrule = float, ^(blueberry.py)$
+        windowrulev2 = float,title:^(Graze.)$
+        windowrule = float, ^(nm-connection-editor)$
+        windowrule = float, ^(pavucontrol)$
+        windowrule = float, \A\Z|\A\Z*|\A\Z+
+        windowrule = float, ^(galculator)$
+        windowrule = noborder, ^(glava)$
+        layerrule = blur, gtk-layer-shell
+        layerrule = ignorezero, gtk-layer-shell
+        windowrule = opacity 0.99,^(firefox)$ 
+        windowrule = opacity 0.99 0.99,^(firefox)$ 
+        windowrulev2 = fakefullscreen, title:(Discord)
 
-              drop_shadow = true
-              shadow_range = 20
-              shadow_render_power = 3
-              col.shadow = rgba(1a1a1aee)
-              shadow_offset = [-10, -10]
-          }
-          animations {
-              enabled = yes
-              animation = windows, 1, 3, default, slide
-              animation = windowsOut, 1, 3, default, slide
-              animation = border, 1, 10, default
-              animation = fade, 1, 3, default
-              animation = workspaces, 1, 3, default
-          }
-          dwindle {
-              pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-              preserve_split = yes # you probably want this
-          }
-          master {
-              new_is_master = true
-              new_on_top = true
-          }
-          gestures {
-              # See https://wiki.hyprland.org/Configuring/Variables/ for more
-              workspace_swipe = on
-              workspace_swipe_forever = true;
-              workspace_swipe_cancel_ratio = 0.25;
-          }
-          windowrule = float, ^(blueberry.py)$
-          windowrulev2 = float,title:^(Graze.)$
-          windowrule = float, ^(nm-connection-editor)$
-          windowrule = float, ^(pavucontrol)$
-          windowrule = float, \A\Z|\A\Z*|\A\Z+
-          windowrule = float, ^(galculator)$
-          windowrule = noborder, ^(glava)$
-          layerrule = blur, gtk-layer-shell
-          layerrule = ignorezero, gtk-layer-shell
-          windowrule = opacity 0.99,^(firefox)$ 
-          windowrule = opacity 0.99 0.99,^(firefox)$ 
-          windowrulev2 = fakefullscreen, title:(Discord)
-
-          misc {
-            enable_swallow = true
-            swallow_regex = ^(kitty)|(Alacritty)|(foot)$
-            animate_manual_resizes = true
-            disable_hyprland_logo = true
-            disable_splash_rendering = true
-          }
+        misc {
+          enable_swallow = true
+          swallow_regex = ^(kitty)|(Alacritty)|(foot)$
+          animate_manual_resizes = true
+          disable_hyprland_logo = true
+          disable_splash_rendering = true
+        }
+        ${plugin_snipet}
       '';
   };
   home.packages = with pkgs; [
