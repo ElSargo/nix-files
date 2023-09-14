@@ -2,7 +2,8 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   environment = {
-    gnome.excludePackages = with pkgs.gnome; [
+    gnome.excludePackages = with pkgs.gnome;
+      [
         cheese # webcam tool
         gnome-music
         gnome-terminal
@@ -12,15 +13,15 @@
         iagno # go game
         hitori # sudoku game
         atomix # puzzle game
-      ] ++ [ pkgs.gnome-tour ] ;
-      systemPackages = with pkgs.gnomeExtensions; [
-        removable-drive-menu
-        caffeine
-        dash-to-dock
-        blur-my-shell
-        uptime-indicator
-        grand-theft-focus
-      ];
+      ] ++ [ pkgs.gnome-tour ];
+    systemPackages = with pkgs.gnomeExtensions; [
+      removable-drive-menu
+      caffeine
+      dash-to-dock
+      blur-my-shell
+      uptime-indicator
+      grand-theft-focus
+    ];
 
   };
 }

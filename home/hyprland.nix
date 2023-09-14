@@ -1,14 +1,18 @@
-{ enabled_hyprland_plugins ? [], pkgs, browser ? "firefox", palette, ... }:
+{ enabled_hyprland_plugins ? [ ], pkgs, browser ? "firefox", palette, ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
   colors = builtins.mapAttrs (k: v: builtins.substring 1 6 v) palette;
-  cmd = x: if isString x then [x] else x;
-  bind = (set: concatLists (attrValues (mapAttrs (k: v: map (x: [k] ++ [x]) (cmd v)) set)))  ;
-  mkbinds = m:  concatLists (attrValues(mapAttrs (k: v: ( x: map (j: [k] ++ j  ) x ) (bind v) ) m))  ;
-  # hypr_stdenv =  pkgs.stdenv ;
-  plugin_snipet = builtins.concatStringsSep "\n" 
-  (builtins.map (p: "plugin = ${ builtins.trace ( builtins.toString p) p}") enabled_hyprland_plugins) ;
+  cmd = x: if isString x then [ x ] else x;
+  bind = (set:
+    concatLists
+    (attrValues (mapAttrs (k: v: map (x: [ k ] ++ [ x ]) (cmd v)) set)));
+  mkbinds = m:
+    concatLists
+    (attrValues (mapAttrs (k: v: (x: map (j: [ k ] ++ j) x) (bind v)) m));
+  plugin_snipet = builtins.concatStringsSep "\n"
+    (builtins.map (p: "plugin = ${builtins.trace (builtins.toString p) p}")
+      enabled_hyprland_plugins);
   keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bind = ${s} 
   '') (map (concatStringsSep ", ") (mkbinds {
@@ -54,7 +58,7 @@ let
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
       N = "workspace, empty";
-      Y = ["exec, kitty" "exec, foot"];
+      Y = [ "exec, kitty" "exec, foot" ];
     };
 
     SUPERSHIFT = {
@@ -87,8 +91,10 @@ let
 
     "" = {
 
-      XF86AudioRaiseVolume = "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
-      XF86AudioLowerVolume = "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
+      XF86AudioRaiseVolume =
+        "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
+      XF86AudioLowerVolume =
+        "exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
       XF86AudioMute = "exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
       # XF86AudioRaiseVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ +5%";
       # XF86AudioLowerVolume = "exec, pactl set-sink-volume @DEFAULT_SINK@ -5%";
@@ -146,13 +152,16 @@ in {
     '';
 
   wayland.windowManager.hyprland = {
-    package = pkgs.unstable.hyprland;
+    package = pkgs.unstable.hyprland.overrideDerivation (old: {
+      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-Ofast" ];
+    });
+
     enable = true;
     extraConfig = # kdl
       ''
         exec-once=eww open-many bar bar2
         # exec-once=swaybg -i ~/Pictures/flake.png
-        exec-once=${import ../misc/change_wall.nix { inherit pkgs; }}
+        exec-once=change-wallpaper
         ${unbinds}
         ${keybinds}
         ${mouse-keybinds}
@@ -191,8 +200,8 @@ in {
             rounding = 10
             blur {
               size = 4
-              passes = 2
-              noise = 0.02
+              passes = 3
+              noise = 0.01
               brightness = 1.
             }
 
@@ -227,15 +236,12 @@ in {
         windowrule = float, ^(blueberry.py)$
         windowrulev2 = float,title:^(Graze.)$
         windowrule = float, ^(nm-connection-editor)$
-        windowrule = float, ^(pavucontrol)$
-        windowrule = float, \A\Z|\A\Z*|\A\Z+
         windowrule = float, ^(galculator)$
-        windowrule = noborder, ^(glava)$
         layerrule = blur, gtk-layer-shell
         layerrule = ignorezero, gtk-layer-shell
-        windowrule = opacity 0.99,^(firefox)$ 
-        windowrule = opacity 0.99 0.99,^(firefox)$ 
-        windowrulev2 = fakefullscreen, title:(Discord)
+        windowrulev2 size 30% 30%, initialTitle:(Enter name of file to save to…)
+          # windowrule = opacity 0.99 0.99,^(firefox)$ 
+        # windowrule = opacity 0.99,^(firefox)$ 
 
         misc {
           enable_swallow = true
@@ -243,6 +249,7 @@ in {
           animate_manual_resizes = true
           disable_hyprland_logo = true
           disable_splash_rendering = true
+          vfr = true
         }
         ${plugin_snipet}
       '';
@@ -256,6 +263,7 @@ in {
     wofi
     wlogout
     wireplumber
+    change-wallpaper
   ];
 
   programs.fish = {

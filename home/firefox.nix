@@ -1,9 +1,6 @@
-{  pkgs, config, lib, ... }:
-{
+{ pkgs, config, lib, ... }: {
 
-  home.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = 1;
-  };
+  home.sessionVariables = { MOZ_ENABLE_WAYLAND = 1; };
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
@@ -125,7 +122,8 @@
             };
             "Khan academy" = {
               urls = [{
-                template = "https://www.khanacademy.org/search?search_again=1&page_search_query={searchTerms}";
+                template =
+                  "https://www.khanacademy.org/search?search_again=1&page_search_query={searchTerms}";
               }];
               iconUpdateURL =
                 "https://cdn.kastatic.org/images/favicon.ico?logo";
@@ -413,12 +411,52 @@
             user_pref("layers.acceleration.force-enabled", true);
             user_pref("gfx.webrender.enabled", true);
             user_pref("layout.css.backdrop-filter.enabled", true);
+            user_pref("userChrome.Linux.Transparency.High.Enabled", true);
 
             /****************************************************************************
              * END: BETTERFOX                                                           *
             ****************************************************************************/
           '';
-      } ;
+      };
     };
   };
-} 
+}
+
+    # TODO: Switch to firefox esr, example
+    # packages.${system}.firefox = wrapFirefox firefox-esr-unwrapped {
+    #         nixExtensions = [
+    #           (fetchFirefoxAddon {
+    #             name = "ublock"; # Has to be unique!
+    #             url =
+    #               "https://addons.mozilla.org/firefox/downloads/file/3679754/ublock_origin-1.31.0-an+fx.xpi";
+    #             hash = "sha256-2e73AbmYZlZXCP5ptYVcFjQYdjDp4iPoEPEOSCVF5sA=";
+    #           })
+    #         ];
+
+    #         extraPolicies = {
+    #           CaptivePortal = false;
+    #           DisableFirefoxStudies = true;
+    #           DisablePocket = true;
+    #           DisableTelemetry = true;
+    #           DisableFirefoxAccounts = true;
+    #           FirefoxHome = {
+    #             Pocket = false;
+    #             Snippets = false;
+    #           };
+    #           UserMessaging = {
+    #             ExtensionRecommendations = false;
+    #             SkipOnboarding = true;
+    #           };
+    #           SecurityDevices = {
+    #             # Use a proxy module rather than `nixpkgs.config.firefox.smartcardSupport = true`
+    #             "PKCS#11 Proxy Module" = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
+    #           };
+    #         };
+
+    #         extraPrefs = ''
+    #           // Show more ssl cert infos
+    #           lockPref("security.identityblock.show_extended_validation", true);
+    #         '';
+    #       };
+
+

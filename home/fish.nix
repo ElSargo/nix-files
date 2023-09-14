@@ -46,7 +46,7 @@ in {
         description = "Change dirs with lf";
       };
       rebuild = {
-        argumentNames = ["name"];
+        argumentNames = [ "name" ];
         body = # fish
           ''
             ulimit -n 4096;
@@ -55,7 +55,7 @@ in {
         description = "Rebuild the system configuration";
       };
       rbs = {
-        argumentNames = ["name"];
+        argumentNames = [ "name" ];
         body = # fish
           ''
             ulimit -n 4096;
@@ -64,7 +64,7 @@ in {
         description = "Rebuild the system configuration";
       };
       rbb = {
-        argumentNames = ["name"];
+        argumentNames = [ "name" ];
         body = # fish
           ''
             ulimit -n 4096;
@@ -85,17 +85,7 @@ in {
         description = "Copy a previously run command";
       };
     };
-    shellAliases = {
-      xc = "wl-copy";
-      clip = "wl-copy";
-      lf = "lfcd";
-      ls = "${pk "exa"} -l";
-      xplr = "cd $(/usr/bin/env ${pk "xplr"})";
-      ns = "nix-shell";
-      za = "${pkgs.unstable.zellij}/bin/zellij a";
-      zl =
-        " ${pkgs.unstable.zellij}/bin/zellij a $(pwd | ${pkgs.sd} '/' '\\n' | tail -n 1) || zellij --layout ./layout.kdl -s $(pwd | sd '/' '\\n' | tail -n 1)";
-    };
+    shellAliases = (import ../misc/shell_aliases.nix { inherit pkgs; });
     shellAbbrs = {
       q = "exit";
       ":q" = "exit";

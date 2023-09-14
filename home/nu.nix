@@ -141,7 +141,7 @@
         '';
     };
 
-    shellAliases = {
+    shellAliases = (import ../misc/shell_aliases.nix { inherit pkgs; }) // {
       unix = "curl -L http://git.io/unix";
       nix-develop = "nix develop -c nu";
       nix-shell = "nix-shell --command nu";

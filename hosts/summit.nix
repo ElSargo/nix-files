@@ -11,15 +11,16 @@
     tmp.cleanOnBoot = true;
     # kernelPackages = pkgs.unstable.linuxPackages_xanmod_latest;
     kernelPackages = pkgs.unstable.linuxPackages_6_5;
-    kernelParams = [ "i915.force_probe=46a6" ];  
+    kernelParams = [ "i915.force_probe=46a6" ];
   };
 
-  nix.settings.system-features = [ "gccarch-alderlake" "kvm" "nixos-test" "big-parallel" ];
+  nix.settings.system-features =
+    [ "gccarch-alderlake" "kvm" "nixos-test" "big-parallel" ];
   services.xserver.videoDrivers = [ "intel" "modsetting" ];
   services.xserver.deviceSection = ''
-     Option "DRI" "3"   
+    Option "DRI" "3"   
   '';
-    nixpkgs.config.packageOverrides = pkgs: {
+  nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
 
@@ -28,39 +29,11 @@
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
-      intel-ocl 
+      intel-ocl
     ];
-  };
-  
-    # nixpkgs.localSystem = {
-    #   gcc.arch = "alderlake";
-    #   gcc.tune = "alderlake";
-    #   system = "x86_64-linux";
-    # };
-  # nixpkgs.overlays = [(self: super: {
-  #   optimizeWithFlags = pkg: flags:
-  #     pkg.overrideAttrs (old: {
-  #       NIX_CFLAGS_COMPILE = [ (old.NIX_CFLAGS_COMPILE or "") ] ++ flags;
-  #     });
-
-  #   optimizeForThisHost = pkg:
-  #     self.optimizeWithFlags pkg [ "-O3" "-march=alderlake" "-fPIC" ];
-
-  #   hyprland = self.optimizeForThisHost super.hyprland;
-  # })];
-
-  
-  systemd.services.mcontrolcenter = {
-    description = "test Daemon";
-    serviceConfig = {
-      Name = "mcontrolcenter.helper";
-      Exec = "/home/sargo/MControlCenter/helper/mcontrolcenter-helper";
-      User = "root";
-    };
-    enable = true;
   };
 
   #////////////////////////////////////////////////////////////////////
@@ -82,8 +55,8 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "acpi_ec" "ec_sys" ];
+  boot.initrd.kernelModules = [ "msi_ec" ];
+  boot.kernelModules = [ "kvm-intel" "acpi_ec" "ec_sys" "msi-ec" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

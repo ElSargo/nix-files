@@ -16,8 +16,10 @@
       warn-dirty = false;
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      ];
     };
 
     gc = {
@@ -46,10 +48,30 @@
   };
 
   services = {
-    # cpupower-gui.enable = true;
-    tlp.enable = false;
-    throttled.enable = false;
-    thermald.enable = true;
+    tlp = {
+      enable = false;
+      settings = {
+        CPU_DRIVER_OPMODE_ON_AC = ""; # "active";
+        CPU_DRIVER_OPMODE_ON_BAT = ""; # "active";
+        CPU_SCALING_GOVERNOR_ON_AC = ""; # "powersave";
+        CPU_SCALING_GOVERNOR_ON_BAT = ""; # "powersave";
+        CPU_SCALING_MIN_FREQ_ON_AC = ""; # 0;
+        CPU_SCALING_MAX_FREQ_ON_AC = ""; # 9999999;
+        CPU_SCALING_MIN_FREQ_ON_BAT = ""; # 0;
+        CPU_SCALING_MAX_FREQ_ON_BAT = ""; # 9999999;
+        CPU_ENERGY_PERF_POLICY_ON_AC = ""; # "balance_performance";
+        CPU_ENERGY_PERF_POLICY_ON_BAT = ""; # "balance_power";
+        CPU_MIN_PERF_ON_AC = ""; # 0;
+        CPU_MAX_PERF_ON_AC = ""; # 100;
+        CPU_MIN_PERF_ON_BAT = ""; # 0;
+        CPU_MAX_PERF_ON_BAT = ""; # 30;
+
+      };
+    };
+    thermald = {
+      enable = true;
+      package = pkgs.thermald;
+    };
     auto-cpufreq = {
       enable = true;
       settings = {
@@ -62,8 +84,8 @@
         };
         battery = {
           governor = "powersave";
-          scaling_min_freq = 100000; # kHz
-          scaling_max_freq = 500000; # kHz
+          scaling_min_freq = 400000; # kHz
+          scaling_max_freq = 2000000; # kHz
           turbo = "auto";
         };
       };
@@ -99,10 +121,7 @@
     rtkit.enable = true;
   };
 
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-  };
+  xdg.portal = { enable = true; };
 
   sound.enable = true;
 

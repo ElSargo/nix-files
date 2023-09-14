@@ -4,7 +4,8 @@
 
   # Bootloader.
   boot = {
-    binfmt.emulatedSystems = [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" "x86_32-linux"];
+    binfmt.emulatedSystems =
+      [ "wasm32-wasi" "x86_64-windows" "aarch64-linux" "x86_32-linux" ];
     loader.efi.efiSysMountPoint = "/boot/efi";
     loader.grub.configurationLimit = 10;
     tmp.cleanOnBoot = true;

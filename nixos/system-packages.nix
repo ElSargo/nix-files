@@ -31,25 +31,22 @@ let
     pastel
     cargo
     git
+    (builtins.trace (builtins.toString change-wallpaper) change-wallpaper)
   ];
-compat = with pkgs; [
-    vulkan-tools
-    lutris
-    vulkan-loader
-    vulkan-headers
-  vulkan-caps-viewer
-  vulkan-cts
-  vulkan-tools-lunarg
-  vulkan-extension-layer
-  vulkan-validation-layers
-  vk-bootstrap
-  vkdt-wayland
-];
   desktop = with pkgs; [ inlyne libreoffice ];
 
   browsers = with pkgs; [ unstable.firefox ];
 
-  custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer zellij-runner ];
+  custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer ];
 
-in pkgs.lib.flatten  [ audio utils coding terminal desktop browsers custom compat pkgs.nixVersions.nix_2_17 ]
+in pkgs.lib.flatten [
+  audio
+  utils
+  coding
+  terminal
+  desktop
+  browsers
+  custom
+  pkgs.nixVersions.nix_2_17
+]
 

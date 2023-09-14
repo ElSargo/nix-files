@@ -1,4 +1,4 @@
-{firefox-theme, ...}: {
+{ firefox-theme, ... }: {
   programs.firefox.profiles.sargo = {
     userChrome = ''
       @import "firefox-gnome-theme/userChrome.css";
@@ -7,5 +7,6 @@
       @import "firefox-gnome-theme/userContent.css";
     '';
   };
-  home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source = "${firefox-theme}";
-}  
+  home.file.".mozilla/firefox/sargo/chrome/firefox-gnome-theme/".source =
+    "${firefox-theme}";
+}

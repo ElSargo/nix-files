@@ -3,7 +3,7 @@ let palette = (import ../misc/palettes.nix).tokionight;
 in {
   # Disable root login
   users.users.root.hashedPassword = "!";
-  imports = [     home-manager.nixosModules.home-manager ];
+  imports = [ home-manager.nixosModules.home-manager ];
   home-manager.users.root = { lib, ... }: {
     imports = map (x: import (x) (args // { inherit palette lib pkgs; })) [
       ../home/bash.nix

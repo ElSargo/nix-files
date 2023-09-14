@@ -21,10 +21,7 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland_plugins.url = "github:hyprwm/hyprland-plugins";
 
-    nixd.url = "github:nix-community/nixd";
-  
     eww-bar = {
       url = "github:ElSargo/eww-bar";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,16 +50,12 @@
       url = "github:ElSargo/wgsl-analyzer";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zellij-runner = {
-      url = "github:ElSargo/zellij-runner";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
-    , helix-flake, supabar, nvim, wgsl, zellij-runner, unix-chad-bookmarks
-    , firefox-gnome-theme, firefox-glass-theme, eww-bar, new-terminal-hyprland
-    , hyprland, hyprland_plugins, nixd, ... }@attrs:
+    , helix-flake, supabar, nvim, wgsl, unix-chad-bookmarks, firefox-gnome-theme
+    , firefox-glass-theme, eww-bar, new-terminal-hyprland, hyprland
+    , hyprland_plugins, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -72,8 +65,8 @@
             config.allowUnfree = true;
           };
         };
-        nixd-overlay = final: prev: {
-          nixd = nixd.packages.${system}.default;
+        change_wallpaper_overlay = final: prev: {
+          change-wallpaper = import ./misc/change_wall.nix { pkgs = prev; };
         };
         helix = helix-flake.packages.${system}.default;
         overlays = ({ config, pkgs, ... }: {
@@ -84,9 +77,8 @@
             nvim.overlays.${system}.default
             wgsl.overlays.${system}.default
             eww-bar.overlays.${system}.default
-            nixd-overlay
             new-terminal-hyprland.overlays.${system}.default
-            zellij-runner.overlays.${system}.default
+            change_wallpaper_overlay
           ];
         });
         specialArgs = attrs // { inherit system helix; };
