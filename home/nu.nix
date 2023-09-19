@@ -3,7 +3,7 @@
     neovim-remote
     fish
     wl-clipboard
-    unstable.zellij
+    zellij
     bzip2
     unrar
     gnutar

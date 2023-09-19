@@ -3,7 +3,7 @@ let supabar-wasm = ''"file:${pkgs.supabar}/bin/zellij-supabar.wasm"'';
 in {
   programs.zellij = {
     enable = true;
-    package = pkgs.unstable.zellij;
+    package = pkgs.zellij;
     enableZshIntegration = false;
     settings = {
       default_layout = "supa";

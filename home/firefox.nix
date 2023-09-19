@@ -54,6 +54,7 @@
 
           in [
             trackmenot
+            ublock-origin
             clearurls
             decentraleyes
             adnauseam

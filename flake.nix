@@ -21,6 +21,10 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
+    hypr-plugins = { 
+      url = "github:hyprwm/hyprland-plugins";
+     flake = false;
+    };
 
     eww-bar = {
       url = "github:ElSargo/eww-bar";
@@ -41,11 +45,8 @@
       url = "github:ElSargo/unix-chad-bookmarks";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    supabar = {
-      url = "github:ElSargo/supabar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nvim = { url = "github:ElSargo/nvim"; };
+    supabar.url = "github:ElSargo/supabar";
+    nvim.url = "github:ElSargo/nvim"; 
     wgsl = {
       url = "github:ElSargo/wgsl-analyzer";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,7 +56,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
     , helix-flake, supabar, nvim, wgsl, unix-chad-bookmarks, firefox-gnome-theme
     , firefox-glass-theme, eww-bar, new-terminal-hyprland, hyprland
-    , hyprland_plugins, ... }@attrs:
+    , ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -73,12 +74,12 @@
           nixpkgs.overlays = [
             unstable-overlay
             unix-chad-bookmarks.overlays.${system}.default
-            supabar.overlays.${system}.default
             nvim.overlays.${system}.default
             wgsl.overlays.${system}.default
             eww-bar.overlays.${system}.default
             new-terminal-hyprland.overlays.${system}.default
             change_wallpaper_overlay
+            supabar.overlays.${system}.all
           ];
         });
         specialArgs = attrs // { inherit system helix; };
@@ -131,8 +132,6 @@
               inherit system;
               specialArgs = specialArgs // {
                 firefox-theme = firefox-glass-theme;
-                # enabled_hyprland_plugins = [ hyprland_plugins.packages.${system}.hyprbars ];
-                # hyprland_package = hyprland.packages.${system}.default;
                 extra-home-modules = [
                   ./misc/future_hyprland_module.nix
                   ./home/hyprland.nix

@@ -31,7 +31,7 @@ let
     pastel
     cargo
     git
-    (builtins.trace (builtins.toString change-wallpaper) change-wallpaper)
+    change-wallpaper
   ];
   desktop = with pkgs; [ inlyne libreoffice ];
 

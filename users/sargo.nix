@@ -18,8 +18,8 @@
   imports = [
     home-manager.nixosModules.home-manager
     {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
+      # home-manager.useGlobalPkgs = true;
+      # home-manager.useUserPackages = true;
       home-manager.users.sargo = { lib, ... }:
         let
           palette = (import ../misc/palettes.nix).gruvbox;

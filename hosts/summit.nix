@@ -33,6 +33,7 @@
       vaapiVdpau
       libvdpau-va-gl
       intel-ocl
+      intel-compute-runtime
     ];
   };
 

@@ -1,4 +1,4 @@
-{ enabled_hyprland_plugins ? [ ], pkgs, browser ? "firefox", palette, ... }:
+{ pkgs, browser ? "firefox", palette, hypr-plugins, lib, ... }:
 with builtins;
 let
   pk = name: "${pkgs.${name}}/bin/${name}";
@@ -10,9 +10,19 @@ let
   mkbinds = m:
     concatLists
     (attrValues (mapAttrs (k: v: (x: map (j: [ k ] ++ j) x) (bind v)) m));
-  plugin_snipet = builtins.concatStringsSep "\n"
-    (builtins.map (p: "plugin = ${builtins.trace (builtins.toString p) p}")
-      enabled_hyprland_plugins);
+
+  optimized-flags = (old: {
+      stdenv = hypr-env;
+      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-Ofast" ];
+    });
+  
+  hypr-env = pkgs.stdenv;
+  hypr-package = pkgs.unstable.hyprland.overrideDerivation optimized-flags; 
+  hyprbars = (pkgs.callPackage "${hypr-plugins}/hyprbars/default.nix" { hyprland = hypr-package; stdenv = hypr-env; inherit lib; }).overrideDerivation optimized-flags;
+  
+  # plugin_snipet = builtins.concatStringsSep "\n"
+  #   (builtins.map (p: "plugin = ${builtins.trace (builtins.toString p) p}")
+  #     enabled_hyprland_plugins);
   keybinds = pkgs.lib.strings.concatMapStrings (s: ''
     bind = ${s} 
   '') (map (concatStringsSep ", ") (mkbinds {
@@ -152,9 +162,8 @@ in {
     '';
 
   wayland.windowManager.hyprland = {
-    package = pkgs.unstable.hyprland.overrideDerivation (old: {
-      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-Ofast" ];
-    });
+    package = hypr-package;
+
 
     enable = true;
     extraConfig = # kdl
@@ -165,9 +174,9 @@ in {
         ${unbinds}
         ${keybinds}
         ${mouse-keybinds}
-        monitor=HDMI-A-1,preferred,auto,1
-        monitor=HDMI-A-1, 1920x1080, 1920x0, 1
-        workspace=HDMI-A-1,1
+        # monitor=HDMI-A-1,1920x1080@75,auto,1
+        monitor=DP-1,1920x1080@75,auto,1
+        # monitor=eDP-1,preferred,auto,1
 
         xwayland {
           force_zero_scaling = true
@@ -210,6 +219,7 @@ in {
             shadow_render_power = 3
             col.shadow = rgba(1a1a1aee)
             shadow_offset = [-10, -10]
+            # fullscreen_opacity = 0.99
         }
         animations {
             enabled = yes
@@ -240,8 +250,7 @@ in {
         layerrule = blur, gtk-layer-shell
         layerrule = ignorezero, gtk-layer-shell
         windowrulev2 size 30% 30%, initialTitle:(Enter name of file to save to…)
-          # windowrule = opacity 0.99 0.99,^(firefox)$ 
-        # windowrule = opacity 0.99,^(firefox)$ 
+        windowrule = opacity 0.99,^(firefox)$ 
 
         misc {
           enable_swallow = true
@@ -251,10 +260,10 @@ in {
           disable_splash_rendering = true
           vfr = true
         }
-        ${plugin_snipet}
       '';
   };
   home.packages = with pkgs; [
+    ( builtins.trace  (builtins.toString hyprbars )hyprbars )
     swaybg
     lazygit
     light
