@@ -1,9 +1,80 @@
-{ pkgs, config, lib, ... }: {
-
-  home.sessionVariables = { MOZ_ENABLE_WAYLAND = 1; };
+{ pkgs, ... }: {
+  home.sessionVariables = { MOZ_ENABLE_WAYLAND = 1; MOZ_USE_XINPUT2 = 1; };
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.unstable.firefox-unwrapped {
+    package = pkgs.wrapFirefox pkgs.unstable.firefox-esr-unwrapped {
+        nixExtensions = [
+          (pkgs.fetchFirefoxAddon {
+            name = "trackmenot"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/3438065/trackmenot-0.10.46.xpi";
+            hash = "sha256-9e2c0kMlQ+IiE+4OebxmlB/GgCo1emrpzKLcvo5NEkw=";
+          })
+          (pkgs.fetchFirefoxAddon {
+            name = "clearurls"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4064884/clearurls-1.26.1.xpi";
+            hash = "sha256-4gFo1jyxuLo60N5M20LFQNmf4AqpZ5tZ9JvMw28QYpE=";
+          })
+          (pkgs.fetchFirefoxAddon {
+            name = "decentraleyes"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4158232/decentraleyes-2.0.18.xpi";
+            hash = "sha256-+PAx75HAKhyxplUqzQK49IhpNABla0BH1o8DugoQeNk=";
+          })
+          (pkgs.fetchFirefoxAddon {
+            name = "adnauseam"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4122213/adnauseam-3.17.0.xpi";
+            hash = "sha256-7U0vNJiz6zeQU5cOJBUNMdTxn/WYeQf8mPhwaX3/t8k=";
+          })            
+          (pkgs.fetchFirefoxAddon {
+            name = "keepassxc-browser"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4134768/keepassxc_browser-1.8.7.xpi";
+            hash = "sha256-3rHDwp+r6Q3YEVNtQ01kwgDKq5qff+vDQoqhcO7+xfI=";
+          })            
+          (pkgs.fetchFirefoxAddon {
+            name = "re-enable-right-click"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/3981363/re_enable_right_click-0.5.4.xpi";
+            hash = "sha256-ndlYFdcuuzvUrD7SO3gHPPvZOsylp69S3hNlGapCK20=";
+          })            
+            
+          (pkgs.fetchFirefoxAddon {
+            name = "sponsorblock"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4169272/sponsorblock-5.4.20.xpi";
+            hash = "sha256-AHw/vVAH5Bwk4smZvnFObYyO/DRVll1szVAK7YhJ2fs=";
+          })            
+          (pkgs.fetchFirefoxAddon {
+            name = "tabliss"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/3940751/tabliss-2.6.0.xpi";
+            hash = "sha256-3nZoEPI0scE//bcEeubL8G7XnD0ItRoH5HZvrf8InA8=";
+          })
+          (pkgs.fetchFirefoxAddon {
+            name = "vimium-c"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4142362/vimium_c-1.99.995.xpi";
+            hash = "sha256-2BPJi05/u+zYIBTQ/w8WPiH2iqPe4YLGHBU2qIVPB2A=";
+          })            
+            
+          (pkgs.fetchFirefoxAddon {
+            name = "youtube-shorts-block"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/4121795/youtube_shorts_block-1.4.1.xpi";
+            hash = "sha256-VxAqhUhFNxtqFhtQX0Ny+5Z+QNfprqm+5eLM55jSU1o=";
+          })            
+          (pkgs.fetchFirefoxAddon {
+            name = "terms-of-service-didnt-read"; # Has to be unique!
+            url =
+              "https://addons.mozilla.org/firefox/downloads/file/3827536/terms_of_service_didnt_read-4.1.2.xpi";
+            hash = "sha256-iGJj3UKOCMyFcnW3cffSjsDomnZjwVEmB9Yd0jP4P6g=";
+          })            
+            
+        ];
+
       extraPolicies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
@@ -31,42 +102,6 @@
       sargo = {
         id = 0;
         name = "sargo";
-
-        extensions = with config.nur.repos.rycee.firefox-addons;
-          let
-
-            trackmenot = buildFirefoxXpiAddon {
-              pname = "trackmenot";
-              version = "0.10.46";
-              addonId = "trackmenot@mrl.nyu.edu";
-              url =
-                "https://addons.mozilla.org/firefox/downloads/file/3438065/trackmenot-0.10.46.xpi";
-              sha256 =
-                "f5ed9cd2432543e22213ee0e79bc66941fc6802a357a6ae9cca2dcbe8e4d124c";
-              meta = with lib; {
-                homepage = "http://cs.nyu.edu/trackmenot/";
-                description =
-                  "An artware browser add-on to protect privacy in web-search. By issuing randomized queries to common search-engines, TrackMeNot obfuscates your search profile and registers your discontent with surreptitious tracking.";
-                license = licenses.gpl2;
-                platforms = platforms.all;
-              };
-            };
-
-          in [
-            trackmenot
-            ublock-origin
-            clearurls
-            decentraleyes
-            adnauseam
-            keepassxc-browser
-            re-enable-right-click
-            sponsorblock
-            tabliss
-            vimium-c
-            youtube-shorts-block
-            terms-of-service-didnt-read
-          ];
-
         search = {
           force = true;
           default = "Brave";
@@ -405,6 +440,26 @@
              * START: MY OVERRIDES                                                      *
             ****************************************************************************/
             // Enter your personal prefs below this line:
+            user_pref("mousewheel.min_line_scroll_amount", 30);
+            user_pref("mousewheel.system_scroll_override_on_root_content.enabled", true);
+            user_pref("mousewheel.system_scroll_override_on_root_content.horizontal.factor", 175);
+            user_pref("mousewheel.system_scroll_override_on_root_content.vertical.factor", 175);
+            user_pref("toolkit.scrollbox.horizontalScrollDistance", 6);
+            user_pref("toolkit.scrollbox.verticalScrollDistance", 2);
+
+            user_pref("general.smoothScroll.lines.durationMaxMS", 125);
+            user_pref("general.smoothScroll.lines.durationMinMS", 125);
+            user_pref("general.smoothScroll.mouseWheel.durationMaxMS", 200);
+            user_pref("general.smoothScroll.mouseWheel.durationMinMS", 100);
+            user_pref("general.smoothScroll.msdPhysics.enabled", true);
+            user_pref("general.smoothScroll.other.durationMaxMS", 125);
+            user_pref("general.smoothScroll.other.durationMinMS", 125);
+            user_pref("general.smoothScroll.pages.durationMaxMS", 125);
+            user_pref("general.smoothScroll.pages.durationMinMS", 125);
+
+
+
+            
             user_pref("svg.context-properties.content.enabled", true);
             user_pref("layout.css.has-selector.enabled", true);
             user_pref("gfx.webrender.all", true);
@@ -413,6 +468,9 @@
             user_pref("gfx.webrender.enabled", true);
             user_pref("layout.css.backdrop-filter.enabled", true);
             user_pref("userChrome.Linux.Transparency.High.Enabled", true);
+            user_pref("userChrome.Toolbar.Transparency.High.Enable", true);
+            user_pref("userChrome.Tabs.SelectedTabIndicator.Enabled", true);
+            user_pref("userChrome.OneLine.NavBarFirst.Enabled", true);
 
             /****************************************************************************
              * END: BETTERFOX                                                           *
@@ -422,42 +480,3 @@
     };
   };
 }
-
-    # TODO: Switch to firefox esr, example
-    # packages.${system}.firefox = wrapFirefox firefox-esr-unwrapped {
-    #         nixExtensions = [
-    #           (fetchFirefoxAddon {
-    #             name = "ublock"; # Has to be unique!
-    #             url =
-    #               "https://addons.mozilla.org/firefox/downloads/file/3679754/ublock_origin-1.31.0-an+fx.xpi";
-    #             hash = "sha256-2e73AbmYZlZXCP5ptYVcFjQYdjDp4iPoEPEOSCVF5sA=";
-    #           })
-    #         ];
-
-    #         extraPolicies = {
-    #           CaptivePortal = false;
-    #           DisableFirefoxStudies = true;
-    #           DisablePocket = true;
-    #           DisableTelemetry = true;
-    #           DisableFirefoxAccounts = true;
-    #           FirefoxHome = {
-    #             Pocket = false;
-    #             Snippets = false;
-    #           };
-    #           UserMessaging = {
-    #             ExtensionRecommendations = false;
-    #             SkipOnboarding = true;
-    #           };
-    #           SecurityDevices = {
-    #             # Use a proxy module rather than `nixpkgs.config.firefox.smartcardSupport = true`
-    #             "PKCS#11 Proxy Module" = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
-    #           };
-    #         };
-
-    #         extraPrefs = ''
-    #           // Show more ssl cert infos
-    #           lockPref("security.identityblock.show_extended_validation", true);
-    #         '';
-    #       };
-
-

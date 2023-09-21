@@ -13,12 +13,13 @@ let
 
   optimized-flags = (old: {
       stdenv = hypr-env;
-      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-Ofast" ];
+      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-O3" ];
     });
   
   hypr-env = pkgs.stdenv;
-  hypr-package = pkgs.unstable.hyprland.overrideDerivation optimized-flags; 
-  hyprbars = (pkgs.callPackage "${hypr-plugins}/hyprbars/default.nix" { hyprland = hypr-package; stdenv = hypr-env; inherit lib; }).overrideDerivation optimized-flags;
+  # hypr-package = pkgs.unstable.hyprland.overrideDerivation optimized-flags; 
+  hypr-package = pkgs.unstable.hyprland; 
+  # hyprbars = (pkgs.callPackage "${hypr-plugins}/hyprbars/default.nix" { hyprland = hypr-package; stdenv = hypr-env; inherit lib; }).overrideDerivation optimized-flags;
   
   # plugin_snipet = builtins.concatStringsSep "\n"
   #   (builtins.map (p: "plugin = ${builtins.trace (builtins.toString p) p}")
@@ -63,7 +64,7 @@ let
       D = "movefocus, r";
       F = "fullscreen,0";
       B = "exec, ${browser}";
-      grave = "togglespecialworkspace,";
+      T = "togglespecialworkspace";
       Q = "killactive, ";
       G = "exec, unixchadbookmarks ~/nix-files/bookmarks";
       Return = "exec, [size 40% 40%] new-terminal-hyprland foot";
@@ -170,7 +171,7 @@ in {
       ''
         exec-once=eww open-many bar bar2
         # exec-once=swaybg -i ~/Pictures/flake.png
-        exec-once=change-wallpaper
+        # exec-once=change-wallpaper
         ${unbinds}
         ${keybinds}
         ${mouse-keybinds}
@@ -250,7 +251,7 @@ in {
         layerrule = blur, gtk-layer-shell
         layerrule = ignorezero, gtk-layer-shell
         windowrulev2 size 30% 30%, initialTitle:(Enter name of file to save to…)
-        windowrule = opacity 0.99,^(firefox)$ 
+        windowrulev2 = opacity 0.99, class:(firefox) 
 
         misc {
           enable_swallow = true
@@ -263,7 +264,7 @@ in {
       '';
   };
   home.packages = with pkgs; [
-    ( builtins.trace  (builtins.toString hyprbars )hyprbars )
+    # ( builtins.trace  (builtins.toString hyprbars )hyprbars )
     swaybg
     lazygit
     light

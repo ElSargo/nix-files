@@ -3,7 +3,6 @@
 
     nixpkgs.url = "nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
 
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     flake-utils.url = "github:numtide/flake-utils";
@@ -11,8 +10,8 @@
       url = "github:nushell/nu_scripts";
       flake = false;
     };
-    firefox-glass-theme = {
-      url = "github:ElSargo/firefox-glass";
+    wave-fox = {
+      url = "github:QNetITQ/WaveFox";
       flake = false;
     };
     firefox-gnome-theme = {
@@ -53,9 +52,9 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, nur, home-manager
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, home-manager
     , helix-flake, supabar, nvim, wgsl, unix-chad-bookmarks, firefox-gnome-theme
-    , firefox-glass-theme, eww-bar, new-terminal-hyprland, hyprland
+    , wave-fox, eww-bar, new-terminal-hyprland, hyprland
     , ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
@@ -85,7 +84,6 @@
         specialArgs = attrs // { inherit system helix; };
         default_modules = [
           overlays
-          nur.nixosModules.nur
           ./nixos/configuration.nix
           ./users/root.nix
         ];
@@ -104,6 +102,7 @@
                   ./home/kitty.nix
                   ./home/firefox.nix
                   ./home/firefox_gnome_theme.nix
+                  ./home/dark-theme.nix
                 ];
               };
               modules = default_modules ++ [
@@ -131,14 +130,14 @@
             ChadBook = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
-                firefox-theme = firefox-glass-theme;
+                firefox-theme = wave-fox;
                 extra-home-modules = [
                   ./misc/future_hyprland_module.nix
                   ./home/hyprland.nix
                   ./home/foot.nix
                   ./home/firefox.nix
                   ./home/dark-theme.nix
-                  ./home/firefox_glass_theme.nix
+                  ./home/wavefox.nix
                 ];
 
               };
@@ -148,7 +147,7 @@
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
                 # ./nixos/waydroid.nix
-                ./nixos/virt-manager.nix
+                # ./nixos/virt-manager.nix
 
               ];
             };
@@ -163,7 +162,7 @@
                   ./home/foot.nix
                   ./home/firefox.nix
                   ./home/dark-theme.nix
-                  ./home/firefox_glass_theme.nix
+                  ./home/wave-fox.nix
                 ];
 
               };

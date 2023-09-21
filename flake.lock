@@ -122,22 +122,6 @@
         "type": "github"
       }
     },
-    "firefox-glass-theme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1693882157,
-        "narHash": "sha256-eC189cH+f4IfftEB/7zdizYsl+DVLPipvbj47zb1RrU=",
-        "owner": "ElSargo",
-        "repo": "firefox-glass",
-        "rev": "fdd612341007d13c40af9a44f7274c8cf2303485",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ElSargo",
-        "repo": "firefox-glass",
-        "type": "github"
-      }
-    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -803,21 +787,6 @@
         "type": "github"
       }
     },
-    "nur": {
-      "locked": {
-        "lastModified": 1693881073,
-        "narHash": "sha256-UiK5adrmnQysbEM3bzx31hTQEuIkQ9ZdejPexa9pDk0=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "ed84d07faf54fb0ca2e981cc23cecd349db8c5a5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
-        "type": "github"
-      }
-    },
     "nuscripts": {
       "flake": false,
       "locked": {
@@ -912,7 +881,6 @@
     "root": {
       "inputs": {
         "eww-bar": "eww-bar",
-        "firefox-glass-theme": "firefox-glass-theme",
         "firefox-gnome-theme": "firefox-gnome-theme",
         "flake-utils": "flake-utils_2",
         "helix-flake": "helix-flake",
@@ -922,11 +890,11 @@
         "new-terminal-hyprland": "new-terminal-hyprland",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nur": "nur",
         "nuscripts": "nuscripts",
         "nvim": "nvim",
         "supabar": "supabar",
         "unix-chad-bookmarks": "unix-chad-bookmarks",
+        "wave-fox": "wave-fox",
         "wgsl": "wgsl"
       }
     },
@@ -1272,6 +1240,22 @@
       "original": {
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
+        "type": "github"
+      }
+    },
+    "wave-fox": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1694868788,
+        "narHash": "sha256-v9mskZqBLaugMpVOacxQ7CYDi1BdDI2RWJYtxm4galA=",
+        "owner": "QNetITQ",
+        "repo": "WaveFox",
+        "rev": "b052850d7260968fb2538b29014fe3100a2a9905",
+        "type": "github"
+      },
+      "original": {
+        "owner": "QNetITQ",
+        "repo": "WaveFox",
         "type": "github"
       }
     },
