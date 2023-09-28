@@ -110,8 +110,8 @@ in {
         set -Ux STARSHIP_LOG error
         any-nix-shell fish --info-right | source
         export DIRENV_LOG_FORMAT=
-        set fish_color_normal ${color.br_blue}
-        set fish_color_command ${color.br_blue}
+        set fish_color_normal ${color.blue}
+        set fish_color_command ${color.blue}
         set fish_color_option ${color.br_yellow}
         set fish_color_escape ${color.br_orange}
         set fish_color_end ${color.br_orange}
