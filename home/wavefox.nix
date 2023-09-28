@@ -1,4 +1,5 @@
 { firefox-theme, ... }: {
-  home.file.".mozilla/firefox/sargo/chrome/".source = "${firefox-theme}/chrome/";
+  home.file.".mozilla/firefox/sargo/chrome/".source =
+    "${firefox-theme}/chrome/";
 }
 

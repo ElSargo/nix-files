@@ -12,15 +12,15 @@ let
     (attrValues (mapAttrs (k: v: (x: map (j: [ k ] ++ j) x) (bind v)) m));
 
   optimized-flags = (old: {
-      stdenv = hypr-env;
-      NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-O3" ];
-    });
-  
+    stdenv = hypr-env;
+    NIX_CFLAGS_COMPILE = [ "-march=alderlake" "-mtune=alderlake" "-O3" ];
+  });
+
   hypr-env = pkgs.stdenv;
   # hypr-package = pkgs.unstable.hyprland.overrideDerivation optimized-flags; 
-  hypr-package = pkgs.unstable.hyprland; 
+  hypr-package = pkgs.unstable.hyprland;
   # hyprbars = (pkgs.callPackage "${hypr-plugins}/hyprbars/default.nix" { hyprland = hypr-package; stdenv = hypr-env; inherit lib; }).overrideDerivation optimized-flags;
-  
+
   # plugin_snipet = builtins.concatStringsSep "\n"
   #   (builtins.map (p: "plugin = ${builtins.trace (builtins.toString p) p}")
   #     enabled_hyprland_plugins);
@@ -164,7 +164,6 @@ in {
 
   wayland.windowManager.hyprland = {
     package = hypr-package;
-
 
     enable = true;
     extraConfig = # kdl

@@ -1,79 +1,82 @@
 { pkgs, ... }: {
-  home.sessionVariables = { MOZ_ENABLE_WAYLAND = 1; MOZ_USE_XINPUT2 = 1; };
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+    MOZ_USE_XINPUT2 = 1;
+  };
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.unstable.firefox-esr-unwrapped {
-        nixExtensions = [
-          (pkgs.fetchFirefoxAddon {
-            name = "trackmenot"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/3438065/trackmenot-0.10.46.xpi";
-            hash = "sha256-9e2c0kMlQ+IiE+4OebxmlB/GgCo1emrpzKLcvo5NEkw=";
-          })
-          (pkgs.fetchFirefoxAddon {
-            name = "clearurls"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4064884/clearurls-1.26.1.xpi";
-            hash = "sha256-4gFo1jyxuLo60N5M20LFQNmf4AqpZ5tZ9JvMw28QYpE=";
-          })
-          (pkgs.fetchFirefoxAddon {
-            name = "decentraleyes"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4158232/decentraleyes-2.0.18.xpi";
-            hash = "sha256-+PAx75HAKhyxplUqzQK49IhpNABla0BH1o8DugoQeNk=";
-          })
-          (pkgs.fetchFirefoxAddon {
-            name = "adnauseam"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4122213/adnauseam-3.17.0.xpi";
-            hash = "sha256-7U0vNJiz6zeQU5cOJBUNMdTxn/WYeQf8mPhwaX3/t8k=";
-          })            
-          (pkgs.fetchFirefoxAddon {
-            name = "keepassxc-browser"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4134768/keepassxc_browser-1.8.7.xpi";
-            hash = "sha256-3rHDwp+r6Q3YEVNtQ01kwgDKq5qff+vDQoqhcO7+xfI=";
-          })            
-          (pkgs.fetchFirefoxAddon {
-            name = "re-enable-right-click"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/3981363/re_enable_right_click-0.5.4.xpi";
-            hash = "sha256-ndlYFdcuuzvUrD7SO3gHPPvZOsylp69S3hNlGapCK20=";
-          })            
-            
-          (pkgs.fetchFirefoxAddon {
-            name = "sponsorblock"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4169272/sponsorblock-5.4.20.xpi";
-            hash = "sha256-AHw/vVAH5Bwk4smZvnFObYyO/DRVll1szVAK7YhJ2fs=";
-          })            
-          (pkgs.fetchFirefoxAddon {
-            name = "tabliss"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/3940751/tabliss-2.6.0.xpi";
-            hash = "sha256-3nZoEPI0scE//bcEeubL8G7XnD0ItRoH5HZvrf8InA8=";
-          })
-          (pkgs.fetchFirefoxAddon {
-            name = "vimium-c"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4142362/vimium_c-1.99.995.xpi";
-            hash = "sha256-2BPJi05/u+zYIBTQ/w8WPiH2iqPe4YLGHBU2qIVPB2A=";
-          })            
-            
-          (pkgs.fetchFirefoxAddon {
-            name = "youtube-shorts-block"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/4121795/youtube_shorts_block-1.4.1.xpi";
-            hash = "sha256-VxAqhUhFNxtqFhtQX0Ny+5Z+QNfprqm+5eLM55jSU1o=";
-          })            
-          (pkgs.fetchFirefoxAddon {
-            name = "terms-of-service-didnt-read"; # Has to be unique!
-            url =
-              "https://addons.mozilla.org/firefox/downloads/file/3827536/terms_of_service_didnt_read-4.1.2.xpi";
-            hash = "sha256-iGJj3UKOCMyFcnW3cffSjsDomnZjwVEmB9Yd0jP4P6g=";
-          })            
-            
-        ];
+      nixExtensions = [
+        (pkgs.fetchFirefoxAddon {
+          name = "trackmenot"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/3438065/trackmenot-0.10.46.xpi";
+          hash = "sha256-9e2c0kMlQ+IiE+4OebxmlB/GgCo1emrpzKLcvo5NEkw=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "clearurls"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4064884/clearurls-1.26.1.xpi";
+          hash = "sha256-4gFo1jyxuLo60N5M20LFQNmf4AqpZ5tZ9JvMw28QYpE=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "decentraleyes"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4158232/decentraleyes-2.0.18.xpi";
+          hash = "sha256-+PAx75HAKhyxplUqzQK49IhpNABla0BH1o8DugoQeNk=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "adnauseam"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4122213/adnauseam-3.17.0.xpi";
+          hash = "sha256-7U0vNJiz6zeQU5cOJBUNMdTxn/WYeQf8mPhwaX3/t8k=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "keepassxc-browser"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4134768/keepassxc_browser-1.8.7.xpi";
+          hash = "sha256-3rHDwp+r6Q3YEVNtQ01kwgDKq5qff+vDQoqhcO7+xfI=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "re-enable-right-click"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/3981363/re_enable_right_click-0.5.4.xpi";
+          hash = "sha256-ndlYFdcuuzvUrD7SO3gHPPvZOsylp69S3hNlGapCK20=";
+        })
+
+        (pkgs.fetchFirefoxAddon {
+          name = "sponsorblock"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4169272/sponsorblock-5.4.20.xpi";
+          hash = "sha256-AHw/vVAH5Bwk4smZvnFObYyO/DRVll1szVAK7YhJ2fs=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "tabliss"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/3940751/tabliss-2.6.0.xpi";
+          hash = "sha256-3nZoEPI0scE//bcEeubL8G7XnD0ItRoH5HZvrf8InA8=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "vimium-c"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4142362/vimium_c-1.99.995.xpi";
+          hash = "sha256-2BPJi05/u+zYIBTQ/w8WPiH2iqPe4YLGHBU2qIVPB2A=";
+        })
+
+        (pkgs.fetchFirefoxAddon {
+          name = "youtube-shorts-block"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/4121795/youtube_shorts_block-1.4.1.xpi";
+          hash = "sha256-VxAqhUhFNxtqFhtQX0Ny+5Z+QNfprqm+5eLM55jSU1o=";
+        })
+        (pkgs.fetchFirefoxAddon {
+          name = "terms-of-service-didnt-read"; # Has to be unique!
+          url =
+            "https://addons.mozilla.org/firefox/downloads/file/3827536/terms_of_service_didnt_read-4.1.2.xpi";
+          hash = "sha256-iGJj3UKOCMyFcnW3cffSjsDomnZjwVEmB9Yd0jP4P6g=";
+        })
+
+      ];
 
       extraPolicies = {
         CaptivePortal = false;
@@ -459,7 +462,7 @@
 
 
 
-            
+
             user_pref("svg.context-properties.content.enabled", true);
             user_pref("layout.css.has-selector.enabled", true);
             user_pref("gfx.webrender.all", true);

@@ -20,9 +20,9 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
-    hypr-plugins = { 
+    hypr-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-     flake = false;
+      flake = false;
     };
 
     eww-bar = {
@@ -45,7 +45,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     supabar.url = "github:ElSargo/supabar";
-    nvim.url = "github:ElSargo/nvim"; 
+    nvim.url = "github:ElSargo/nvim";
     wgsl = {
       url = "github:ElSargo/wgsl-analyzer";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,8 +54,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, home-manager
     , helix-flake, supabar, nvim, wgsl, unix-chad-bookmarks, firefox-gnome-theme
-    , wave-fox, eww-bar, new-terminal-hyprland, hyprland
-    , ... }@attrs:
+    , wave-fox, eww-bar, new-terminal-hyprland, hyprland, ... }@attrs:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -82,11 +81,8 @@
           ];
         });
         specialArgs = attrs // { inherit system helix; };
-        default_modules = [
-          overlays
-          ./nixos/configuration.nix
-          ./users/root.nix
-        ];
+        default_modules =
+          [ overlays ./nixos/configuration.nix ./users/root.nix ];
       in {
         packages = {
           formatter.${system} =
@@ -138,6 +134,7 @@
                   ./home/firefox.nix
                   ./home/dark-theme.nix
                   ./home/wavefox.nix
+                  ./home/mime.nix
                 ];
 
               };
@@ -146,6 +143,7 @@
                 ./nixos/finger_print.nix
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
+                ./nixos/thunar.nix
                 # ./nixos/waydroid.nix
                 # ./nixos/virt-manager.nix
 
