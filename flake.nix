@@ -145,7 +145,7 @@
                 ./users/sargo.nix
                 ./nixos/thunar.nix
                 # ./nixos/waydroid.nix
-                # ./nixos/virt-manager.nix
+                ./nixos/virt-manager.nix
 
               ];
             };
