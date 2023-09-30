@@ -250,7 +250,7 @@ in {
         layerrule = blur, gtk-layer-shell
         layerrule = ignorezero, gtk-layer-shell
         windowrulev2 size 30% 30%, initialTitle:(Enter name of file to save to…)
-        windowrulev2 = opacity 0.99, class:(firefox) 
+        # windowrulev2 = opacity 0.99, class:(firefox) 
 
         misc {
           enable_swallow = true
