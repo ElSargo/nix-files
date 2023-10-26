@@ -69,7 +69,7 @@ in {
           ''
             rm -rf /home/sargo/.mozilla/firefox/sargo
             rm -rf /home/sargo/.mozilla/firefox/profiles.ini
-            ulimit -n 4096;
+            ulimit -n 8000;
             sudo nixos-rebuild boot --flake "/home/sargo/nix-files/#$(echo $name)" -p $name
           '';
         description = "Rebuild the system configuration";

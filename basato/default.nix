@@ -1,6 +1,6 @@
 { config, lib, modulesPath, pkgs, ... }: {
   # networking.defaultGateway = "192.168.1.200";
-  networking.hostName = "SargoSummit"; # Define your hostname.
+  networking.hostName = "Basato"; # Define your hostname.
   services.acpid.enable = true;
   # Bootloader.
   # services.undervolt.enable = true;
@@ -56,9 +56,9 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [ "msi_ec" ];
+
   boot.kernelModules = [ "kvm-intel" "acpi_ec" "ec_sys" "msi-ec" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = let msi-ec = config.boot.kernelPackages.callPackage ./msi-ec-patch.nix {}; in [ msi-ec ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/ab032e3a-09d1-43eb-85df-1b6ea66d99eb";

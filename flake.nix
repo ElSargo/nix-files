@@ -89,7 +89,7 @@
             (import nixpkgs-unstable { inherit system; }).nil;
           nixosConfigurations = {
 
-            SargoSummit = nixpkgs.lib.nixosSystem {
+            Basato = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
                 firefox-theme = firefox-gnome-theme;
@@ -102,10 +102,13 @@
                 ];
               };
               modules = default_modules ++ [
-                ./hosts/summit.nix
+                ./basato
                 ./nixos/finger_print.nix
                 ./nixos/gnome.nix
                 ./users/sargo.nix
+                ./nixos/remaps.nix
+                ./nixos/power-management.nix
+                ./nixos/virt-manager.nix
               ];
             };
 
@@ -116,10 +119,11 @@
                 extra-home-modules = [ ./home/kitty.nix ./home/firefox.nix ];
               };
               modules = default_modules ++ [
-                ./hosts/summit.nix
+                ./basato
                 ./nixos/finger_print.nix
                 ./users/sargo.nix
                 ./nixos/plasma.nix
+                ./nixos/power-management.nix
               ];
             };
 
@@ -144,13 +148,14 @@
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
                 ./nixos/thunar.nix
+                ./nixos/power-management.nix
                 # ./nixos/waydroid.nix
                 ./nixos/virt-manager.nix
 
               ];
             };
 
-            SargoLaptop = nixpkgs.lib.nixosSystem {
+            Wojak = nixpkgs.lib.nixosSystem {
               inherit system;
               specialArgs = specialArgs // {
                 firefox-theme = firefox-gnome-theme;
@@ -165,7 +170,7 @@
 
               };
               modules = default_modules ++ [
-                ./hosts/laptop.nix
+                ./wojak
                 ./nixos/hyprland.nix
                 ./users/sargo.nix
               ];

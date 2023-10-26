@@ -33,9 +33,7 @@ let
     git
     change-wallpaper
   ];
-  desktop = with pkgs; [ inlyne libreoffice ];
-
-  browsers = with pkgs; [ unstable.firefox ];
+  desktop = with pkgs; [ inlyne libreoffice thunderbird unstable.firefox ];
 
   custom = with pkgs; [ unixchadbookmarks nvim wgsl-analyzer ];
 
@@ -45,7 +43,6 @@ in pkgs.lib.flatten [
   coding
   terminal
   desktop
-  browsers
   custom
   pkgs.nixVersions.nix_2_17
 ]

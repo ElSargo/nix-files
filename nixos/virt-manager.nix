@@ -9,7 +9,7 @@
     spice-protocol
     win-virtio
     win-spice
-    libGL 
+    libGL
     libGLU
   ];
   users.users.sargo.extraGroups = [ "libvirtd" ];
